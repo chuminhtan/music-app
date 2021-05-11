@@ -10,17 +10,18 @@ public class ServerInfo {
     // Song
     public static final String SONG = "song";
     public  static final String STORAGE_SONG_MP3 ="storage/song";
-    public  static final String STORAGE_SONG_IMG ="storage/song-img";
+    public  static final String STORAGE_SONG_IMG ="storage/song-image";
 
     // Album
-
 
     // Artist
 
     // Genre
 
     // Playlist
-
+    public static final String PLAYLIST = "playlist";
+    public static final String PLAYLIST_NEWEST = PLAYLIST + "/newest";
+    public static final String PLAYLIST_IMG = "storage/playlist-image";
     // Song
 
     // User

@@ -1,5 +1,7 @@
 package com.myteam.myapplication.model;
 
+import com.myteam.myapplication.util.ServerInfo;
+
 public class Song {
     private int id;
     private String name;
@@ -75,5 +77,10 @@ public class Song {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    // Khởi tạo đường dẫn lấy file ảnh
+    public String getUrlImage() {
+        return ServerInfo.SERVER_BASE + "/" + ServerInfo.STORAGE_SONG_IMG+ "/" + this.img;
     }
 }
