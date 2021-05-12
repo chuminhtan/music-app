@@ -43,19 +43,24 @@ public class BannerFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.fragment_banner, container, false);
 
         // Lấy dữ liệu banner - bài hát mới upload từ server
         getPlaylistNewest();
+
         // Mapping
         mapping();
+
         return view;
     }
+
 
     private void mapping() {
         viewPager = view.findViewById(R.id.viewpager);
         circleIndicator = view.findViewById(R.id.indicatorDefault);
     }
+
 
     private void getPlaylistNewest() {
         playlistNewest = new PlaylistData().getNewUpload(new PlaylistArrayListAsyncResponse() {

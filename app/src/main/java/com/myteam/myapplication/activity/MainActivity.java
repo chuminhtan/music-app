@@ -34,12 +34,22 @@ public class MainActivity extends AppCompatActivity {
         init();
     }
 
+
+    // Ánh Xạ Các Thành Phần Từ MainActivity Đến View
+    private void mappingComponent() {
+        tabLayout = findViewById(R.id.myTabLayout);
+        viewPager = findViewById(R.id.myViewPager);
+    }
+
+
     // Khởi tạo ViewPager chứa các Fragment
     private void init() {
         MainViewPagerAdapter mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager()); // Truyền vào Fragment Quản lý tại Activity
-        mainViewPagerAdapter.addGragment(new HomeFragment(), "Trang Chủ");
-        mainViewPagerAdapter.addGragment(new SearchFragment(), "Tìm Kiếm");
-        mainViewPagerAdapter.addGragment(new UserFragment(), "Người Dùng");
+
+        // Thêm 3 Fragment vào bộ chuyển đổi mainView
+        mainViewPagerAdapter.addFragment(new HomeFragment(), "Trang Chủ");
+        mainViewPagerAdapter.addFragment(new SearchFragment(), "Tìm Kiếm");
+        mainViewPagerAdapter.addFragment(new UserFragment(), "Người Dùng");
 
         // Set Adapter cho view pager
         viewPager.setAdapter(mainViewPagerAdapter);
@@ -51,12 +61,5 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_home_30);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_search_30);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_supervised_user_circle_50);
-    }
-
-
-    // Ánh Xạ Các Thành Phần Từ MainActivity Đến View
-    private void mappingComponent() {
-        tabLayout = findViewById(R.id.myTabLayout);
-        viewPager = findViewById(R.id.myViewPager);
     }
 }

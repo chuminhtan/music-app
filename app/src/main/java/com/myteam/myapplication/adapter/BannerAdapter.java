@@ -16,33 +16,40 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+
+// File chuyển đổi BannerFragment thành các thành phần hiển thị màn hình
+
 public class BannerAdapter extends PagerAdapter {
     Context context;
     ArrayList<Playlist> playlistNewest;
 
-    //  Tạo contructor
-
-
+    //  contructor
     public BannerAdapter(Context context, ArrayList<Playlist> playlistNewest) {
         this.context = context;
         this.playlistNewest = playlistNewest;
     }
 
+
     // Muốn vẽ bao nhiêu pager?
     // = kích thước list
+
     @Override
     public int getCount() {
         return playlistNewest.size();
     }
 
+
     // true: sử dụng Object riêng
     // false: không sử dụng object riêng
+
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
     }
 
+
     // Object riêng chứa giao diện do người dùng tự định nghĩa
+
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -71,4 +78,10 @@ public class BannerAdapter extends PagerAdapter {
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((View) object);
     }
+
+
+
+
+
+
 }
