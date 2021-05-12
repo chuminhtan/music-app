@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/vert_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
+    android:padding="15dp"
+    android:background="@drawable/background_transparent">
+
+    <ImageView
+        android:id="@+id/vert_item_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/vert_item_song"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:text="Name"
+        android:textSize="20dp"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/vert_item_artist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="25dp"
+        android:text="Artist"
+        android:textSize="20dp"
+        android:textColor="@color/white" />
+
+    <View android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:background="#FFFFFF"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"/>
+</RelativeLayout>

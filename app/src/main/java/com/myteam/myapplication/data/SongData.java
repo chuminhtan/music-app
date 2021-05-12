@@ -16,9 +16,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SongData {
     private ArrayList<Song> songList;
+
+    public ArrayList<Song> getSongList() {
+        return songList;
+    }
+
+    public void setSongList(ArrayList<Song> songList) {
+        this.songList = songList;
+    }
 
     // Test Server
     public void getServer() {
@@ -45,7 +54,7 @@ public class SongData {
     }
 
     // Lấy Banner Bài Hát Mới Nhất
-    public ArrayList<Song> getNewUpload(final SongListAsyncResponse callback) {
+    public void getNewUpload(final SongListAsyncResponse callback) {
 
         songList = new ArrayList<>();
 
@@ -69,11 +78,11 @@ public class SongData {
                                 song.setSrc(obj.getString("SO_SRC"));
 
                                 songList.add(song);
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
+                        callback.processFinished(songList);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -84,7 +93,75 @@ public class SongData {
 
         // Access the RequestQueue through your AppController class.
         AppController.getInstance().addToRequestQueue(jsonArrayRequest);
-
-        return songList;
     }
+
+    // Lấy thông tin bài hát theo Id
+    public void getSongInfoById(final SongAsyncResponeByID callback, int id) {
+        String url = ServerInfo.SERVER_BASE + "/" + id;
+        Log.d("API", "URL = " + url);
+        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            Song song = new Song();
+                            song.setId(response.getInt("SO_ID"));
+                            song.setName(response.getString("SO_NAME"));
+                            song.setImg(response.getString("SO_IMG"));
+                            song.setSrc(response.getString("SO_SRC"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        // Access the RequestQueue through your AppController class.
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+    }
+
+    // Lấy danh sách bài hát có tên tương tự nhau
+    public void getListSongSimilar(final SongListAsyncResponse callback, String word) {
+        songList = new ArrayList<>();
+        String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.SONG_RELATE +"/" + word;
+        Log.d("API", "URL = " + url);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        int size = response.length();
+
+                        for (int i = 0; i < size; i++) {
+
+                            try {
+                                JSONObject obj = response.getJSONObject(i);
+                                Song song = new Song();
+                                song.setId(obj.getInt("SO_ID"));
+                                song.setName(obj.getString("SO_NAME"));
+                                song.setImg(obj.getString("SO_IMG"));
+                                song.setSrc(obj.getString("SO_SRC"));
+
+                                // get Artist
+                                int ArtistId = obj.getInt("AR_ID");
+
+                                songList.add(song);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        callback.processFinished(songList);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        // Access the RequestQueue through your AppController class.
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+    }
+
+
 }
