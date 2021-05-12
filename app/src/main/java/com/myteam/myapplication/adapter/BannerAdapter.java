@@ -11,38 +11,45 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.myteam.myapplication.R;
-import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.model.Playlist;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
+
+// File chuyển đổi BannerFragment thành các thành phần hiển thị màn hình
+
 public class BannerAdapter extends PagerAdapter {
     Context context;
-    ArrayList<Song> songList;
+    ArrayList<Playlist> playlistNewest;
 
-    //  Tạo contructor
-
-
-    public BannerAdapter(Context context, ArrayList<Song> songList) {
+    //  contructor
+    public BannerAdapter(Context context, ArrayList<Playlist> playlistNewest) {
         this.context = context;
-        this.songList = songList;
+        this.playlistNewest = playlistNewest;
     }
+
 
     // Muốn vẽ bao nhiêu pager?
     // = kích thước list
+
     @Override
     public int getCount() {
-        return songList.size();
+        return playlistNewest.size();
     }
+
 
     // true: sử dụng Object riêng
     // false: không sử dụng object riêng
+
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return view==object;
+        return view == object;
     }
 
+
     // Object riêng chứa giao diện do người dùng tự định nghĩa
+
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
@@ -50,11 +57,31 @@ public class BannerAdapter extends PagerAdapter {
 
         View view = inflater.inflate(R.layout.banner_dynamic, null);
 
-        ImageView imageBackgroundBanner = view.findViewById(R.id.imageview_backround_banner);
-        ImageView imgSongBanner = view.findViewById(R.id.imageview_banner);
-        TextView txtTitleSongBanner = view.findViewById(R.id.textview_title_banner);
+        ImageView imageBackgroundBanner = view.findViewById(R.id.imageview_background_banner);
+        ImageView imgPlaylistBanner = view.findViewById(R.id.imageview_banner);
+        TextView txtTitlePlaylistBanner = view.findViewById(R.id.textview_title_banner);
+        TextView txtDesPlaylistBanner = view.findViewById(R.id.textview_des_playlist_banner);
 
-        txtTitleSongBanner.setText(songList.get(position).getName());
+        txtDesPlaylistBanner.setText((playlistNewest.get(position).getDes()));
+        txtTitlePlaylistBanner.setText(playlistNewest.get(position).getName());
+
+        // Thư viện Picasso hỗ trợ get và hiển thị ảnh khi có url
+        String url = playlistNewest.get(position).getImageUrl();
+        Picasso.with(context).load(playlistNewest.get(position).getImageUrl()).into(imageBackgroundBanner);
+
+        container.addView(view);
+
         return view;
     }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((View) object);
+    }
+
+
+
+
+
+
 }

@@ -66,6 +66,7 @@ public class SongData {
                     @Override
                     public void onResponse(JSONArray response) {
                         int size = response.length();
+//                        Log.d("SONGLIST", "result:" + response.toString());
 
                         for (int i = 0; i < size; i++) {
 
@@ -82,6 +83,8 @@ public class SongData {
                                 e.printStackTrace();
                             }
                         }
+                        // Gọi callback để truyền vào songList sau khi hoàn thành.
+                        // Hàm callback sẽ được gọi lại trong Fragment hoặc Layout
                         callback.processFinished(songList);
                     }
                 }, new Response.ErrorListener() {

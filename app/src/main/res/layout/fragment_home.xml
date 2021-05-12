@@ -18,6 +18,12 @@
             android:id="@+id/fragmentBanner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        
+        <fragment
+            android:name="com.myteam.myapplication.fragment.PlaylistFragment"
+            android:id="@+id/fragment_playlists"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
 </ScrollView>

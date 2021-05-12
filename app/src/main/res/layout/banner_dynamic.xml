@@ -4,19 +4,18 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageview_backround_banner"
+        android:id="@+id/imageview_background_banner"
         android:scaleType="fitXY"
         android:layout_width="match_parent"
         android:layout_height="200dp" />
     
     <View
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@drawable/custom_background_banner" />
+        android:layout_height="200dp" />
 
     <RelativeLayout
         android:id="@+id/relative1"
-        android:layout_alignBottom="@id/imageview_backround_banner"
+        android:layout_alignBottom="@id/imageview_background_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <ImageView
@@ -44,6 +43,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/textview_des_playlist_banner"
                 android:textColor="#ffffff"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
