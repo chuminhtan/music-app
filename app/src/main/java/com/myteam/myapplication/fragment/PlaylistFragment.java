@@ -31,9 +31,11 @@ public class PlaylistFragment extends Fragment {
     PlaylistAdapter playlistAdapter;
     ArrayList<Playlist> playlistsType1;
 
+    // chuyển đổi từ xml sang view cho java
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // có layout của xml
         view = inflater.inflate(R.layout.fragment_playlist, container, false);
 
         lvPlaylist = view.findViewById(R.id.listview_playlist);
@@ -47,14 +49,18 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void getPlaylistsByType(int i) {
-        playlistsType1 = new PlaylistData().getPlaylistsType(1,new PlaylistArrayListAsyncResponse() {
+        playlistsType1 = new PlaylistData().getPlaylistsType(1, new PlaylistArrayListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Playlist> playlistArrayList) {
                 Log.d("PLAYLIST", "CALLBACK: " + playlistArrayList.toString());
 
+                // Adapter - Tạo view thành phần + gắn data vô return view
                 playlistAdapter = new PlaylistAdapter(getActivity(), R.layout.playlist_dynamic, playlistArrayList);
+
+                //
                 lvPlaylist.setAdapter(playlistAdapter);
             }
+
         });
     }
 

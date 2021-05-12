@@ -60,6 +60,7 @@ public class Playlist {
 
     // URL lấy file từ server
     public String getImageUrl() {
+
         return ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_IMG + "/" +this.img;
     }
 }

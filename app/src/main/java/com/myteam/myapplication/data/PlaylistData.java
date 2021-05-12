@@ -32,7 +32,6 @@ public class PlaylistData {
         String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_NEWEST;
 
         Log.d("API", "URL = " + url);
-
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
@@ -60,6 +59,7 @@ public class PlaylistData {
                         // Gọi callback để truyền vào playlistNewest sau khi hoàn thành.
                         // Hàm callback sẽ được gọi lại trong Fragment hoặc Layout
                         callback.processFinished(playlistNewest);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -82,6 +82,7 @@ public class PlaylistData {
         String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_TYPE + "/" + type;
         Log.d("API", "URL = " + url);
 
+        // Bất đồng bộ: gửi request lên nhưng không có chờ đến khi kết quả trả về, một lát sau mới trả về kết quả
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override

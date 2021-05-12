@@ -25,7 +25,6 @@ public class PlaylistAdapter extends ArrayAdapter<Playlist> {
     private int resourceLayout;
     private Context mContext;
 
-
     TextView txtNamePlaylist;
     ImageView imgBackground, imgPlaylist;
 
@@ -43,44 +42,34 @@ public class PlaylistAdapter extends ArrayAdapter<Playlist> {
 
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-//        ViewHolder viewHolder = null;
-//
-//        if (convertView == null) {
-//            LayoutInflater inflater = LayoutInflater.from(getContext());
-//
-//            convertView = inflater.inflate(R.layout.playlist_dynamic, null);
-//
-//            viewHolder = new ViewHolder();
-//            viewHolder.txtNamePlaylist = convertView.findViewById(R.id.textview_name_playlist);
-//            viewHolder.imgPlaylist = convertView.findViewById(R.id.imageview_playlist);
-//            viewHolder.imgBackground = convertView.findViewById(R.id.imageview_background_playlist);
-//
-//            convertView.setTag(viewHolder);
-//
-//        } else {
-//            viewHolder = (ViewHolder) convertView.getTag();
-//        }
         View v = convertView;
+
         if (v == null) {
-            LayoutInflater vi;
-            vi = LayoutInflater.from(mContext);
-            v = vi.inflate(resourceLayout, null);
+            // chuyển đổi từ xml -> view - hệ thống mới xài ddc
+            LayoutInflater inflater = LayoutInflater.from(mContext);
+            v = inflater.inflate(resourceLayout, null);
         }
 
 //        LayoutInflater layoutInflater = LayoutInflater.from(getContext());
 //        View view = layoutInflater.inflate(R.layout.playlist_dynamic, null);
 
+        // getItem định nghĩa sẵn: dùng để lấy phần tử từ List ra
         Playlist playlist = getItem(position);
 
         if (playlist != null) {
+
             txtNamePlaylist = v.findViewById(R.id.textview_name_playlist);
             imgPlaylist = v.findViewById(R.id.imageview_playlist);
             imgBackground = v.findViewById(R.id.imageview_background_playlist);
+
             String url = playlist.getImageUrl();
+
+            // Picasso load ảnh từ server
             Picasso.with(getContext()).load(playlist.getImageUrl()).into(imgBackground);
             Picasso.with(getContext()).load(playlist.getImageUrl()).into(imgPlaylist);
             txtNamePlaylist.setText(playlist.getName());
         }
+
         return v;
     }
 }
