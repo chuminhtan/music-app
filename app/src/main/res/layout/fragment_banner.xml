@@ -7,12 +7,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         
-        <ViewFlipper
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
-            android:background="@android:color/holo_red_dark"
             android:layout_width="match_parent"
             android:layout_height="180dp">
-        </ViewFlipper>
+        </androidx.viewpager.widget.ViewPager>
         <me.relex.circleindicator.CircleIndicator
             android:id="@+id/indicatorDefault"
             android:layout_alignParentRight="true"

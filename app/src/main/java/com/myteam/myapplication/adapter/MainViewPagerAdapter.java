@@ -8,6 +8,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.ArrayList;
 
+
+
+// File chuyển đổi các thành phần dữ liệu trong fragment để hiển thị được trên màn hình
+
 public class MainViewPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> arrayFragment = new ArrayList<>();
     private ArrayList<String> arrayTitle = new ArrayList<>();
@@ -30,7 +34,7 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     // Thêm Fragment vào ViewPager
-    public void addGragment(Fragment fragment, String title) {
+    public void addFragment(Fragment fragment, String title) {
         arrayFragment.add(fragment);
         arrayTitle.add(title);
     }

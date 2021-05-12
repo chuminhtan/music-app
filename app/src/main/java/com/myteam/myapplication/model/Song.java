@@ -1,10 +1,14 @@
 package com.myteam.myapplication.model;
 
+import com.myteam.myapplication.util.ServerInfo;
+
 public class Song {
     private int id;
     private String name;
     private Genre genre;
     private Artist artist;
+    private Artist artist2;
+    private Artist artist3;
     private Album album;
     private String src;
     private String img;
@@ -19,6 +23,22 @@ public class Song {
         this.artist = artist;
         this.src = src;
         this.img = img;
+    }
+
+    public Artist getArtist2() {
+        return artist2;
+    }
+
+    public void setArtist2(Artist artist2) {
+        this.artist2 = artist2;
+    }
+
+    public Artist getArtist3() {
+        return artist3;
+    }
+
+    public void setArtist3(Artist artist3) {
+        this.artist3 = artist3;
     }
 
     public int getId() {
@@ -75,5 +95,10 @@ public class Song {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    // Khởi tạo đường dẫn lấy file ảnh
+    public String getUrlImage() {
+        return ServerInfo.SERVER_BASE + "/" + ServerInfo.STORAGE_SONG_IMG+ "/" + this.img;
     }
 }
