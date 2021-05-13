@@ -47,6 +47,8 @@ public class BannerFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_banner, container, false);
 
         // Lấy dữ liệu banner - bài hát mới upload từ server
+
+        //getBanner();
         getPlaylistNewest();
 
         // Mapping
@@ -54,6 +56,17 @@ public class BannerFragment extends Fragment {
 
         return view;
     }
+
+//    private void getBanner() {
+//        songList = new ArrayList<>();
+//        songList = new SongData().getNewUpload(new SongListAsyncResponse() {
+//            @Override
+//            public void processFinished(ArrayList<Song> songList) {
+//
+//                Log.d("SONGLIST", "RESULT: " + songList.toString());
+//            }
+//        });
+//    }
 
 
     private void mapping() {

@@ -1,24 +1,27 @@
 package com.myteam.myapplication.model;
 
 public class Album {
-    private int in;
+    private int id;
     private Artist artist;
     private String name;
     private String img;
 
     public Album(int in, Artist artist, String name, String img) {
-        this.in = in;
+        this.id = in;
         this.artist = artist;
         this.name = name;
         this.img = img;
     }
 
-    public int getIn() {
-        return in;
+    public Album() {
     }
 
-    public void setIn(int in) {
-        this.in = in;
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int in) {
+        this.id = in;
     }
 
     public Artist getArtist() {
