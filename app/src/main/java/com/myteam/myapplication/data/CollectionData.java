@@ -70,7 +70,7 @@ public class CollectionData {
                                 // Lấy arrayObj nghệ sĩ
                                 JSONArray artistArrayObj = songObj.getJSONArray("ARTISTS");
                                 for (int j = 0; j < artistArrayObj.length(); j++) {
-                                    JSONObject artistObj = artistArrayObj.getJSONObject(i);
+                                    JSONObject artistObj = artistArrayObj.getJSONObject(j);
                                     Artist artist = new Artist();
 
                                     artist.setId(artistObj.getInt("AR_ID"));

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginVertical="5dp"
+    android:elevation="20dp"
+    android:background="@android:color/transparent"
+>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/carview_songlist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="8dp">
+            <ImageView
+                android:id="@+id/imageview_songlist_item"
+                android:layout_width="60dp"
+                android:layout_height="60dp" />
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toRightOf="@id/carview_songlist">
+
+            <TextView
+                android:id="@+id/textview_songname_item"
+                android:textSize="@dimen/text_song_name"
+                android:text="Em của ngày hôm qua"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:textStyle="bold"
+                android:layout_marginBottom="10dp"
+                android:maxWidth="250dp" />
+
+            <TextView
+                android:id="@+id/textview_artistname_item"
+                android:textSize="@dimen/text_song_artist"
+                android:text="Sơn Tùng MTP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxWidth="250dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_baseline_more_vert_50"
+            android:scaleType="fitXY"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

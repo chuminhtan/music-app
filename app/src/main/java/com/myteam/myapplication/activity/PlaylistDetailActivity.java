@@ -3,6 +3,7 @@ package com.myteam.myapplication.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -20,16 +21,19 @@ import android.widget.Toast;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.adapter.SonglistAdapter;
 import com.myteam.myapplication.data.CollectionAsyncResponse;
 import com.myteam.myapplication.data.CollectionData;
 import com.myteam.myapplication.data.PlaylistData;
 import com.myteam.myapplication.model.Collection;
 import com.myteam.myapplication.model.Playlist;
+import com.myteam.myapplication.model.Song;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 public class PlaylistDetailActivity extends AppCompatActivity {
     private Playlist playlistIntent;
@@ -38,9 +42,10 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     private Button btnPlay;
     private Toolbar toolbar;
 
-    CoordinatorLayout coordinatorLayout;
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    RecyclerView recyclerViewSonglist;
+    private CoordinatorLayout coordinatorLayout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private RecyclerView recyclerViewSonglist;
+    private SonglistAdapter songlistAdapter;
 
 
     @Override
@@ -55,8 +60,6 @@ public class PlaylistDetailActivity extends AppCompatActivity {
 
         // Init
         init();
-
-
 
         // Check playlist is null
         if (playlistIntent != null && !playlistIntent.getName().equals("")) {
@@ -73,14 +76,18 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             public void processFinished(Collection collection) {
                 mCollection = collection;
 
+                ArrayList<Song> songs = collection.getSongs();
+
+                songlistAdapter = new SonglistAdapter(getApplication(), R.layout.songlist_item, songs);
+                recyclerViewSonglist.setAdapter(songlistAdapter);
+
                 Log.d("COLLECTION", collection.toString());
             }
         });
     }
 
     private void setInfoPlaylist(String playlistName, String playlistImageUrl) {
-
-        Picasso.with(this).load(playlistImageUrl).into(imagePlaylist);
+        Picasso.with(this).load(playlistIntent.getImageUrl()).into(imagePlaylist);
     }
 
     private void init() {
@@ -107,7 +114,12 @@ public class PlaylistDetailActivity extends AppCompatActivity {
         imagePlaylist = findViewById(R.id.imageview_playlist_detail);
         btnPlay = findViewById(R.id.button_play_playlist_detail);
         toolbar = findViewById(R.id.toolbar_playlist_detail);
+
+        // Thiết lập recyclerView hiển thị hàng dọc
         recyclerViewSonglist = findViewById(R.id.recyclerview_songlist_playlist_detail);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerViewSonglist.setLayoutManager(mLayoutManager);
+
     }
 
     private void getDataIntent() {
@@ -120,8 +132,6 @@ public class PlaylistDetailActivity extends AppCompatActivity {
                 playlistIntent = (Playlist) intent.getSerializableExtra("playlist");
                 Toast.makeText(this, playlistIntent.getName(), Toast.LENGTH_SHORT).show();
             }
-
-
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.myteam.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.activity.PlaylistDetailActivity;
 import com.myteam.myapplication.model.Playlist;
 import com.squareup.picasso.Picasso;
 
@@ -41,9 +43,18 @@ public class PlaylistRectangleAdapter extends RecyclerView.Adapter<PlaylistRecta
 
     @Override
     public void onBindViewHolder(@NonNull PlaylistRectangleAdapter.MyViewHolder holder, int position) {
-        Playlist playlist = mplaylist.get(position);
+        final Playlist playlist = mplaylist.get(position);
         holder.txtPlaylistTitle.setText(playlist.getName());
         Picasso.with(mContext).load(playlist.getImageUrl()).into(holder.imgPlaylistImageSquare);
+
+        holder.imgPlaylistImageSquare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Intent intent = new Intent(mContext, PlaylistDetailActivity.class);
+                    intent.putExtra("playlist", playlist);
+                    mContext.startActivity(intent);
+            }
+        });
     }
 
 

@@ -1,6 +1,7 @@
 package com.myteam.myapplication.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.activity.PlaylistDetailActivity;
 import com.myteam.myapplication.model.Playlist;
 import com.squareup.picasso.Picasso;
 
@@ -45,9 +48,18 @@ public class PlaylistSquareAdapter extends RecyclerView.Adapter<PlaylistSquareAd
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Playlist playlist = mplaylist.get(position);
+        final Playlist playlist = mplaylist.get(position);
         holder.txtPlaylistTitle.setText(playlist.getName());
         Picasso.with(mContext).load(playlist.getImageUrl()).into(holder.imgPlaylistImageSquare);
+
+        holder.imgPlaylistImageSquare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, PlaylistDetailActivity.class);
+                intent.putExtra("playlist", playlist);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
 
@@ -56,17 +68,15 @@ public class PlaylistSquareAdapter extends RecyclerView.Adapter<PlaylistSquareAd
         return mplaylist.size();
     }
 
-
     class MyViewHolder extends RecyclerView.ViewHolder{
         public TextView txtPlaylistTitle;
         public ImageView imgPlaylistImageSquare;
+        public CardView cardView;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
             txtPlaylistTitle = itemView.findViewById(R.id.textview_title_playlist_square_item);
             imgPlaylistImageSquare = itemView.findViewById(R.id.imageview_playlist_square_item);
-
         }
     }
 
