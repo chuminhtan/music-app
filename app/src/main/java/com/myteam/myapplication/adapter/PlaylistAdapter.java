@@ -66,7 +66,7 @@ public class PlaylistAdapter extends ArrayAdapter<Playlist> {
 
             // Picasso load ảnh từ server
             Picasso.with(getContext()).load(playlist.getImageUrl()).into(imgBackground);
-            Picasso.with(getContext()).load(playlist.getImageUrl()).into(imgPlaylist);
+            Picasso.with(getContext()).load(playlist.getImageUrl2()).into(imgPlaylist);
             txtNamePlaylist.setText(playlist.getName());
         }
 

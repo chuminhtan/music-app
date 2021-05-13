@@ -2,12 +2,15 @@ package com.myteam.myapplication.model;
 
 import com.myteam.myapplication.util.ServerInfo;
 
-public class Playlist {
+import java.io.Serializable;
+
+public class Playlist implements Serializable {
     private int id;
     private User user;
     private String name;
     private String des;
     private String img;
+    private String img2;
 
     public Playlist() {}
 
@@ -15,6 +18,14 @@ public class Playlist {
         this.id = id;
         this.user = user;
         this.name = name;
+    }
+
+    public String getImg2() {
+        return img2;
+    }
+
+    public void setImg2(String img2) {
+        this.img2 = img2;
     }
 
     public String getDes() {
@@ -62,5 +73,10 @@ public class Playlist {
     public String getImageUrl() {
 
         return ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_IMG + "/" +this.img;
+    }
+
+    // URL lấy file ảnh 2 từ server
+    public String getImageUrl2() {
+        return ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_IMG + "/" +this.img2;
     }
 }

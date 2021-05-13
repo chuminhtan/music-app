@@ -1,6 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
+    <TextView
+        android:id="@+id/textview_title_playlist_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chủ Đề Hot"
+        android:textColor="@color/colorTextBlack"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"
+        android:textSize="@dimen/text_title"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:id="@+id/textview_more_playlist_horizontal"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Xem Thêm>"
+        android:textColor="@color/colorTextMore"
+        android:textStyle="bold"
+        android:layout_marginBottom="15dp"
+        android:textSize="12sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_playlist_horizontal"
+            android:orientation="horizontal"
+            android:scrollbars="none"
+            android:layout_below="@id/textview_title_playlist_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+</RelativeLayout>

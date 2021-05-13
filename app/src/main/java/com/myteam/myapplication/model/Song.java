@@ -2,6 +2,8 @@ package com.myteam.myapplication.model;
 
 import com.myteam.myapplication.util.ServerInfo;
 
+import java.util.ArrayList;
+
 public class Song {
     private int id;
     private String name;
@@ -12,6 +14,7 @@ public class Song {
     private Album album;
     private String src;
     private String img;
+    private ArrayList<Artist> artists = new ArrayList<>();
 
     public Song() {
     }
@@ -23,6 +26,14 @@ public class Song {
         this.artist = artist;
         this.src = src;
         this.img = img;
+    }
+
+    public ArrayList<Artist> getArtists() {
+        return artists;
+    }
+
+    public void setArtists(ArrayList<Artist> artists) {
+        this.artists = artists;
     }
 
     public Artist getArtist2() {
@@ -100,5 +111,10 @@ public class Song {
     // Khởi tạo đường dẫn lấy file ảnh
     public String getUrlImage() {
         return ServerInfo.SERVER_BASE + "/" + ServerInfo.STORAGE_SONG_IMG+ "/" + this.img;
+    }
+
+    // Thêm nghệ sĩ vào bài hát
+    public void addArtist(Artist artist) {
+        artists.add(artist);
     }
 }

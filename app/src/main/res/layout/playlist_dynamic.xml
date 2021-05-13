@@ -10,7 +10,7 @@
         android:id="@+id/imageview_background_playlist"
         android:scaleType="fitXY"
         android:layout_width="match_parent"
-        android:layout_height="120dp" />
+        android:layout_height="150dp" />
 
     <View
         android:layout_marginVertical="5dp"

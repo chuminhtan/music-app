@@ -52,12 +52,9 @@ public class PlaylistFragment extends Fragment {
         playlistsType1 = new PlaylistData().getPlaylistsType(1, new PlaylistArrayListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Playlist> playlistArrayList) {
-                Log.d("PLAYLIST", "CALLBACK: " + playlistArrayList.toString());
-
                 // Adapter - Tạo view thành phần + gắn data vô return view
                 playlistAdapter = new PlaylistAdapter(getActivity(), R.layout.playlist_dynamic, playlistArrayList);
 
-                //
                 lvPlaylist.setAdapter(playlistAdapter);
             }
 

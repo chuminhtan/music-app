@@ -48,6 +48,7 @@ public class PlaylistData {
                                 playlist.setName(obj.getString("PL_NAME"));
                                 playlist.setDes(obj.getString("PL_DES"));
                                 playlist.setImg(obj.getString("PL_IMG"));
+                                playlist.setImg2(obj.getString("PL_IMG2"));
 
                                 playlistNewest.add(playlist);
 
@@ -100,6 +101,7 @@ public class PlaylistData {
                                 playlist.setName(obj.getString("PL_NAME"));
                                 playlist.setDes(obj.getString("PL_DES"));
                                 playlist.setImg(obj.getString("PL_IMG"));
+                                playlist.setImg2(obj.getString("PL_IMG2"));
 
                                 playlistType.add(playlist);
 

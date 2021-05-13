@@ -3,27 +3,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="none"
     android:fillViewport="true"
+    android:scrollbars="none"
+    android:padding="20dp"
     tools:context=".fragment.HomeFragment">
 
     <LinearLayout
         android:id="@+id/linearlayout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <fragment
-            android:name="com.myteam.myapplication.fragment.BannerFragment"
             android:id="@+id/fragmentBanner"
+            android:name="com.myteam.myapplication.fragment.BannerFragment"
             android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
             android:layout_height="wrap_content" />
-        
+
         <fragment
-            android:name="com.myteam.myapplication.fragment.PlaylistFragment"
-            android:id="@+id/fragment_playlists"
+            android:name="com.myteam.myapplication.fragment.ActivityPlaylistFragment"
             android:layout_width="match_parent"
+            android:layout_marginVertical="15dp"
             android:layout_height="wrap_content" />
+
+        <fragment
+            android:name="com.myteam.myapplication.fragment.HotPlaylistFragment"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="15dp"
+            android:layout_height="wrap_content" />
+
+        <fragment
+            android:name="com.myteam.myapplication.fragment.TopPlaylistFragment"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="15dp"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </ScrollView>

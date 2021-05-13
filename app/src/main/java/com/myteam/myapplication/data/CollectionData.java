@@ -27,7 +27,7 @@ public class CollectionData {
     // Lấy danh sách bài hát của một playlist = Playlist_id
     // @playlistId : ID của playlist
     // @callback
-    public void getCollectionByPlaylistId(int playlistId, CollectionAsyncResponse callBack) {
+    public void getCollectionByPlaylistId(int playlistId, final CollectionAsyncResponse callback) {
 
          collection = new Collection();
          playlist = new Playlist();
@@ -46,6 +46,7 @@ public class CollectionData {
 
                         try {
 
+                            // Lấy object playlist
                             JSONObject playlistObj = response.getJSONObject("playlist");
                             playlist.setId(playlistObj.getInt("PL_ID"));
                             playlist.setName(playlistObj.getString("PL_NAME"));
@@ -54,6 +55,7 @@ public class CollectionData {
 
                             collection.setPlaylist(playlist);
 
+                            // Lấy arrayObj bài hát
                             JSONArray songsArrayObj = response.getJSONArray("songs");
                             for (int i = 0; i < songsArrayObj.length(); i++) {
 
@@ -65,13 +67,28 @@ public class CollectionData {
                                 song.setImg(songObj.getString("SO_IMG"));
                                 song.setSrc(songObj.getString("SO_SRC"));
 
+                                // Lấy arrayObj nghệ sĩ
+                                JSONArray artistArrayObj = songObj.getJSONArray("ARTISTS");
+                                for (int j = 0; j < artistArrayObj.length(); j++) {
+                                    JSONObject artistObj = artistArrayObj.getJSONObject(i);
+                                    Artist artist = new Artist();
+
+                                    artist.setId(artistObj.getInt("AR_ID"));
+                                    artist.setName(artistObj.getString("AR_NAME"));
+
+                                    song.addArtist(artist);
+                                }
+                                songArrayList.add(song);
                             }
+
+                            collection.setSongs(songArrayList);
+                            callback.processFinished(collection);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        Log.d("API", "ROOT = " + response.toString());
+
 
                     }
 
@@ -84,10 +101,8 @@ public class CollectionData {
                     }
                 });
 
-
         // Thêm vào hàng đợi request
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
-
     }
 
 
