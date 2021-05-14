@@ -31,11 +31,12 @@ import com.myteam.myapplication.model.Song;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class PlaylistDetailActivity extends AppCompatActivity {
+public class PlaylistDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private Playlist playlistIntent;
     private Collection mCollection;
     private ImageView imagePlaylist;
@@ -47,6 +48,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
     private RecyclerView recyclerViewSonglist;
     private SonglistAdapter songlistAdapter;
 
+    private ArrayList<Song> songList =  new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +68,8 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             setInfoPlaylist(playlistIntent.getName(), playlistIntent.getImageUrl());
             getSonglist(playlistIntent.getId());
         }
+
+        btnPlay.setOnClickListener(this);
     }
 
     private void getSonglist(int playlistId) {
@@ -76,9 +80,9 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             public void processFinished(Collection collection) {
                 mCollection = collection;
 
-                ArrayList<Song> songs = collection.getSongs();
+                songList = collection.getSongs();
 
-                songlistAdapter = new SonglistAdapter(getApplication(), R.layout.songlist_item, songs);
+                songlistAdapter = new SonglistAdapter(PlaylistDetailActivity.this, R.layout.songlist_item, songList);
                 recyclerViewSonglist.setAdapter(songlistAdapter);
 
                 Log.d("COLLECTION", collection.toString());
@@ -117,7 +121,7 @@ public class PlaylistDetailActivity extends AppCompatActivity {
 
         // Thiết lập recyclerView hiển thị hàng dọc
         recyclerViewSonglist = findViewById(R.id.recyclerview_songlist_playlist_detail);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(PlaylistDetailActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerViewSonglist.setLayoutManager(mLayoutManager);
 
     }
@@ -130,8 +134,19 @@ public class PlaylistDetailActivity extends AppCompatActivity {
             // Data : Playlist
             if (intent.hasExtra("playlist")) {
                 playlistIntent = (Playlist) intent.getSerializableExtra("playlist");
-                Toast.makeText(this, playlistIntent.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(PlaylistDetailActivity.this, playlistIntent.getName(), Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.button_play_playlist_detail:
+                Intent intent = new Intent(PlaylistDetailActivity.this, PlayMusicActivity.class);
+                intent.putExtra("songList", songList);
+                PlaylistDetailActivity.this.startActivity(intent);
         }
     }
 }

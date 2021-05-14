@@ -1,10 +1,14 @@
 package com.myteam.myapplication.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.myteam.myapplication.util.ServerInfo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Song {
+public class Song implements Serializable {
     private int id;
     private String name;
     private Genre genre;
@@ -26,6 +30,13 @@ public class Song {
         this.artist = artist;
         this.src = src;
         this.img = img;
+    }
+
+    protected Song(Parcel in) {
+        id = in.readInt();
+        name = in.readString();
+        src = in.readString();
+        img = in.readString();
     }
 
     public ArrayList<Artist> getArtists() {
@@ -116,5 +127,33 @@ public class Song {
     // Thêm nghệ sĩ vào bài hát
     public void addArtist(Artist artist) {
         artists.add(artist);
+    }
+
+    // Lấy url file nhạc
+    public String getUrlSrc() {
+        return ServerInfo.SERVER_BASE + "/" + ServerInfo.STORAGE_SONG_MP3 + "/" + this.src;
+    }
+
+    // Lấy tên nghệ sĩ
+    public String getArtistsName() {
+        String name = artists.get(0).getName();
+
+        for ( int i = 0; i < artists.size(); i++) {
+            name += ", " + artists.get(i).getName();
+        }
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return "Song{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", genre=" + genre +
+                ", album=" + album +
+                ", src='" + src + '\'' +
+                ", img='" + img + '\'' +
+                ", artists=" + artists +
+                '}';
     }
 }

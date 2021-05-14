@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_header_selector">
 
-    <ImageButton
-        android:id="@+id/btn_back"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/ic_baseline_arrow_back_ios_50" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_playsong"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        tools:ignore="InvalidId"></androidx.appcompat.widget.Toolbar>
 
     <ImageButton
         android:id="@+id/btn_more_option"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="16dp"
+        android:layout_height="18dp"
         android:layout_marginLeft="350dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/ic_baseline_more_vert_50" />
+
+        />
 
     <ImageView
         android:id="@+id/image_song"
@@ -36,7 +37,7 @@
         android:text="Name"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="25dp" />
+        android:textSize="16sp" />
 
     <TextView
         android:id="@+id/txt_song_artist"
@@ -47,7 +48,7 @@
         android:text="Artist"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="25dp" />
+        android:textSize="13sp" />
     
     <LinearLayout
         android:layout_width="wrap_content"
@@ -58,31 +59,31 @@
 
         <ImageButton
             android:id="@+id/btn_like_song"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_favorite_50" />
 
         <ImageButton
             android:id="@+id/btn_list_add"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_marginLeft="50dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_playlist_add_50" />
 
         <ImageButton
             android:id="@+id/btn_share"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_marginLeft="50dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_share_50" />
 
         <ImageButton
             android:id="@+id/btn_list"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_marginLeft="50dp"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_list_50" />
@@ -136,16 +137,16 @@
 
         <ImageButton
             android:id="@+id/btn_volume"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_volume_up_50"
             android:orientation="horizontal" />
 
         <ImageButton
             android:id="@+id/btn_skip_previous"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
@@ -153,15 +154,16 @@
 
         <ImageButton
             android:id="@+id/btn_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
-            android:background="@drawable/ic_baseline_play_circle_90" />
+            android:background="@null"
+            android:scaleType="fitXY" />
 
         <ImageButton
             android:id="@+id/btn_skip_next"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="30dp"
@@ -169,8 +171,8 @@
 
         <ImageButton
             android:id="@+id/btn_mode_play"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/play_icon_control"
+            android:layout_height="@dimen/play_icon_control"
             android:layout_gravity="center_vertical"
             android:background="@drawable/ic_baseline_shuffle_50" />
     </LinearLayout>
