@@ -53,7 +53,7 @@ public class ListSongBySearchAdapter extends ArrayAdapter<Song> {
 
         // Set Artist
         if (song.getArtist() != null) {
-            vert_item_artist.setText(song.getArtist().getName());
+            vert_item_artist.setText(song.getArtistsName());
         } else {
             vert_item_artist.setText("");
         }

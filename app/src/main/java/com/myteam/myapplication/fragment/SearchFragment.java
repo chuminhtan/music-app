@@ -1,6 +1,6 @@
 /**
  * TRANG SEARCH
- * */
+ */
 
 
 package com.myteam.myapplication.fragment;
@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
-
 
 
 import android.view.ViewGroup;
@@ -42,6 +41,7 @@ public class SearchFragment extends Fragment {
     View view;
     ListView lv_song;
     SearchView search_view;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -62,18 +62,20 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+
         lv_song.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song songModel = (Song) parent.getItemAtPosition(position);
                 Bundle sendBundle = new Bundle();
                 Intent intent = new Intent(getContext(), PlayMusicActivity.class);
-                sendBundle.putInt("song_id", songModel.getId());
-                sendBundle.putString("song_name", songModel.getName());
-                sendBundle.putString("url", songModel.getSrc());
-                sendBundle.putString("src_img", songModel.getImg());
+//                sendBundle.putInt("song_id", songModel.getId());
+////                sendBundle.putString("song_name", songModel.getName());
+////                sendBundle.putString("url", songModel.getSrc());
+////                sendBundle.putString("src_img", songModel.getImg());
                 //sendBundle.putString("artist_name", songModel.getArtist().getName());
-                intent.putExtras(sendBundle);
+
+                intent.putExtra("song", songModel);
                 startActivity(intent);
             }
         });
@@ -86,10 +88,10 @@ public class SearchFragment extends Fragment {
         songDataService.getListSongSimilar(new SongListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Song> songList) {
-                ListSongBySearchAdapter listSongBySearchAdapter = new ListSongBySearchAdapter(getActivity(),R.layout.fragment_search,songList);
+                ListSongBySearchAdapter listSongBySearchAdapter = new ListSongBySearchAdapter(getActivity(), R.layout.fragment_search, songList);
                 lv_song.setAdapter(listSongBySearchAdapter);
             }
-        },query);
+        }, query);
 
     }
 }

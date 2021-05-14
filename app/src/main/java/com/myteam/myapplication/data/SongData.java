@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.myteam.myapplication.controller.AppController;
+import com.myteam.myapplication.model.Artist;
 import com.myteam.myapplication.model.Song;
 import com.myteam.myapplication.util.ServerInfo;
 
@@ -146,8 +147,17 @@ public class SongData {
                                 song.setImg(obj.getString("SO_IMG"));
                                 song.setSrc(obj.getString("SO_SRC"));
 
-                                // get Artist
-                                int ArtistId = obj.getInt("AR_ID");
+                                // Lấy arrayObj nghệ sĩ
+                                JSONArray artistArrayObj = obj.getJSONArray("ARTISTS");
+                                for (int j = 0; j < artistArrayObj.length(); j++) {
+                                    JSONObject artistObj = artistArrayObj.getJSONObject(j);
+                                    Artist artist = new Artist();
+
+                                    artist.setId(artistObj.getInt("AR_ID"));
+                                    artist.setName(artistObj.getString("AR_NAME"));
+
+                                    song.addArtist(artist);
+                                }
 
                                 songList.add(song);
                             } catch (JSONException e) {
