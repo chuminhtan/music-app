@@ -22,7 +22,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         app:tabIndicatorColor="#171A2B"
-        app:tabIndicatorHeight="2dp"
         app:tabMode="fixed"
         app:tabSelectedTextColor="#000000">
 
