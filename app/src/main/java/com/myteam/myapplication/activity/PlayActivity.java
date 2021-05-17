@@ -3,10 +3,14 @@ package com.myteam.myapplication.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -21,6 +25,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,6 +39,7 @@ import android.widget.Toast;
 
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.adapter.ViewPagerPlayAdapter;
+import com.myteam.myapplication.controller.NotificationReceiver;
 import com.myteam.myapplication.fragment.CurrentPlaylistFragment;
 import com.myteam.myapplication.fragment.DishFragment;
 import com.myteam.myapplication.model.Song;
@@ -51,7 +57,13 @@ import java.util.Random;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.myteam.myapplication.controller.AppController.ACTION_NEXT;
+import static com.myteam.myapplication.controller.AppController.ACTION_PLAY;
+import static com.myteam.myapplication.controller.AppController.ACTION_PREVIOUS;
+import static com.myteam.myapplication.controller.AppController.CHANNEL_ID_2;
+
 public class PlayActivity extends AppCompatActivity implements ActionPlaying, ServiceConnection {
+
     Toolbar toolbarPlay;
     ViewPager viewPagerPlay;
     ImageView btnLikeSong, btnShareSong, btnAddPlaylist, btnRepeatOne, btnSkipPre, btnPlayPause, btnSkipNext, btnShuffle;
@@ -60,7 +72,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     ViewPager viewPager;
     DishFragment dishFragment;
     CurrentPlaylistFragment currentPlaylistFragment;
-    MediaPlayer mediaPlayer;
+    //    MediaPlayer mediaPlayer;
     Handler handler = new Handler();
     public static ArrayList<Song> SONGLIST = new ArrayList<>();
     public static ArrayList<Song> SONGLIST_SHUFFLE = new ArrayList<>();
@@ -71,6 +83,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     private int currentPositionSong = 0;
     private String urlMP3 = "";
     private int sizeList;
+    MediaSessionCompat mediaSessionCompat;
 
     MusicService musicService;
 
@@ -79,23 +92,14 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
-        initComponent();
-
-
-        PlayActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                playSongs();
-                setEvents();
-            }
-        });
+        // Get data intent
+        getDataIntent();
+        mediaSessionCompat = new MediaSessionCompat(getBaseContext(), "My Audio");
     }
 
 
     // INIT COMPONENT
     private void initComponent() {
-        // Get data intent
-        getDataIntent();
 
         // Toolbar
         toolbarPlay = findViewById(R.id.toolbar_play);
@@ -128,8 +132,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         toolbarPlay.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mediaPlayer.isPlaying()) {
-                    mediaPlayer.stop();
+                if (musicService.isPlaying()) {
+                    musicService.stop();
                 }
                 finish();
             }
@@ -141,8 +145,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         adapterPlay.AddFragment(dishFragment);
         adapterPlay.AddFragment(currentPlaylistFragment);
         viewPager.setAdapter(adapterPlay);
-
-        mediaPlayer = new MediaPlayer();
+        musicService.createMediaPlayer();
     }
 
     // ON RESUME
@@ -264,21 +267,27 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         } else if (SONGLIST.size() > 1 && !isRepeatOne) {
             currentPositionSong = (currentPositionSong + 1) % SONGLIST.size();
         }
+
+
         playSongs();
     }
 
     public void btnPlayPauseClicked() {
-        if (mediaPlayer.isPlaying()) {
+        if (musicService.isPlaying()) {
             btnPlayPause.setImageResource(R.drawable.ic_play_circle);
+            showNotification(R.drawable.ic_play_circle);
+
             handler.removeCallbacks(update);
-            mediaPlayer.pause();
+            musicService.pause();
             dishFragment.pauseAnimator();
         } else {
             btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
-            mediaPlayer.start();
+            showNotification(R.drawable.ic_pause_circle);
+            musicService.start();
             updateSeekBar();
             dishFragment.resumeAnimator();
         }
+
     }
 
     public void btnShuffleClicked() {
@@ -323,55 +332,52 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
                 sizeList = SONGLIST.size();
             }
+
         }
     }
 
     // PLAYS SONGS
     private void playSongs() {
-    PlayActivity.this.runOnUiThread(new Runnable() {
-        @Override
-        public void run() {
-            if (SONGLIST.size() == 0) return;
 
-            Song song = SONGLIST.get(currentPositionSong);
+                if (SONGLIST.size() == 0) return;
 
-            if (mediaPlayer != null) {
-                mediaPlayer.stop();
-                mediaPlayer.reset();
-                mediaPlayer.release();
-            }
-            // Change background
-            changeBackground(song.getUrlImage());
+                Song song = SONGLIST.get(currentPositionSong);
 
-            mediaPlayer = new MediaPlayer();
-
-            seekBarPlay.setMax(100);
-            prepareMediaPlayer(song.getUrlSrc());
-            mediaPlayer.start();
-
-            // change icon play/pause
-            btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
-
-            // update seekbar
-            updateSeekBar();
-
-            // Change song name image
-            changeSongImageFromDishFragment(song.getUrlImage());
-
-            // Set song name
-            txtSongName.setText(song.getName());
-            txtSongArtist.setText(song.getArtistsName());
-
-            // Change Song When Complete
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    btnSkipNextClicked();
+                if (musicService.isPlaying()) {
+                    musicService.stop();
+                    musicService.reset();
+                    musicService.release();
                 }
-            });
-        }
-    });
+                // Change background
+                changeBackground(song.getUrlImage());
 
+                musicService.createMediaPlayer();
+
+                seekBarPlay.setMax(100);
+                prepareMediaPlayer(song.getUrlSrc());
+                musicService.start();
+
+                // change icon play/pause
+                btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
+                showNotification(R.drawable.ic_pause_circle);
+                // update seekbar
+                updateSeekBar();
+
+                // Change song name image
+                changeSongImageFromDishFragment(song.getUrlImage());
+
+                // Set song name
+                txtSongName.setText(song.getName());
+                txtSongArtist.setText(song.getArtistsName());
+
+                // Change Song When Complete
+                musicService.onCompleted();
+
+                // Send position to Service
+
+                Intent intent = new Intent(PlayActivity.this, MusicService.class);
+                intent.putExtra("servicePostition", currentPositionSong);
+                startService(intent);
 
     }
 
@@ -458,9 +464,9 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 SeekBar seekBar = (SeekBar) v;
-                int playPosition = (mediaPlayer.getDuration() / 100) * seekBar.getProgress();
-                mediaPlayer.seekTo(playPosition);
-                txtTimePlayed.setText(milliSecondsToTimer(mediaPlayer.getCurrentPosition()));
+                int playPosition = (musicService.getDuration() / 100) * seekBar.getProgress();
+                musicService.seekTo(playPosition);
+                txtTimePlayed.setText(milliSecondsToTimer(musicService.getCurrentPosition()));
                 return false;
             }
         });
@@ -513,14 +519,14 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
     // CHANGE PLAY/PAUSE BUTTON
     private void changePlayPause() {
-        if (mediaPlayer.isPlaying()) {
+        if (musicService.isPlaying()) {
             btnPlayPause.setImageResource(R.drawable.ic_play_circle);
             handler.removeCallbacks(update);
-            mediaPlayer.pause();
+            musicService.pause();
             dishFragment.pauseAnimator();
         } else {
             btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
-            mediaPlayer.start();
+            musicService.start();
             updateSeekBar();
             dishFragment.resumeAnimator();
         }
@@ -532,9 +538,9 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     private void prepareMediaPlayer(String url) {
         Log.d("URL", url);
         try {
-            mediaPlayer.setDataSource(url);
-            mediaPlayer.prepare();
-            txtTimeTotal.setText(milliSecondsToTimer(mediaPlayer.getDuration()));
+            musicService.setDataSource(url);
+            musicService.prepare();
+            txtTimeTotal.setText(milliSecondsToTimer(musicService.getDuration()));
         } catch (Exception ex) {
             Toast.makeText(PlayActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -546,14 +552,14 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         @Override
         public void run() {
             updateSeekBar();
-            long currentDuration = mediaPlayer.getCurrentPosition();
+            long currentDuration = musicService.getCurrentPosition();
             txtTimePlayed.setText(milliSecondsToTimer(currentDuration));
         }
     };
 
     private void updateSeekBar() {
-        if (mediaPlayer.isPlaying()) {
-            seekBarPlay.setProgress((int) (((float) mediaPlayer.getCurrentPosition() / mediaPlayer.getDuration()) * 100));
+        if (musicService.isPlaying()) {
+            seekBarPlay.setProgress((int) (((float) musicService.getCurrentPosition() / musicService.getDuration()) * 100));
             handler.postDelayed(update, 1000);
         }
     }
@@ -605,15 +611,14 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     }
 
 
-
     /**
      * **************************************************************************************
-     *
+     * <p>
      * SERVICE
      * CONNECT TO SERVICE
-     *
+     * <p>
      * **************************************************************************************
-     * */
+     */
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
@@ -621,10 +626,74 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         musicService = myBinder.getService();
         Toast.makeText(PlayActivity.this, "Connected " + musicService,
                 Toast.LENGTH_LONG).show();
+
+        PlayActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                initComponent();
+                playSongs();
+                setEvents();
+            }
+        });
     }
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
         musicService = null;
+    }
+
+    void showNotification(final int playPauseBtn) {
+        Intent intent = new Intent(this, PlayActivity.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0 ,intent, 0);
+
+        Intent prevIntent = new Intent(this, NotificationReceiver.class)
+                .setAction(ACTION_PREVIOUS);
+        final PendingIntent prevPending = PendingIntent.getBroadcast(this, 0 , prevIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent pauseIntent = new Intent(this, NotificationReceiver.class)
+                .setAction(ACTION_PLAY);
+        final PendingIntent pausePending = PendingIntent.getBroadcast(this, 0 , pauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent nextIntent = new Intent(this, NotificationReceiver.class)
+                .setAction(ACTION_NEXT);
+        final PendingIntent nextPending = PendingIntent.getBroadcast(this, 0 , nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        final Song song = SONGLIST.get(currentPositionSong);
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+
+                Notification notification = new NotificationCompat.Builder(PlayActivity.this,CHANNEL_ID_2)
+                        .setSmallIcon(playPauseBtn)
+                        .setLargeIcon(bitmap)
+                        .setContentTitle(song.getName())
+                .setContentText(song.getArtistsName())
+                        .addAction(R.drawable.ic_skip_previous, "Previous", prevPending)
+                        .addAction(R.drawable.ic_pause_circle, "Pause", pausePending)
+                        .addAction(R.drawable.ic_skip_next, "Next", nextPending)
+                        .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setMediaSession(mediaSessionCompat.getSessionToken()))
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setOnlyAlertOnce(true)
+                        .build();
+
+                NotificationManager notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+
+                notificationManager.notify(0, notification);
+
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
+
+        Picasso.with(PlayActivity.this).load(song.getUrlImage()).into(target);
     }
 }
