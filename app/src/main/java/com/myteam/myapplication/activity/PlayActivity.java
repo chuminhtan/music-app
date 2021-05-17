@@ -1,19 +1,30 @@
 package com.myteam.myapplication.activity;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,13 +37,21 @@ import com.myteam.myapplication.model.Song;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
+import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class PlayActivity extends AppCompatActivity {
     Toolbar toolbarPlay;
     ViewPager viewPagerPlay;
-    ImageView btnLikeSong, btnShareSong, btnAddPlaylist, btnRepeat, btnSkipPre, btnPlayPause, btnSkipNext, btnShuffle;
-    TextView txtSongName, txtSongArtist,txtTimePlayed, txtTimeTotal, txtTitleToolbarPlay;
+    ImageView btnLikeSong, btnShareSong, btnAddPlaylist, btnRepeatOne, btnSkipPre, btnPlayPause, btnSkipNext, btnShuffle;
+    TextView txtSongName, txtSongArtist, txtTimePlayed, txtTimeTotal, txtTitleToolbarPlay;
     SeekBar seekBarPlay;
     ViewPager viewPager;
     DishFragment dishFragment;
@@ -40,112 +59,33 @@ public class PlayActivity extends AppCompatActivity {
     MediaPlayer mediaPlayer;
     Handler handler = new Handler();
     public static ArrayList<Song> SONGLIST = new ArrayList<>();
+    public static ArrayList<Song> SONGLIST_SHUFFLE = new ArrayList<>();
     public static ViewPagerPlayAdapter adapterPlay;
+    public static boolean isShuffle = false, isRepeatOne = false;
     private Thread playThread, prevThread, nextThread;
-private         Bundle bundle = new Bundle();
+    private Bundle bundle = new Bundle();
     private int currentPositionSong = 0;
     private String urlMP3 = "";
+    private int sizeList;
+
     // ON CREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_media_player);
 
-        initComponent();
-        
-    }
-
-
-    // ON RESUME
-    // HANDEL MEDIA CONTROL
-    @Override
-    protected void onResume() {
-        playThreadBtn();
-        nextThreadBtn();
-        prevThreadBtn();
-        super.onResume();
-    }
-
-    private void prevThreadBtn() {
-        prevThread = new Thread(){
+        runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                super.run();
-                btnSkipPre.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        btnSkipPreClicked();
-                    }
-                });
+                initComponent();
+                playSongs();
+                setEvents();
             }
-        };
-        prevThread.start();
+        });
+
     }
 
-    private void nextThreadBtn() {
-        nextThread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                btnSkipNext.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        btnSkipNextClicked();
-                    }
-                });
-            }
-        };
-        nextThread.start();
-    }
-
-    private void playThreadBtn() {
-        playThread = new Thread(){
-            @Override
-            public void run() {
-                super.run();
-                btnPlayPause.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        playPauseBtnClicked();
-                    }
-                });
-            }
-        };
-        playThread.start();
-    }
-
-    private void btnSkipPreClicked() {
-        if (SONGLIST.size() > 1) {
-            currentPositionSong = (currentPositionSong - 1) < 0 ? (SONGLIST.size() - 1) : ((currentPositionSong - 1) % SONGLIST.size());
-            playSong();
-        }
-    }
-
-    private void btnSkipNextClicked() {
-        if (SONGLIST.size() > 1) {
-            currentPositionSong = (currentPositionSong + 1) % SONGLIST.size();
-            playSong();
-        }
-    }
-
-
-
-    private void playPauseBtnClicked() {
-        if ( mediaPlayer.isPlaying()) {
-            btnPlayPause.setImageResource(R.drawable.ic_play_circle);
-            handler.removeCallbacks(update);
-            mediaPlayer.pause();
-            dishFragment.pauseAnimator();
-        } else {
-            btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
-            mediaPlayer.start();
-            updateSeekBar();
-            dishFragment.resumeAnimator();
-        }
-    }
-
-
-    // INIT VIEW COMPONENT
+    // INIT COMPONENT
     private void initComponent() {
         // Get data intent
         getDataIntent();
@@ -160,11 +100,11 @@ private         Bundle bundle = new Bundle();
         btnAddPlaylist = findViewById(R.id.imageview_list_add);
         btnShareSong = findViewById(R.id.imageview_share_song);
         btnShareSong = findViewById(R.id.imageview_share_song);
-        btnRepeat = findViewById(R.id.imageview_repeat_song);
+        btnRepeatOne = findViewById(R.id.imageview_repeat_song);
         btnSkipPre = findViewById(R.id.imageview_skip_previous_song);
         btnPlayPause = findViewById(R.id.imageview_play_song);
         btnSkipNext = findViewById(R.id.imageview_skip_next_song);
-        btnShuffle =  findViewById(R.id.imageview_shuffle_song);
+        btnShuffle = findViewById(R.id.imageview_shuffle_song);
         // TextView
         txtTimePlayed = findViewById(R.id.textview_time_played);
         txtTimeTotal = findViewById(R.id.textview_time_total);
@@ -196,18 +136,160 @@ private         Bundle bundle = new Bundle();
         viewPager.setAdapter(adapterPlay);
 
         mediaPlayer = new MediaPlayer();
-        // play songs
-        playSong();
-
-        // set events
-        setEvents();
-
     }
 
+    // ON RESUME
+    // HANDEL MEDIA CONTROL
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        playThreadBtn();
+//        nextThreadBtn();
+//        prevThreadBtn();
+    }
+
+    private void prevThreadBtn() {
+        prevThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnSkipPre.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        btnSkipPreClicked();
+                    }
+                });
+            }
+        };
+        prevThread.start();
+    }
+
+    private void nextThreadBtn() {
+        nextThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnSkipNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        btnSkipNextClicked();
+                    }
+                });
+            }
+        };
+        nextThread.start();
+    }
+
+    private void playThreadBtn() {
+        playThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnPlayPause.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        playPauseBtnClicked();
+                    }
+                });
+            }
+        };
+        playThread.start();
+    }
+
+    private void shuffleThreadBtn() {
+        playThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnShuffle.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        shuffleBtnClicked();
+                    }
+                });
+            }
+        };
+        playThread.start();
+    }
+
+    private void repeatOneThreadBtn() {
+        playThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnRepeatOne.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        repeatOneBtnClicked();
+                    }
+                });
+            }
+        };
+        playThread.start();
+    }
+
+    private void btnSkipPreClicked() {
+        if (SONGLIST.size() > 1) {
+            currentPositionSong = (currentPositionSong - 1) < 0 ? (SONGLIST.size() - 1) : ((currentPositionSong - 1) % SONGLIST.size());
+            playSongs();
+        }
+    }
+
+    private void btnSkipNextClicked() {
+        if (isRepeatOne) {
+            currentPositionSong--;
+        } else if (isShuffle) {
+            int temp = currentPositionSong;
+            do{
+                currentPositionSong = (int) Math.floor(Math.random() * (sizeList - 1 + 1) + 0);
+            }while(currentPositionSong == temp);
+
+        } else if (SONGLIST.size() > 1){
+            currentPositionSong = (currentPositionSong + 1) % SONGLIST.size();
+        }
+        playSongs();
+    }
+
+    private void playPauseBtnClicked() {
+        if (mediaPlayer.isPlaying()) {
+            btnPlayPause.setImageResource(R.drawable.ic_play_circle);
+            handler.removeCallbacks(update);
+            mediaPlayer.pause();
+            dishFragment.pauseAnimator();
+        } else {
+            btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
+            mediaPlayer.start();
+            updateSeekBar();
+            dishFragment.resumeAnimator();
+        }
+    }
+
+    private void shuffleBtnClicked() {
+        if (SONGLIST_SHUFFLE.size() == 0) return;
+
+        if (!isShuffle) {
+            btnShuffle.setImageResource(R.drawable.ic_shuffle_on);
+        } else {
+
+            btnShuffle.setImageResource(R.drawable.ic_shuffle_off);
+        }
+
+        isShuffle = !isShuffle;
+    }
+
+    private void repeatOneBtnClicked() {
+        if (!isRepeatOne) {
+            btnRepeatOne.setImageResource(R.drawable.ic_repeatone_on);
+        } else {
+            btnRepeatOne.setImageResource(R.drawable.ic_repeat_off);
+        }
+        isRepeatOne = !isRepeatOne;
+    }
 
     // GET DATA FROM INTENT
     private void getDataIntent() {
         SONGLIST.clear();
+        SONGLIST_SHUFFLE.clear();
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -218,44 +300,62 @@ private         Bundle bundle = new Bundle();
 
             if (intent.hasExtra("SONGLIST")) {
                 ArrayList<Song> songs = (ArrayList<Song>) intent.getSerializableExtra("SONGLIST");
-                SONGLIST = songs;
+                SONGLIST = new ArrayList<>(songs);
+                SONGLIST_SHUFFLE = new ArrayList<>(songs);
+                Collections.shuffle(SONGLIST_SHUFFLE);
+
+                sizeList = SONGLIST.size();
             }
         }
-
     }
 
-
     // PLAYS SONGS
-    private void playSong() {
+    private void playSongs() {
+
         if (SONGLIST.size() == 0) return;
-            Song song = SONGLIST.get(currentPositionSong);
 
-            if (mediaPlayer.isPlaying()) {
-                mediaPlayer.stop();
-                mediaPlayer.release();
-            }
+        Song song = SONGLIST.get(currentPositionSong);
 
-            mediaPlayer = new MediaPlayer();
-            seekBarPlay.setMax(100);
-            prepareMediaPlayer(song.getUrlSrc());
-            mediaPlayer.start();
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+        }
+        // Change background
+        changeBackground(song.getUrlImage());
 
-            // change icon play/pause
-            btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
-            // update seekbar
-            updateSeekBar();
+        mediaPlayer = new MediaPlayer();
 
-            // set image
-            changeSongImageFromDishFragment(song.getUrlImage());
+        seekBarPlay.setMax(100);
+        prepareMediaPlayer(song.getUrlSrc());
+        mediaPlayer.start();
+
+        // change icon play/pause
+        btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
+
+        // update seekbar
+        updateSeekBar();
+
+        // Change song name image
+        changeSongImageFromDishFragment(song.getUrlImage());
+
         // Set song name
         txtSongName.setText(song.getName());
         txtSongArtist.setText(song.getArtistsName());
 
+        // Change Song When Complete
+        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                btnSkipNextClicked();
+            }
+        });
     }
 
 
     // CHANGE SONG IMAGE FROM DISH FRAGMENT
-    private void changeSongImageFromDishFragment (String urlImage) {
+    private void changeSongImageFromDishFragment(final String urlImage) {
+
         if (dishFragment.isExistsViewComponent()) {
             dishFragment.changeCircleImage(urlImage);
         } else {
@@ -267,17 +367,54 @@ private         Bundle bundle = new Bundle();
 
 
     // CHANGE BACKGROUND Activity
-    private void changeBackground(String urlImage) {
-
+    private void changeBackground(final String urlImage) {
+        Animation animationOut = AnimationUtils.loadAnimation(PlayActivity.this, android.R.anim.fade_out);
+        Animation animationIn = AnimationUtils.loadAnimation(PlayActivity.this, android.R.anim.fade_in);
         Target target = new com.squareup.picasso.Target() {
             @Override
             public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                Palette.from(bitmap).generate(new Palette.PaletteAsyncListener() {
+                    @Override
+                    public void onGenerated(@Nullable Palette palette) {
+//                        Palette.Swatch swatch = palette.getLightMutedSwatch();
+//                        Palette.Swatch swatch = palette.getLightMutedSwatch();
+                        Palette.Swatch swatch = palette.getMutedSwatch();
 
+                        if (swatch != null) {
+                            LinearLayout linearLayout = findViewById(R.id.linearlayout_media_player);
+
+                            linearLayout.setBackgroundResource(R.drawable.main_background);
+
+                            GradientDrawable gradientDrawableBg = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
+                                    new int[]{
+
+                                            swatch.getRgb(),
+                                            Color.rgb(0, 0, 0)});
+
+                            //Color.rgb(193,193,193)
+                            linearLayout.setBackground(gradientDrawableBg);
+//                            txtSongName.setTextColor(swatch.getBodyTextColor());
+//                            txtSongArtist.setTextColor(swatch.getBodyTextColor());
+
+                        } else {
+                            LinearLayout linearLayout = findViewById(R.id.linearlayout_media_player);
+
+                            linearLayout.setBackgroundResource(R.drawable.main_background);
+                            GradientDrawable gradientDrawableBg = new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
+                                    new int[]{0xff000000, 0xff000000});
+
+                            linearLayout.setBackground(gradientDrawableBg);
+
+//                            txtSongName.setTextColor(Color.WHITE);
+//                            txtSongArtist.setTextColor(Color.DKGRAY);
+                        }
+                    }
+                });
             }
 
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-
+                Log.d("ON_BITMAP_FAILED", errorDrawable.toString());
             }
 
             @Override
@@ -291,7 +428,9 @@ private         Bundle bundle = new Bundle();
 
 
     // SET EVENTS
+    @SuppressLint("ClickableViewAccessibility")
     private void setEvents() {
+        // Seekbar time
         seekBarPlay.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -303,19 +442,55 @@ private         Bundle bundle = new Bundle();
             }
         });
 
+        // Shuffle Button
+        btnShuffle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shuffleBtnClicked();
+            }
+        });
 
+        // Repeat One Button
+        btnRepeatOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                repeatOneBtnClicked();
+            }
+        });
+
+//        btnSkipNext.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                btnSkipNextClicked();
+//            }
+//        });
+//
+//        btnSkipPre.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                btnSkipPreClicked();
+//            }
+//        });
+//
 //        btnPlayPause.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                changePlayPause();
+//                playPauseBtnClicked();
 //            }
 //        });
-    }
 
+        // Next
+        nextThreadBtn();
+        prevThreadBtn();
+//        shuffleThreadBtn();
+        playThreadBtn();
+//        repeatOneThreadBtn();
+
+    }
 
     // CHANGE PLAY/PAUSE BUTTON
     private void changePlayPause() {
-        if ( mediaPlayer.isPlaying()) {
+        if (mediaPlayer.isPlaying()) {
             btnPlayPause.setImageResource(R.drawable.ic_play_circle);
             handler.removeCallbacks(update);
             mediaPlayer.pause();
@@ -380,4 +555,31 @@ private         Bundle bundle = new Bundle();
         timeString = timeString + minutes + ":" + secondString;
         return timeString;
     }
+
+
+    // IMAGE ANIMATION
+    public void imageAnimation(final Context context, ImageView imageView, final Bitmap bitmap) {
+        Animation animationOut = AnimationUtils.loadAnimation(context, android.R.anim.fade_out);
+        Animation animationIn = AnimationUtils.loadAnimation(context, android.R.anim.fade_in);
+
+        animationOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+    }
+
+
 }

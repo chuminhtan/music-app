@@ -3,12 +3,14 @@ package com.myteam.myapplication.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.NonNull;
+
 import com.myteam.myapplication.util.ServerInfo;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Song implements Serializable {
+public class Song implements Serializable, Cloneable {
     private int id;
     private String name;
     private Genre genre;
@@ -19,8 +21,23 @@ public class Song implements Serializable {
     private String src;
     private String img;
     private ArrayList<Artist> artists = new ArrayList<>();
+    private boolean isActive;
+
+    @NonNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     public Song() {
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+        public void setActive(boolean active) {
+        isActive = active;
     }
 
     public Song(int id, String name, Genre genre, Artist artist, String src, String img) {
@@ -30,6 +47,7 @@ public class Song implements Serializable {
         this.artist = artist;
         this.src = src;
         this.img = img;
+        this.isActive = false;
     }
 
     protected Song(Parcel in) {

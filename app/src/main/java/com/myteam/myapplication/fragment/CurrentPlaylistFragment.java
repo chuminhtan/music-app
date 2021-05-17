@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.activity.PlayActivity;
+import com.myteam.myapplication.adapter.CurrentPlaylistAdapter;
 import com.myteam.myapplication.adapter.SonglistAdapter;
+import com.myteam.myapplication.model.Song;
+
+import java.util.ArrayList;
 
 public class CurrentPlaylistFragment extends Fragment {
     View view;
-    SonglistAdapter songlistAdapter;
-
+    CurrentPlaylistAdapter currentPlaylistAdapter;
     RecyclerView recyclerView;
 
     @Nullable
@@ -29,10 +32,22 @@ public class CurrentPlaylistFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerview_current_playlist);
 
         if (PlayActivity.SONGLIST.size() > 0) {
-            songlistAdapter = new SonglistAdapter(getActivity(), R.layout.songlist_item, PlayActivity.SONGLIST);
+            currentPlaylistAdapter = new CurrentPlaylistAdapter(getActivity(), R.layout.current_playlist_song_item, PlayActivity.SONGLIST);
             recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            recyclerView.setAdapter(songlistAdapter);
+            recyclerView.setAdapter(currentPlaylistAdapter);
         }
         return view;
     }
+
+    public void updateCurrentPlaylistView(ArrayList<Song> songs) {
+        currentPlaylistAdapter.updateList(songs);
+    }
+
+    public boolean isCreated() {
+        if (view == null) {
+            return false;
+        }
+        return true;
+    }
+
 }

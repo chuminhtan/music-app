@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_header_selector"
     android:orientation="vertical"
     android:weightSum="10"
+    android:paddingHorizontal="15dp"
+    android:id="@+id/linearlayout_media_player"
     tools:context=".activity.PlayActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -52,7 +53,6 @@
         android:layout_height="0dp"
         android:layout_weight="4"
         android:orientation="vertical"
-        android:paddingHorizontal="25dp"
         android:weightSum="10">
 
         <RelativeLayout
