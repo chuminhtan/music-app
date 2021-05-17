@@ -44,11 +44,10 @@ public class PlayMusicActivity extends AppCompatActivity {
     ImageButton btn_list_add;
     ImageButton btn_play;
     ImageButton btn_share;
-    ImageButton btn_list;
     ImageButton btn_skip_next;
-    ImageButton btn_volume;
     ImageButton btn_skip_previous;
-    ImageButton btn_mode_play;
+    ImageButton btn_shuffle;
+
     Toolbar toolbar;
     TextView txt_song_name;
     TextView txt_song_artist;
@@ -68,12 +67,12 @@ public class PlayMusicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_music);
-
-        mapping();
-
-        getDataIntent();
-
-        init();
+//
+//        mapping();
+//
+//        getDataIntent();
+//
+//        init();
 
     }
 
@@ -140,34 +139,34 @@ public class PlayMusicActivity extends AppCompatActivity {
     }
 
     private void mapping() {
-
-        btn_like_song = findViewById(R.id.btn_like_song);
-        btn_more_option = findViewById(R.id.btn_more_option);
-        btn_list_add = findViewById(R.id.btn_list_add);
-        btn_play = findViewById(R.id.btn_play);
-        btn_share = findViewById(R.id.btn_share);
-        btn_list = findViewById(R.id.btn_list);
-        btn_skip_next = findViewById(R.id.btn_skip_next);
-        btn_volume = findViewById(R.id.btn_volume);
-        btn_skip_previous = findViewById(R.id.btn_skip_previous);
-        btn_mode_play = findViewById(R.id.btn_mode_play);
-        txt_song_name = findViewById(R.id.txt_song_name);
-        txt_song_artist = findViewById(R.id.txt_song_artist);
-        txt_time_played = findViewById(R.id.txt_time_played);
-        txt_time_song = findViewById(R.id.txt_time_song);
-        seekbar_time = findViewById(R.id.seekbar_time);
-        image_song = findViewById(R.id.image_song);
-
-        toolbar = findViewById(R.id.toolbar_playsong);
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//
+//        btn_like_song = findViewById(R.id.btn_like_song);
+//        btn_more_option = findViewById(R.id.btn_more_option);
+//        btn_list_add = findViewById(R.id.btn_list_add);
+//        btn_play = findViewById(R.id.btn_play);
+//        btn_share = findViewById(R.id.btn_share);
+//        btn_list = findViewById(R.id.btn_list);
+//        btn_skip_next = findViewById(R.id.btn_skip_next);
+//        btn_volume = findViewById(R.id.btn_volume);
+//        btn_skip_previous = findViewById(R.id.btn_skip_previous);
+//        btn_mode_play = findViewById(R.id.btn_mode_play);
+//        txt_song_name = findViewById(R.id.txt_song_name);
+//        txt_song_artist = findViewById(R.id.txt_song_artist);
+//        txt_time_played = findViewById(R.id.txt_time_played);
+//        txt_time_song = findViewById(R.id.txt_time_song);
+//        seekbar_time = findViewById(R.id.seekbar_time);
+//        image_song = findViewById(R.id.image_song);
+//
+//        toolbar = findViewById(R.id.toolbar_playsong);
+//
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
 //        viewPager = findViewById(R.id.viewpager_play);
 //        adapterPlay = new ViewPagerPlayAdapter(getSupportFragmentManager());
 //        dishFragment = new DishFragment();

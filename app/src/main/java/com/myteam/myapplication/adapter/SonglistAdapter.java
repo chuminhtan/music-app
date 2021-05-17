@@ -64,7 +64,7 @@ public class SonglistAdapter extends RecyclerView.Adapter<SonglistAdapter.MyView
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, PlayMusicActivity.class);
+                Intent intent = new Intent(mContext, PlayActivity.class);
                 intent.putExtra("song", song);
                 mContext.startActivity(intent);
             }
