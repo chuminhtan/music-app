@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.myteam.myapplication.R;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -20,17 +21,30 @@ public class DishFragment extends Fragment {
     View view;
     CircleImageView circleImageView;
     ObjectAnimator objectAnimator;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_dish, container, false);
         circleImageView = view.findViewById(R.id.imageviewcircle_song);
         objectAnimator = ObjectAnimator.ofFloat(circleImageView, "rotation", 0f, 360f);
-        objectAnimator.setDuration(7000);
+        objectAnimator.setDuration(13000);
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.setRepeatMode(ValueAnimator.RESTART);
         objectAnimator.setInterpolator(new LinearInterpolator());
+        objectAnimator.start();
 
+        String url = getArguments().getString("songImageURL");
+
+        Picasso.with(getContext()).load(url).into(circleImageView);
         return view;
+    }
+
+    public void resumeAnimator() {
+        objectAnimator.resume();
+    }
+
+    public void pauseAnimator() {
+        objectAnimator.pause();
     }
 }

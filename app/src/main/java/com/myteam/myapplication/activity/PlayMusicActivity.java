@@ -59,20 +59,21 @@ public class PlayMusicActivity extends AppCompatActivity {
     Handler handler = new Handler();
     Song song;
 
-//    ViewPager viewPager;
-//    DishFragment dishFragment;
-//    CurrentPlaylistFragment currentPlaylistFragment;
-//  public static ViewPagerPlayAdapter adapterPlay;
+    ViewPager viewPager;
+    DishFragment dishFragment;
+    CurrentPlaylistFragment currentPlaylistFragment;
+  public static ViewPagerPlayAdapter adapterPlay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.play_music);
-//
-//        mapping();
-//
-//        getDataIntent();
-//
-//        init();
+
+        mapping();
+
+        getDataIntent();
+
+        init();
 
     }
 
