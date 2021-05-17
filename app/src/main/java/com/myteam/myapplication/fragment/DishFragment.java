@@ -34,7 +34,8 @@ public class DishFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_dish, container, false);
         circleImageView = view.findViewById(R.id.imageviewcircle_song);
         objectAnimator = ObjectAnimator.ofFloat(circleImageView, "rotation", 0f, 360f);
-        objectAnimator.setDuration(13000);
+
+        objectAnimator.setDuration(20000);
         objectAnimator.setRepeatCount(ValueAnimator.INFINITE);
         objectAnimator.setRepeatMode(ValueAnimator.RESTART);
         objectAnimator.setInterpolator(new LinearInterpolator());
