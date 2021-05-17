@@ -2,6 +2,7 @@ package com.myteam.myapplication.fragment;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.activity.PlayActivity;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -34,9 +36,12 @@ public class DishFragment extends Fragment {
         objectAnimator.setInterpolator(new LinearInterpolator());
         objectAnimator.start();
 
-        String url = getArguments().getString("songImageURL");
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String urlImage = bundle.getString("urlImage");
+            Picasso.with(getContext()).load(urlImage).into(circleImageView);
+        }
 
-        Picasso.with(getContext()).load(url).into(circleImageView);
         return view;
     }
 
@@ -47,4 +52,14 @@ public class DishFragment extends Fragment {
     public void pauseAnimator() {
         objectAnimator.pause();
     }
+
+
+    public boolean isExistsViewComponent() {
+         if (circleImageView == null) return false;
+         return true;
+    }
+    public void  changeCircleImage(String urlImage) {
+            Picasso.with(getContext()).load(urlImage).into(circleImageView);
+    }
+
 }

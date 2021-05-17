@@ -1,9 +1,6 @@
 package com.myteam.myapplication.adapter;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.myteam.myapplication.R;
-import com.myteam.myapplication.activity.PlayMusicActivity;
 import com.myteam.myapplication.model.Song;
 import com.myteam.myapplication.util.ServerInfo;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.util.List;
 
 public class ListSongBySearchAdapter extends ArrayAdapter<Song> {

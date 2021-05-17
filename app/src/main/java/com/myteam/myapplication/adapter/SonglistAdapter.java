@@ -1,7 +1,6 @@
 package com.myteam.myapplication.adapter;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.activity.PlayActivity;
-import com.myteam.myapplication.activity.PlayMusicActivity;
-import com.myteam.myapplication.activity.PlaylistDetailActivity;
-import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.Song;
 import com.squareup.picasso.Picasso;
 

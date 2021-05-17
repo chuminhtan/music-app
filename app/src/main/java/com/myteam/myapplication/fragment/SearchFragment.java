@@ -20,17 +20,15 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.myteam.myapplication.R;
-import com.myteam.myapplication.activity.PlayMusicActivity;
+import com.myteam.myapplication.activity.PlayActivity;
 import com.myteam.myapplication.adapter.ListSongBySearchAdapter;
 import com.myteam.myapplication.data.SongData;
 import com.myteam.myapplication.data.SongListAsyncResponse;
 import com.myteam.myapplication.model.Song;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -68,7 +66,7 @@ public class SearchFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Song songModel = (Song) parent.getItemAtPosition(position);
                 Bundle sendBundle = new Bundle();
-                Intent intent = new Intent(getContext(), PlayMusicActivity.class);
+                Intent intent = new Intent(getContext(), PlayActivity.class);
 //                sendBundle.putInt("song_id", songModel.getId());
 ////                sendBundle.putString("song_name", songModel.getName());
 ////                sendBundle.putString("url", songModel.getSrc());

@@ -144,8 +144,8 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
 
         switch (v.getId()) {
             case R.id.button_play_playlist_detail:
-                Intent intent = new Intent(PlaylistDetailActivity.this, PlayMusicActivity.class);
-                intent.putExtra("songList", songList);
+                Intent intent = new Intent(PlaylistDetailActivity.this, PlayActivity.class);
+                intent.putExtra("SONGLIST", songList);
                 PlaylistDetailActivity.this.startActivity(intent);
         }
     }

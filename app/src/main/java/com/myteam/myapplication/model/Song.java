@@ -138,7 +138,7 @@ public class Song implements Serializable {
     public String getArtistsName() {
         String name = artists.get(0).getName();
 
-        for ( int i = 0; i < artists.size(); i++) {
+        for ( int i = 1; i < artists.size(); i++) {
             name += ", " + artists.get(i).getName();
         }
         return name;
