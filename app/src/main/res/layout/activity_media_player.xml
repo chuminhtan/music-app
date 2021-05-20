@@ -13,7 +13,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_play"
         android:layout_width="match_parent"
-        android:background="#00000000"
+        android:background="#000000"
         android:theme="@style/ToolbarTheme"
         android:layout_height="?attr/actionBarSize">
 
@@ -63,12 +63,12 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:background="@drawable/ic_favourite"
                 android:id="@+id/imageview_like_song"
                 android:layout_width="@dimen/play_icon_control"
                 android:layout_height="@dimen/play_icon_control"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
-                android:background="@drawable/ic_favorite_border" />
+                android:layout_alignParentLeft="true" />
 
             <ImageButton
                 android:id="@+id/imageview_list_add"
