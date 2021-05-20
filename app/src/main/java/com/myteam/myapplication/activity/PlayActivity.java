@@ -558,8 +558,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         MusicService.MyBinder myBinder = (MusicService.MyBinder) service;
         musicService = myBinder.getService();
         musicService.setCallback(this);
-        Toast.makeText(PlayActivity.this, "Connected " + musicService,
-                Toast.LENGTH_LONG).show();
+//        Toast.makeText(PlayActivity.this, "Connected " + musicService,Toast.LENGTH_LONG).show();
 
         PlayActivity.this.runOnUiThread(new Runnable() {
             @Override

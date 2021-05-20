@@ -3,55 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_header_selector"
     tools:context=".fragment.UserFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <fragment
+        android:id="@+id/fragment_no_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/background_transparent">
-
-        <TextView
-            android:id="@+id/txt_username"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginLeft="21dp"
-            android:textColor="#FFFFFF"
-            android:textSize="30dp"
-            android:text="Username" />
-
-        <ImageButton
-            android:id="@+id/btn_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="350dp"
-            android:background="@drawable/background_transparent"
-            android:src="@drawable/ic_baseline_settings_50"/>
-
-        <View
-            android:id="@+id/line"
-            android:layout_width="380dp"
-            android:layout_height="1dp"
-            android:background="@color/white"
-            android:layout_marginTop="80dp"
-            android:layout_centerHorizontal="true"/>
-
-        <LinearLayout
-            android:id="@+id/list_liked_song"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="82dp">
-
-            <ExpandableListView
-                android:id="@+id/view_liked_song_list"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-    </RelativeLayout>
+        android:layout_height="match_parent"/>
 </FrameLayout>

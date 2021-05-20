@@ -47,9 +47,9 @@ public class MainActivity extends AppCompatActivity {
         MainViewPagerAdapter mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager()); // Truyền vào Fragment Quản lý tại Activity
 
         // Thêm 3 Fragment vào bộ chuyển đổi mainView
-        mainViewPagerAdapter.addFragment(new HomeFragment(), "Trang Chủ");
-        mainViewPagerAdapter.addFragment(new SearchFragment(), "Tìm Kiếm");
-        mainViewPagerAdapter.addFragment(new UserFragment(), "Người Dùng");
+        mainViewPagerAdapter.addFragment(new HomeFragment(),"");
+        mainViewPagerAdapter.addFragment(new SearchFragment(), "");
+        mainViewPagerAdapter.addFragment(new UserFragment(), "");
 
         // Set Adapter cho view pager
         viewPager.setAdapter(mainViewPagerAdapter);
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // Thiết Lập Icon
-        tabLayout.getTabAt(0).setIcon(R.drawable.ic_baseline_home_30);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_circle_dish);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_search_30);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_supervised_user_circle_50);
     }

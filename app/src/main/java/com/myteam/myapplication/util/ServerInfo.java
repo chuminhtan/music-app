@@ -30,4 +30,7 @@ public class ServerInfo {
     public static final String PLAYLIST_IMG = "storage/playlist-image";
 
     // User
+    public static final String USER = "user";
+    public static final String RESPONSE_SUCCESS = "success";
+    public static final String RESPONSE_FAIL = "fail";
 }

@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginRight="20dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardPreventCornerOverlap="false">
 
     <androidx.cardview.widget.CardView
@@ -14,8 +14,8 @@
         android:layout_height="wrap_content" >
         <ImageView
             android:id="@+id/imageview_playlist_square_item"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:scaleType="fitXY"/>
     </androidx.cardview.widget.CardView>
     <TextView
@@ -24,7 +24,7 @@
         android:layout_marginVertical="5dp"
         android:textAlignment="center"
         android:textColor="@color/colorTextBlack"
-        android:layout_width="150dp"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/carview_playlist_square_item"
         android:textSize="12sp"

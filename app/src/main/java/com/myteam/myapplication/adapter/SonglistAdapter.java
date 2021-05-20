@@ -48,12 +48,7 @@ public class SonglistAdapter extends RecyclerView.Adapter<SonglistAdapter.MyView
 
         holder.txtSongName.setText(song.getName());
 
-        String artistsName = song.getArtists().get(0).getName();
-        for (int i = 1; i < song.getArtists().size(); i++) {
-            artistsName += ", " + song.getArtists().get(i).getName();
-        }
-
-        holder.txtArtistName.setText(artistsName);
+        holder.txtArtistName.setText(song.getArtistsName());
 
         Picasso.with(mContext).load(song.getUrlImage()).into(holder.imgSongSquare);
 

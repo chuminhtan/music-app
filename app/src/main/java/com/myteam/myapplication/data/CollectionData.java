@@ -71,11 +71,14 @@ public class CollectionData {
                                 JSONArray artistArrayObj = songObj.getJSONArray("ARTISTS");
                                 for (int j = 0; j < artistArrayObj.length(); j++) {
                                     JSONObject artistObj = artistArrayObj.getJSONObject(j);
+
+                                    if (artistObj.getInt("AR_ID") == 1) {
+                                        continue;
+                                    }
                                     Artist artist = new Artist();
 
                                     artist.setId(artistObj.getInt("AR_ID"));
                                     artist.setName(artistObj.getString("AR_NAME"));
-
                                     song.addArtist(artist);
                                 }
                                 songArrayList.add(song);

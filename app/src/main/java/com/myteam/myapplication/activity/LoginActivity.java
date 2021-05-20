@@ -2,6 +2,7 @@ package com.myteam.myapplication.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.data.RegisterLoginAsyncResponse;
 import com.myteam.myapplication.data.RegisterLoginData;
+import com.myteam.myapplication.util.ServerInfo;
 
 import java.util.Map;
 

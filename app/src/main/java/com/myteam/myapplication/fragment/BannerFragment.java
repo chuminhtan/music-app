@@ -24,6 +24,8 @@ import com.myteam.myapplication.data.PlaylistData;
 import com.myteam.myapplication.model.Playlist;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import me.relex.circleindicator.CircleIndicator;
 
@@ -33,9 +35,10 @@ public class BannerFragment extends Fragment {
     CircleIndicator circleIndicator;
     BannerAdapter bannerAdapter;
     Handler handler;
-    Runnable runnable;
+    Runnable update;
+    Timer timer;
 
-    int currentItem;
+    int currentItem = 0;
 
     private ArrayList<Playlist> playlistNewest;
 
@@ -46,28 +49,12 @@ public class BannerFragment extends Fragment {
 
         view = inflater.inflate(R.layout.fragment_banner, container, false);
 
-        // Lấy dữ liệu banner - bài hát mới upload từ server
-
-        //getBanner();
-        getPlaylistNewest();
-
-        // Mapping
         mapping();
+
+        getPlaylistNewest();
 
         return view;
     }
-
-//    private void getBanner() {
-//        songList = new ArrayList<>();
-//        songList = new SongData().getNewUpload(new SongListAsyncResponse() {
-//            @Override
-//            public void processFinished(ArrayList<Song> songList) {
-//
-//                Log.d("SONGLIST", "RESULT: " + songList.toString());
-//            }
-//        });
-//    }
-
 
     private void mapping() {
         viewPager = view.findViewById(R.id.viewpager);
@@ -84,20 +71,25 @@ public class BannerFragment extends Fragment {
                 circleIndicator.setViewPager(viewPager);
 
                 handler = new Handler();
-                runnable = new Runnable() {
+                update = new Runnable() {
                     @Override
                     public void run() {
                         currentItem = viewPager.getCurrentItem();
                         currentItem++;
-                        if (currentItem >= viewPager.getAdapter().getCount()) {
+                        if (currentItem == viewPager.getAdapter().getCount()) {
                             currentItem = 0;
                         }
-                        viewPager.setCurrentItem(currentItem, true);
-                        handler.postDelayed(runnable, 4500);
+                        viewPager.setCurrentItem(currentItem++, true);
                     }
-
                 };
-                handler.postDelayed(runnable, 4500);
+
+                timer = new Timer(); // This will create a new Thread
+                timer.schedule(new TimerTask() { // task to be scheduled
+                    @Override
+                    public void run() {
+                        handler.post(update);
+                    }
+                }, 500, 3000);
             }
         });
     }
