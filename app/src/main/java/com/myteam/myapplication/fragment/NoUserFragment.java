@@ -35,13 +35,6 @@ public class NoUserFragment extends Fragment {
         txtUserName = view.findViewById(R.id.textview_user_name);
         txtUserEmail = view.findViewById(R.id.textview_user_email);
 
-
-//        if (isLogin) {
-//
-//        } else {
-
-//        }
-
         setInfo();
         return view;
     }
@@ -52,6 +45,7 @@ public class NoUserFragment extends Fragment {
         super.onResume();
         setInfo();
     }
+
 
     // setInfo
     private void setInfo() {
@@ -67,7 +61,7 @@ public class NoUserFragment extends Fragment {
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent mainIntent = new Intent(requireActivity(),  LoginActivity.class);
+                    Intent mainIntent = new Intent(requireActivity(), LoginActivity.class);
                     requireActivity().startActivity(mainIntent);
                 }
             });
@@ -78,8 +72,6 @@ public class NoUserFragment extends Fragment {
             txtUserName.setText(name);
             txtUserEmail.setText(email);
             btnLogin.setText("Đăng Xuất");
-
-
 
             btnLogin.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,6 +84,7 @@ public class NoUserFragment extends Fragment {
                     editor.putInt("user_id", 0);
                     editor.apply();
                     setInfo();
+                    Toast.makeText(getActivity(), "Đã Đăng Xuất", Toast.LENGTH_SHORT).show();
                 }
             });
         }

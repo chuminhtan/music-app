@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
+        <TextView
+            android:id="@+id/textview_title_custom_dialog_success"
+            android:layout_width="match_parent"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:text="Đã Đăng Ký"
+            android:textAlignment="center"
+            android:textColor="@color/colorCustomBlack1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        <TextView
+            android:id="@+id/textview_message_custom_dialog_success"
+            android:layout_marginVertical="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            android:text="Bạn Có Thể Đăng Nhập"
+            android:textAlignment="center"
+            android:textColor="@color/colorCustomBlack1"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <Button
+            android:id="@+id/button_success"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/custom_button_1"
+            android:text="Ok"
+            android:textColor="#FFF" />
+    </LinearLayout>
+</LinearLayout>

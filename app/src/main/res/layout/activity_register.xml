@@ -7,8 +7,13 @@
     android:orientation="vertical"
     tools:context=".activity.RegisterActivity">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_register"
+        android:layout_width="match_parent"
+        android:theme="@style/ToolbarTheme2"
+        android:layout_height="?attr/actionBarSize"/>
 
+    <TextView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Đăng Ký"
@@ -64,11 +69,11 @@
 
     <Button
         android:id="@+id/button_register"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:text="Đăng Ký"
-        android:background="@color/colorMain"
-        android:textColor="@color/white"
+        android:text="Xác Nhận"
+        android:background="@drawable/custom_button_2"
+        android:textColor="@color/colorCustomBlack1"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"></Button>
 
@@ -77,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Thành Công"
+        android:text=""
         android:textColor="@color/colorMain"
         android:layout_marginTop="80dp"/>
 </LinearLayout>

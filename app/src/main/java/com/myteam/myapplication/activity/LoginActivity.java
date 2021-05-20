@@ -1,15 +1,19 @@
 package com.myteam.myapplication.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -28,6 +32,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText txtPassword;
     TextView txtResult;
     Button btnLogin;
+    Button btnToRegister;
     Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         txtPassword = findViewById(R.id.edittext_password_login);
         txtResult = findViewById(R.id.textview_result_login);
         toolbar = findViewById(R.id.toolbar_login);
-
+        btnToRegister = findViewById(R.id.button_to_register);
         btnLogin = (Button) findViewById(R.id.button_login);
 
         // Create Toolbar
@@ -53,10 +58,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        btnToRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(LoginActivity.this,  RegisterActivity.class);
+                LoginActivity.this.startActivity(mainIntent);
+            }
+        });
+
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
                 String email = txtEmail.getText().toString();
                 String password = txtPassword.getText().toString();
 
@@ -69,14 +82,14 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                login(email, password);
+                login(email, password, v);
             }
         });
 
     }
 
 
-    public void login(String email, String password) {
+    public void login(String email, String password, final View v) {
 //        String email = "nguyenvana@gmail.com";
 //        String password="123456";
 
@@ -109,11 +122,31 @@ public class LoginActivity extends AppCompatActivity {
                             + sharedPreferences.getString("user_name", "NULL")
                             + sharedPreferences.getString("user_email", "NULL"));
 
-                    Toast.makeText(LoginActivity.this, "Đã Đăng Nhập", Toast.LENGTH_LONG);
-                    finish();
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    ViewGroup viewGroup = findViewById(android.R.id.content);
+
+                    View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.dialog_custom_success, viewGroup, false);
+                    Button btn = dialogView.findViewById(R.id.button_success);
+                    TextView txtTitleDialog = dialogView.findViewById(R.id.textview_title_custom_dialog_success);
+                    TextView txtMessageDialog = dialogView.findViewById(R.id.textview_message_custom_dialog_success);
+
+                    builder.setView(dialogView);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+
+                    txtTitleDialog.setText("Đã Đăng Nhập");
+                    txtMessageDialog.setText("Chào Mừng Quay Trở Lại");
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                        }
+                    });
                 }
 
                 Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG);
+
+
             }
         });
     }
