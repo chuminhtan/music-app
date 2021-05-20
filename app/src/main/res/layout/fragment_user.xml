@@ -7,6 +7,7 @@
 
     <fragment
         android:id="@+id/fragment_no_user"
+        android:name="com.myteam.myapplication.fragment.NoUserFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 </FrameLayout>
