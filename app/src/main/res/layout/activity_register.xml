@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.RegisterActivity">
+
+    <TextView
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Đăng Ký"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorMain"
+        android:layout_marginVertical="40dp"
+        />
+
+    <EditText
+        android:id="@+id/edittext_username_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Tên"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+    <EditText
+        android:id="@+id/edittext_useremail_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/prompt_email"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <EditText
+        android:id="@+id/edittext_password_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Mật Khẩu"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <EditText
+        android:id="@+id/edittext_password2_register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nhập Lại Mật Khẩu"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/button_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng Ký"
+        android:background="@color/colorMain"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"></Button>
+
+    <TextView
+        android:id="@+id/textview_result_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Thành Công"
+        android:textColor="@color/colorMain"
+        android:layout_marginTop="80dp"/>
+</LinearLayout>
