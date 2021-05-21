@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.activity.PlayActivity;
 import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.service.MusicService;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class CurrentPlaylistAdapter extends RecyclerView.Adapter<CurrentPlaylist
 
 
     @Override
-    public void onBindViewHolder(@NonNull CurrentPlaylistAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CurrentPlaylistAdapter.MyViewHolder holder, final int position) {
 
         final Song song = mSongs.get(position);
 
@@ -67,7 +68,9 @@ public class CurrentPlaylistAdapter extends RecyclerView.Adapter<CurrentPlaylist
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(mContext, MusicService.class);
+                intent.putExtra("changeCurrentPosition", position);
+                mContext.startService(intent);
             }
         });
     }

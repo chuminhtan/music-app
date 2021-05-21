@@ -244,11 +244,16 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         if (!isShuffle) {
             btnShuffle.setImageResource(R.drawable.ic_shuffle_on);
         } else {
-
             btnShuffle.setImageResource(R.drawable.ic_shuffle_off);
         }
 
         isShuffle = !isShuffle;
+    }
+
+    @Override
+    public void playsong(int position) {
+        currentPositionSong = position;
+        playSongs();
     }
 
     public void btnRepeatOneClicked() {
@@ -321,8 +326,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
         // Change song name image
         changeSongImageFromDishFragment(song.getUrlImage());
-
-
 
         // Set song name
         txtSongName.setText(song.getName());
@@ -583,5 +586,11 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         Intent intent = new Intent(PlayActivity.this, MusicService.class);
         intent.putExtra("songlist", SONGLIST);
         startService(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
     }
 }

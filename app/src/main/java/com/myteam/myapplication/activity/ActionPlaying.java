@@ -7,4 +7,5 @@ public interface ActionPlaying {
     void btnPlayPauseClicked();
     void btnRepeatOneClicked();
     void btnShuffleClicked();
+    void playsong(int position);
 }

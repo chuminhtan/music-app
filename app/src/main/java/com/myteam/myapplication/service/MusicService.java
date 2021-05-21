@@ -81,6 +81,19 @@ public class MusicService extends Service{
     // ON START COMMAND
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        // From Current Playlist
+        if (intent.hasExtra("changeCurrentPosition")) {
+            int newPosition = (int) intent.getSerializableExtra("changeCurrentPosition");
+
+            if (newPosition <0) {
+                newPosition = 0;
+            }
+            position = newPosition;
+            actionPlaying.playsong(newPosition);
+        }
+
+
         // From NotificationReceiver
         String actionName =  intent.getStringExtra("ActionName");
         if (actionName != null) {
@@ -143,10 +156,10 @@ public class MusicService extends Service{
     }
 
     // PLAY MEDIA
-    private void playMedia(int startPosistion) throws IOException {
+    private void playMedia(int startPosistion){
         songlist = PlayActivity.SONGLIST;
         position = startPosistion;
-
+        try {
         Song song = songlist.get(position);
         if (mediaPlayer != null) {
             mediaPlayer.stop();
@@ -154,7 +167,9 @@ public class MusicService extends Service{
 
             if (songlist != null) {
                 createMediaPlayer();
-                mediaPlayer.setDataSource(song.getUrlSrc());
+
+                    mediaPlayer.setDataSource(song.getUrlSrc());
+
                 mediaPlayer.prepare();
                 mediaPlayer.start();
             }
@@ -164,7 +179,9 @@ public class MusicService extends Service{
             mediaPlayer.prepare();
             mediaPlayer.start();
         }
-
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
