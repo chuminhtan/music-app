@@ -71,7 +71,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     private int currentPositionSong = 0;
     private String urlMP3 = "";
     private int sizeList;
-
+    boolean isActivityVisible;
 
     MusicService musicService;
 
@@ -82,6 +82,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         setContentView(R.layout.activity_media_player);
         // Get data intent
         getDataIntent();
+        isActivityVisible = true;
     }
 
 
@@ -129,24 +130,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         adapterPlay.AddFragment(dishFragment);
         adapterPlay.AddFragment(currentPlaylistFragment);
         viewPager.setAdapter(adapterPlay);
-        musicService.createMediaPlayer();
     }
 
-    // ON RESUME
-    // HANDEL MEDIA CONTROL
-    @Override
-    protected void onResume() {
-        Intent intent = new Intent(PlayActivity.this, MusicService.class);
-        bindService(intent, PlayActivity.this, BIND_AUTO_CREATE);
-        super.onResume();
-    }
-
-    // ON PAUSE
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unbindService(PlayActivity.this);
-    }
 
     private void prevThreadBtn() {
         prevThread = new Thread() {
@@ -319,17 +304,17 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         prepareMediaPlayer(song.getUrlSrc());
         musicService.start();
 
-        // change icon play/pause
-        btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
-        // update seekbar
-        updateSeekBar();
-
         // Change song name image
-        changeSongImageFromDishFragment(song.getUrlImage());
+        if (isActivityVisible) {
+            // change icon play/pause
+            btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
+            updateSeekBar();
+            changeSongImageFromDishFragment(song.getUrlImage());
+            // Set song name
+            txtSongName.setText(song.getName());
+            txtSongArtist.setText(song.getArtistsName());
+        }
 
-        // Set song name
-        txtSongName.setText(song.getName());
-        txtSongArtist.setText(song.getArtistsName());
 
         // Change Song When Complete
         musicService.onCompleted(isShuffle);
@@ -502,22 +487,29 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
     private String milliSecondsToTimer(long milliSeconds) {
         String timeString = "";
-        String secondString;
+//        String secondString;
+//
+//        int hours = (int) (milliSeconds / (1000 * 60 * 60));
+//        int minutes = (int) (milliSeconds % (1000 * 60 * 60)) / (1000 * 60);
+//        int seconds = (int) ((milliSeconds % (1000 * 60 * 60)) % (1000 * 60) / 1000);
+//
+//        if (hours > 0) {
+//            timeString = hours + ":";
+//        }
+//        if (seconds < 10) {
+//            secondString = "0" + seconds;
+//        } else {
+//            secondString = "" + seconds;
+//        }
 
-        int hours = (int) (milliSeconds / (1000 * 60 * 60));
-        int minutes = (int) (milliSeconds % (1000 * 60 * 60)) / (1000 * 60);
-        int seconds = (int) ((milliSeconds % (1000 * 60 * 60)) % (1000 * 60) / 1000);
+        long m = (milliSeconds / 1000) / 60;
 
-        if (hours > 0) {
-            timeString = hours + ":";
-        }
-        if (seconds < 10) {
-            secondString = "0" + seconds;
-        } else {
-            secondString = "" + seconds;
-        }
+        // formula for conversion for
+        // milliseconds to seconds
+        long s = (milliSeconds / 1000) % 60;
 
-        timeString = timeString + minutes + ":" + secondString;
+//        timeString = timeString + minutes + ":" + secondString;
+        timeString = timeString+m+":"+s;
         return timeString;
     }
 
@@ -549,10 +541,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
     /**
      * **************************************************************************************
-     * <p>
-     * SERVICE
      * CONNECT TO SERVICE
-     * <p>
      * **************************************************************************************
      */
 
@@ -562,16 +551,17 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         musicService = myBinder.getService();
         musicService.setCallback(this);
 //        Toast.makeText(PlayActivity.this, "Connected " + musicService,Toast.LENGTH_LONG).show();
-
-        PlayActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                initComponent();
-                playSongs();
-                setEvents();
-            }
-        });
-
+        initComponent();
+        playSongs();
+        setEvents();
+//        PlayActivity.this.runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                initComponent();
+//                playSongs();
+//                setEvents();
+//            }
+//        });
 
     }
 
@@ -583,14 +573,41 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(PlayActivity.this, MusicService.class);
-        intent.putExtra("songlist", SONGLIST);
-        startService(intent);
+
+        if (SONGLIST != null) {
+            Intent intent = new Intent(PlayActivity.this, MusicService.class);
+            intent.putExtra("songlist", SONGLIST);
+            startService(intent);
+        } else {
+            getDataIntent();
+            playSongs();
+        }
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
+    }
+
+
+    // ON RESUME
+    // HANDEL MEDIA CONTROL
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent = new Intent(PlayActivity.this, MusicService.class);
+        bindService(intent, PlayActivity.this, BIND_AUTO_CREATE);
+        isActivityVisible = true;
+
+    }
+
+    // ON PAUSE
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isActivityVisible = false;
+        unbindService(PlayActivity.this);
     }
 }

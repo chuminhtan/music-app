@@ -84,6 +84,7 @@ public class AppController extends Application {
     public static final String ACTION_PREVIOUS = "actionprevious";
     public static final String ACTION_NEXT = "actionnext";
     public static final String ACTION_PLAY = "actionplay";
+    public static final String ACTION_GOBACK = "actiongoback";
 
     private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

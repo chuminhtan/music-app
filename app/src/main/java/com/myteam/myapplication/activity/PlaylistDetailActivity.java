@@ -85,7 +85,6 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
                 songlistAdapter = new SonglistAdapter(PlaylistDetailActivity.this, R.layout.songlist_item, songList);
                 recyclerViewSonglist.setAdapter(songlistAdapter);
 
-                Log.d("COLLECTION", collection.toString());
             }
         });
     }

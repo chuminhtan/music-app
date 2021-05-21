@@ -8,6 +8,7 @@
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
+
         android:layout_height="match_parent">
 
         <SearchView
@@ -16,22 +17,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:iconifiedByDefault="false"
-            android:queryHint="Search Here" />
+            android:queryHint="Tên Bài Hát" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_search_song"
+            android:layout_below="@id/search_field"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/list_search_result"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="65dp">
 
-        <ListView
-            android:id="@+id/lv_song"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-        </ListView>
-    </LinearLayout>
 
 </FrameLayout>

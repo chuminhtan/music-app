@@ -85,11 +85,9 @@ public class MusicService extends Service{
         // From Current Playlist
         if (intent.hasExtra("changeCurrentPosition")) {
             int newPosition = (int) intent.getSerializableExtra("changeCurrentPosition");
-
             if (newPosition <0) {
                 newPosition = 0;
             }
-            position = newPosition;
             actionPlaying.playsong(newPosition);
         }
 
@@ -99,7 +97,7 @@ public class MusicService extends Service{
         if (actionName != null) {
             switch(actionName) {
                 case "playPause":
-                    Toast.makeText(this, "PlayPause", Toast.LENGTH_SHORT ).show();
+//                    Toast.makeText(this, "PlayPause", Toast.LENGTH_SHORT ).show();
                     Log.d("Inside", "Action");
                     if (actionPlaying != null) {
                         actionPlaying.btnPlayPauseClicked();
@@ -108,7 +106,7 @@ public class MusicService extends Service{
                     break;
 
                 case "next":
-                    Toast.makeText(this, "Next", Toast.LENGTH_SHORT ).show();
+//                    Toast.makeText(this, "Next", Toast.LENGTH_SHORT ).show();
                     Log.d("Inside", "Action");
                     if (actionPlaying != null) {
                         actionPlaying.btnSkipNextClicked();
@@ -117,13 +115,17 @@ public class MusicService extends Service{
                     break;
 
                 case "previous":
-                    Toast.makeText(this, "Previous", Toast.LENGTH_SHORT ).show();
+//                    Toast.makeText(this, "Previous", Toast.LENGTH_SHORT ).show();
                     Log.d("Inside", "Action");
                     if (actionPlaying!= null) {
                         actionPlaying.btnSkipPreClicked();
                     }
 
                     break;
+
+                case "goback":
+                    PlayActivity.SONGLIST = songlist;
+                    actionPlaying.playsong(position);
             }
         }
 
@@ -131,9 +133,10 @@ public class MusicService extends Service{
 
         if (intent.hasExtra("songlist")) {
             songlist = (ArrayList<Song>) intent.getSerializableExtra("songlist");
-
+            if (mediaPlayer!=null) {
+                mediaPlayer.stop();
+            }
         }
-
 
         int currentPositionOfAct = intent.getIntExtra("servicePosition", -1);
 
@@ -191,6 +194,9 @@ public class MusicService extends Service{
     }
 
     public boolean isPlaying() {
+        if (mediaPlayer == null) {
+            return false;
+        }
         return mediaPlayer.isPlaying();
     }
 
@@ -256,8 +262,11 @@ public class MusicService extends Service{
      * NOTIFICATION
      * */
     public void showNotification(final int playPauseBtn) {
-        Intent intent = new Intent(this, PlayActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        Intent intent = new Intent(this, PlayActivity.class).setAction("ACTION_GOBACK");
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         Intent prevIntent = new Intent(this, NotificationReceiver.class)
                 .setAction(ACTION_PREVIOUS);
@@ -289,6 +298,7 @@ public class MusicService extends Service{
                         .setPriority(NotificationCompat.PRIORITY_HIGH)
                         .setOnlyAlertOnce(true)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setContentIntent(contentIntent)
                         .build();
 
 //                NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
