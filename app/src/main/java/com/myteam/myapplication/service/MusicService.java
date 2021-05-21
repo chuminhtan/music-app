@@ -115,6 +115,13 @@ public class MusicService extends Service{
         }
 
         // From PlayActivity
+
+        if (intent.hasExtra("songlist")) {
+            songlist = (ArrayList<Song>) intent.getSerializableExtra("songlist");
+
+        }
+
+
         int currentPositionOfAct = intent.getIntExtra("servicePosition", -1);
 
         if (currentPositionOfAct != -1) {

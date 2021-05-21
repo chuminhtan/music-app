@@ -577,5 +577,11 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         musicService = null;
     }
 
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(PlayActivity.this, MusicService.class);
+        intent.putExtra("songlist", SONGLIST);
+        startService(intent);
+    }
 }

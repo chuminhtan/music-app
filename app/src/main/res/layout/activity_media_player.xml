@@ -13,7 +13,6 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_play"
         android:layout_width="match_parent"
-        android:background="#000000"
         android:theme="@style/ToolbarTheme"
         android:layout_height="?attr/actionBarSize">
 
