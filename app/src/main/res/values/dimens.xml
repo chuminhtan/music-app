@@ -6,4 +6,5 @@
     <dimen name="text_song_name">12sp</dimen>
     <dimen name="text_song_artist">10sp</dimen>
     <dimen name="play_icon_control">30dp</dimen>
+    <dimen name="padding_horizontal">10dp</dimen>
 </resources>

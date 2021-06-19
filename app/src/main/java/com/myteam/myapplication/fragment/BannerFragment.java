@@ -76,7 +76,7 @@ public class BannerFragment extends Fragment {
                     public void run() {
                         currentItem = viewPager.getCurrentItem();
                         currentItem++;
-                        if (currentItem == 5) {
+                        if (currentItem == viewPager.getAdapter().getCount()) {
                             currentItem = 0;
                         }
                         viewPager.setCurrentItem(currentItem++, true);
@@ -89,7 +89,7 @@ public class BannerFragment extends Fragment {
                     public void run() {
                         handler.post(update);
                     }
-                }, 500, 3000);
+                }, 3000, 3000);
             }
         });
     }

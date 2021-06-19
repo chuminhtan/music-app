@@ -20,6 +20,7 @@
             android:queryHint="Tên Bài Hát" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:paddingHorizontal="@dimen/padding_horizontal"
             android:id="@+id/recyclerview_search_song"
             android:layout_below="@id/search_field"
             android:layout_width="match_parent"
