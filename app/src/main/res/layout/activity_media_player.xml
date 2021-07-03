@@ -78,13 +78,13 @@
                 android:background="@drawable/ic_playlist_add" />
 
             <ImageButton
-                android:id="@+id/imageview_share_song"
+                android:id="@+id/imageview_download_song"
                 android:layout_width="27dp"
                 android:layout_height="27dp"
                 android:layout_marginRight="30dp"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/imageview_list_add"
-                android:background="@drawable/ic_baseline_share_50" />
+                android:background="@drawable/ic_baseline_get_app_24" />
 
         </RelativeLayout>
         <RelativeLayout

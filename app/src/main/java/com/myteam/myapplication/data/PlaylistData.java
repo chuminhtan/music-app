@@ -37,7 +37,7 @@ public class PlaylistData {
                     @Override
                     public void onResponse(JSONArray response) {
                         int size = response.length();
-//                        Log.d("SONGLIST", "result:" + response.toString());
+                        Log.d("SONGLIST", "result:" + response.toString());
 
                         for (int i = 0; i < size; i++) {
 
@@ -65,7 +65,7 @@ public class PlaylistData {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("API", error.getMessage());
             }
         });
 
@@ -89,7 +89,7 @@ public class PlaylistData {
                     @Override
                     public void onResponse(JSONArray response) {
                         int size = response.length();
-//                        Log.d("SONGLIST", "result:" + response.toString());
+                        Log.d("SONGLIST", "result:" + response.toString());
 
                         for (int i = 0; i < size; i++) {
 

@@ -1,0 +1,96 @@
+package com.myteam.myapplication.data;
+
+import android.util.Log;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.myteam.myapplication.controller.AppController;
+import com.myteam.myapplication.model.LikeSong;
+import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.model.User;
+import com.myteam.myapplication.util.ServerInfo;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class LikeSongData {
+    private boolean result;
+    public void like(LikeSong likeSong, final LikeSongAsyncRespone callback) {
+        Log.d("LIKESONG", "From LikeSongData Started");
+
+        final Map<String, String> mapResponse = new HashMap<>();
+        try {
+            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.USER + "/like";
+            final JSONObject jsonBody = new JSONObject();
+            jsonBody.put("user_id", likeSong.getUserId());
+            jsonBody.put("song_id", likeSong.getSongId());
+            JsonObjectRequest jsonOblect = new JsonObjectRequest(Request.Method.POST, URL, jsonBody, new Response.Listener<JSONObject>() {
+                @Override
+                public void onResponse(JSONObject response) {
+                    Log.d("LIKESONG", "result response : " + response.toString());
+
+                    try {
+                        mapResponse.put("result",response.getString("result"));
+                        mapResponse.put("message", response.getString("message"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    callback.processFinished(mapResponse);
+                }
+
+
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Log.d("LIKESONG", error.getMessage());
+
+                }
+            }) {
+            };
+            AppController.getInstance().addToRequestQueue(jsonOblect);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // CHECK SONG LIKED
+    public void checkIfLikeSong(final int SongId, final int UserId, final CheckLikeSongAsyncResponse callback) {
+        String url = ServerInfo.SERVER_BASE + "/user/liked_song" + "/" + UserId +"/" + SongId;
+        Log.d("API", "URL = " + url);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            JSONObject obj = response.getJSONObject(0);
+                            LikeSong likeSong = new LikeSong();
+                            likeSong.setSongId(obj.getInt("SO_ID"));
+                            likeSong.setUserId(obj.getInt("US_ID"));
+                            if(likeSong.getSongId() == SongId && likeSong.getUserId() == UserId)
+                                result = true;
+                            else
+                                result = false;
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callback.processFinished(result);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("LIKESONG", "CHECK LIKE SONG " + error.getMessage());
+            }
+        });
+        // Access the RequestQueue through your AppController class.
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+    }
+}

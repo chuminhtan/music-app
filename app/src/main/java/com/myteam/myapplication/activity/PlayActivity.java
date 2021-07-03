@@ -7,15 +7,18 @@ import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -31,22 +34,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.adapter.CreateUserPlaylistDialog;
+import com.myteam.myapplication.adapter.PlaylistBottomSheetAdapter;
+import com.myteam.myapplication.adapter.UserPlaylistAdapter;
 import com.myteam.myapplication.adapter.ViewPagerPlayAdapter;
 
+import com.myteam.myapplication.data.CheckLikeSongAsyncResponse;
+import com.myteam.myapplication.data.LikeSongAsyncRespone;
+import com.myteam.myapplication.data.LikeSongData;
+import com.myteam.myapplication.data.RegisterLoginAsyncResponse;
+import com.myteam.myapplication.data.RegisterLoginData;
+import com.myteam.myapplication.data.UserPlaylistAsycnResponse;
+import com.myteam.myapplication.data.UserPlaylistData;
 import com.myteam.myapplication.fragment.CurrentPlaylistFragment;
 import com.myteam.myapplication.fragment.DishFragment;
+import com.myteam.myapplication.model.LikeSong;
+import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.model.User;
 import com.myteam.myapplication.service.MusicService;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Map;
 
-public class PlayActivity extends AppCompatActivity implements ActionPlaying, ServiceConnection {
+public class PlayActivity extends AppCompatActivity implements ActionPlaying, ServiceConnection, CreateUserPlaylistDialog.CreateUserPlaylistDialogListener {
     Toolbar toolbarPlay;
     ViewPager viewPagerPlay;
-    ImageView btnLikeSong, btnShareSong, btnAddPlaylist, btnRepeatOne, btnSkipPre, btnPlayPause, btnSkipNext, btnShuffle;
+    ImageView btnLikeSong, btnDownSong, btnAddPlaylist, btnRepeatOne, btnSkipPre, btnPlayPause, btnSkipNext, btnShuffle;
     TextView txtSongName, txtSongArtist, txtTimePlayed, txtTimeTotal, txtTitleToolbarPlay;
     SeekBar seekBarPlay;
     ViewPager viewPager;
@@ -64,7 +81,9 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     private int sizeList;
     boolean isActivityVisible;
     MusicService musicService;
-
+    private User user = new User();
+    private String result, message;
+    PlaylistBottomSheetAdapter bottomSheetAdapter;
     // ON CREATE
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +91,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         setContentView(R.layout.activity_media_player);
         // Get data intent
         getDataIntent();
+        // Get data from Sharedpreferences
+        getPreferences();
         isActivityVisible = true;
     }
 
@@ -83,10 +104,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         viewPagerPlay = findViewById(R.id.viewpager_play);
         // ImageView
         btnLikeSong = findViewById(R.id.imageview_like_song);
-        btnShareSong = findViewById(R.id.imageview_share_song);
+        btnDownSong = findViewById(R.id.imageview_download_song);
         btnAddPlaylist = findViewById(R.id.imageview_list_add);
-        btnShareSong = findViewById(R.id.imageview_share_song);
-        btnShareSong = findViewById(R.id.imageview_share_song);
         btnRepeatOne = findViewById(R.id.imageview_repeat_song);
         btnSkipPre = findViewById(R.id.imageview_skip_previous_song);
         btnPlayPause = findViewById(R.id.imageview_play_song);
@@ -118,6 +137,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         adapterPlay.AddFragment(dishFragment);
         adapterPlay.AddFragment(currentPlaylistFragment);
         viewPager.setAdapter(adapterPlay);
+        checkLikeSong(user.getId(), SONGLIST.get(currentPositionSong).getId());
     }
 
     private void prevThreadBtn() {
@@ -212,14 +232,81 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         if (SONGLIST_SHUFFLE.size() == 0) return;
 
         if (!isShuffle) {
+            getDataIntent();
+            currentPlaylistFragment.updateCurrentPlaylistView(SONGLIST_SHUFFLE);
             btnShuffle.setImageResource(R.drawable.ic_shuffle_on);
         } else {
-            btnShuffle.setImageResource(R.drawable.ic_shuffle_off);
+            btnShuffle.setImageResource(R.drawable.ic_baseline_shuffle_50);
         }
-
         isShuffle = !isShuffle;
     }
 
+    public void btnButtonLikeSong(){
+        playThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnLikeSong.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        LikeSong likeSong = new LikeSong();
+                        likeSong.setUserId(user.getId());
+                        Song song = SONGLIST.get(currentPositionSong);
+                        likeSong.setSongId(song.getId());
+
+                        like(likeSong);
+                    }
+                });
+            }
+        };
+        playThread.start();
+    }
+
+    public void btnAddPlaylist(){
+        playThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnAddPlaylist.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("song_id", SONGLIST.get(currentPositionSong).getId());
+                        bottomSheetAdapter = new PlaylistBottomSheetAdapter();
+                        bottomSheetAdapter.setArguments(bundle);
+                        bottomSheetAdapter.show(getSupportFragmentManager(), "PlaylistBottomSheet");
+                    }
+                });
+            }
+        };
+        playThread.start();
+    }
+
+    public void btnDownSong(){
+        playThread = new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                btnDownSong.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Song song = SONGLIST.get(currentPositionSong);
+                        try{
+                            DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+                            Uri uri = Uri.parse(song.getUrlSrc());
+                            DownloadManager.Request request = new DownloadManager.Request(uri);
+                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                            Long reference = downloadManager.enqueue(request);
+                        }catch (IllegalArgumentException e) {
+                            Log.d("ERRROR DONWLOAD", e.getMessage());
+                        }
+
+                    }
+                });
+            }
+        };
+        playThread.start();
+    }
     @Override
     public void playsong(int position) {
         currentPositionSong = position;
@@ -255,10 +342,93 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
                 sizeList = SONGLIST.size();
             }
-
         }
     }
 
+    // GET DATA FROM PREFERENCES
+    private void getPreferences(){
+        SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", 0);
+        String userName = sharedPreferences.getString("user_name", "");
+        String userEmail = sharedPreferences.getString("user_email", "");
+        Log.d("User Information: ", String.valueOf(userId) + " " + userName + " " + userEmail);
+        user = new User(userId, userName, userEmail, "");
+    }
+
+    // LIKE AND UNLIKE
+    public void like(LikeSong likeSong) {
+        new LikeSongData().like(likeSong, new LikeSongAsyncRespone() {
+            @Override
+            public void processFinished(Map<String, String> mapResponse) {
+                result = mapResponse.get("result");
+                message = mapResponse.get("message");
+
+                Log.d("LIKESONG","From PlayActivity-LikeSong Started");
+                Log.d("LIKESONG","From PlayActivity-LikeSong response : " + mapResponse.get("result") + " | " + mapResponse.get("message"));
+
+                if(result.equalsIgnoreCase("success") && message.equalsIgnoreCase("like")) {
+                    btnLikeSong.setImageResource(R.drawable.ic_baseline_favorite_50);
+                }
+                if(result.equalsIgnoreCase("success") && message.equalsIgnoreCase("unlike")) {
+                    btnLikeSong.setImageResource(R.drawable.ic_favourite);
+                }
+            }
+        });
+    }
+
+    // ADD New User playlist
+    public void addNewUserPlaylist(Playlist playlist, Song song){
+        new UserPlaylistData().createUserPlaylist(playlist, song, new UserPlaylistAsycnResponse() {
+            @Override
+            public void processFinished(Map<String, String> mapResponse) {
+                result = mapResponse.get("result");
+                message = mapResponse.get("message");
+
+                Log.d("USERPLAYLIST","From PlayActivity-addNewUserPlaylist Started");
+                Log.d("LIKESONG","From PlayActivity-createUserPlaylist response : " + mapResponse.get("result") + " | " + mapResponse.get("message"));
+
+                if(result.equalsIgnoreCase("success")) {
+                    Log.d("USERPLAYLIST", "Add New User Playlist Successfully");
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("song_id", SONGLIST.get(currentPositionSong).getId());;
+                    bottomSheetAdapter.dismiss();
+                    PlaylistBottomSheetAdapter new_bottomSheetAdapter = new PlaylistBottomSheetAdapter();
+                    new_bottomSheetAdapter.setArguments(bundle);
+                    new_bottomSheetAdapter.show(getSupportFragmentManager(), "PlaylistBottomSheet");
+                }
+            }
+        });
+    }
+
+    // GET NEW PLAYLIST USER CREATE FROM DIALOG
+    @Override
+    public void applyText(String playListName) {
+        Playlist playlist = new Playlist();
+        Song song = SONGLIST.get(currentPositionSong);
+        playlist.setType(0);
+        playlist.setName(playListName);
+        User user = new User();
+        user.setId(user.getId());
+        playlist.setUser(user);
+        playlist.setImg(song.getImg());
+        addNewUserPlaylist(playlist,song);
+        Log.d("CREATE USER PLAYLIST", playListName);
+
+    }
+
+    // CHECK LIKE SONG
+    public void checkLikeSong(int userId, int songId) {
+        new LikeSongData().checkIfLikeSong(songId, userId, new CheckLikeSongAsyncResponse() {
+            @Override
+            public void processFinished(boolean result) {
+                if(result == true) {
+                    btnLikeSong.setImageResource(R.drawable.ic_baseline_favorite_50);
+                } else {
+                    btnLikeSong.setImageResource(R.drawable.ic_favourite);
+                }
+            }
+        });
+    }
 
     // PLAYS SONGS
     private void playSongs() {
@@ -398,8 +568,11 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         nextThreadBtn();
         prevThreadBtn();
         playThreadBtn();
+        btnButtonLikeSong();
 //        repeatOneThreadBtn();
 //        shuffleThreadBtn();
+        btnAddPlaylist();
+        btnDownSong();
     }
 
     // CHANGE PLAY/PAUSE BUTTON
