@@ -49,7 +49,7 @@ public class PlaylistFragment extends Fragment {
     }
 
     private void getPlaylistsByType(int i) {
-        playlistsType1 = new PlaylistData().getPlaylistsType(1, new PlaylistArrayListAsyncResponse() {
+        playlistsType1 = new PlaylistData().getPlaylistsType(1,4, new PlaylistArrayListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Playlist> playlistArrayList) {
                 // Adapter - Tạo view thành phần + gắn data vô return view

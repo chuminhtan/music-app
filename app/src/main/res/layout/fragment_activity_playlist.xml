@@ -13,7 +13,7 @@
         android:textSize="@dimen/text_title"/>
 
     <TextView
-        android:id="@+id/textview_more_playlist_horizontal"
+        android:id="@+id/textview_more_activity_playlist"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,7 +25,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_playlist_grid"
-        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal|center_vertical"
         android:scrollbars="none"
         android:layout_below="@id/textview_title_playlist_horizontal"
         android:layout_width="match_parent"

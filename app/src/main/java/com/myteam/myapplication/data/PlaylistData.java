@@ -76,11 +76,13 @@ public class PlaylistData {
 
 
     // Playlist chủ đề HOT => Playlist type = 1
-    public ArrayList<Playlist> getPlaylistsType(int type, final PlaylistArrayListAsyncResponse callback) {
+    // Top 100 => Playlist type 2
+    // Activity => Playlist type 3
+    public ArrayList<Playlist> getPlaylistsType(int type, int number,  final PlaylistArrayListAsyncResponse callback) {
 
         playlistType= new ArrayList<>();
 
-        String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_TYPE + "/" + type;
+        String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.PLAYLIST_TYPE + "/" + type +"/" + number;
         Log.d("API", "URL = " + url);
 
         // Bất đồng bộ: gửi request lên nhưng không có chờ đến khi kết quả trả về, một lát sau mới trả về kết quả
