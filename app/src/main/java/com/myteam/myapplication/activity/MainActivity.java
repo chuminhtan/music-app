@@ -3,7 +3,10 @@ package com.myteam.myapplication.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        createUser();
         // Ánh xạ thành phần ra View
         mappingComponent();
 
@@ -61,5 +65,17 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_circle_dish);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_search_30);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_supervised_user_circle_50);
+    }
+
+    // User
+    private void createUser() {
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("USER", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("user_name", "User Name 1");
+            editor.putString("user_email", "User Email 1");
+            editor.putInt("user_id", 1);
+            editor.apply();
     }
 }

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/user_playlist_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
+    android:padding="15dp"
+    android:background="@drawable/background_transparent">
+
+    <ImageView
+        android:id="@+id/user_playlist_item_image"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/user_playlist_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:textSize="20dp"
+        android:text="Name"
+        android:layout_centerVertical="true"/>
+
+    <ImageButton
+        android:id="@+id/btn_user_playlist_songs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_keyboard_arrow_right_50"
+        android:background="@drawable/background_transparent"
+        android:layout_marginLeft="350dp" />
+
+    <View android:layout_width="380dp"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="60dp"/>
+</RelativeLayout>
