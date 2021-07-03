@@ -69,14 +69,12 @@ public class BannerFragment extends Fragment {
                 bannerAdapter = new BannerAdapter(getActivity(), playlistNewest);
                 viewPager.setAdapter(bannerAdapter);
                 circleIndicator.setViewPager(viewPager);
-
                 handler = new Handler();
                 update = new Runnable() {
                     @Override
                     public void run() {
                         currentItem = viewPager.getCurrentItem();
-                        currentItem++;
-                        if (currentItem == viewPager.getAdapter().getCount()) {
+                        if (currentItem == 4) {
                             currentItem = 0;
                         }
                         viewPager.setCurrentItem(currentItem++, true);

@@ -45,4 +45,6 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
     public CharSequence getPageTitle(int position) {
         return arrayTitle.get(position);
     }
+
+
 }

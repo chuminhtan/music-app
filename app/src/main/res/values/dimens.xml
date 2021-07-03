@@ -7,4 +7,5 @@
     <dimen name="text_song_artist">10sp</dimen>
     <dimen name="play_icon_control">30dp</dimen>
     <dimen name="padding_horizontal">10dp</dimen>
+    <dimen name="spacing">20dp</dimen>
 </resources>
