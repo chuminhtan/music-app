@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.adapter.ArtistAdapter;
 import com.myteam.myapplication.adapter.SonglistAdapter;
 import com.myteam.myapplication.data.AlbumSongAsyncRespone;
 import com.myteam.myapplication.data.AlbumSongData;
 import com.myteam.myapplication.model.Album;
 import com.myteam.myapplication.model.AlbumSong;
+import com.myteam.myapplication.model.Artist;
 import com.myteam.myapplication.model.Song;
 import com.squareup.picasso.Picasso;
 
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 public class AlbumDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private Album albumIntent;
     private AlbumSong mAlbumSong;
+    private ArrayList<Artist> martists;
     private ImageView imageAlbum;
     private Button btnPlay;
     private Toolbar toolbar;
@@ -36,7 +39,9 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
     private CoordinatorLayout coordinatorLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private RecyclerView recyclerViewSonglist;
+    private RecyclerView recyclerViewArtist;
     private SonglistAdapter songlistAdapter;
+    private ArtistAdapter artistAdapter;
 
     ArrayList<Song> songList = new ArrayList<>();
 
@@ -56,6 +61,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         btnPlay.setOnClickListener(this);
+
     }
 
     private void init() {
@@ -86,6 +92,11 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         recyclerViewSonglist = findViewById(R.id.recyclerview_songlist_album_detail);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(AlbumDetailActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerViewSonglist.setLayoutManager(mLayoutManager);
+
+        // Thiết lập recyclerView hiển thị hàng ngang
+        recyclerViewArtist = findViewById(R.id.recyclerview_album_artists);
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(AlbumDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewArtist.setLayoutManager(layoutManager2);
     }
 
     private void setInfoAlbum(String albumName, String albumImageUrl) {
@@ -107,14 +118,18 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
 
     private void getSonglist(int albumId) {
         mAlbumSong = new AlbumSong();
+        martists = new ArrayList<>();
 
         new AlbumSongData().getAlbumSongByAlbumId(albumId, new AlbumSongAsyncRespone() {
             @Override
-            public void processFinished(AlbumSong albumSong) {
+            public void processFinished(AlbumSong albumSong, ArrayList<Artist> artists) {
                 mAlbumSong = albumSong;
+                martists = artists;
                 songList = albumSong.getSongs();
                 songlistAdapter = new SonglistAdapter(AlbumDetailActivity.this, R.layout.songlist_item, songList);
                 recyclerViewSonglist.setAdapter(songlistAdapter);
+                artistAdapter = new ArtistAdapter(AlbumDetailActivity.this, R.layout.artist_item, martists);
+                recyclerViewArtist.setAdapter(artistAdapter);
             }
         });
     }

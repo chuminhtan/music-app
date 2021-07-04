@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ public class UserAlbumAdapter extends ArrayAdapter<Album> {
     ImageView imgAlbum;
     TextView nameAlbum, artistAlbum;
     ImageButton btnListSongs;
+    RelativeLayout relativeLayout;
 
     public UserAlbumAdapter(@NonNull Context context, int resource, @NonNull List<Album> objects) {
         super(context, resource, objects);
@@ -52,12 +54,12 @@ public class UserAlbumAdapter extends ArrayAdapter<Album> {
             nameAlbum = convertView.findViewById(R.id.user_album_item_name);
             artistAlbum = convertView.findViewById(R.id.user_album_item_artist);
             btnListSongs = convertView.findViewById(R.id.btn_user_album_songs);
+            relativeLayout = convertView.findViewById(R.id.user_album_item);
 
             Picasso.with(getContext()).load(album.getImageUrl()).into(imgAlbum);
             nameAlbum.setText(album.getName());
-//            artistAlbum.setText(album.getArtist().getName());
 
-            btnListSongs.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                 Intent intent = new Intent(mContext, AlbumDetailActivity.class);

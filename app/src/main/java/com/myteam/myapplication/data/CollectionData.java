@@ -23,6 +23,7 @@ public class CollectionData {
     Collection collection;
     Playlist playlist;
     ArrayList<Song> songArrayList;
+    ArrayList<Artist> artists;
 
     // Lấy danh sách bài hát của một playlist = Playlist_id
     // @playlistId : ID của playlist
@@ -32,6 +33,7 @@ public class CollectionData {
          collection = new Collection();
          playlist = new Playlist();
          songArrayList = new ArrayList<>();
+         artists = new ArrayList<>();
 
         String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.COLLECTION + "/" + playlistId;
 
@@ -72,7 +74,7 @@ public class CollectionData {
                                 for (int j = 0; j < artistArrayObj.length(); j++) {
                                     JSONObject artistObj = artistArrayObj.getJSONObject(j);
 
-                                    if (artistObj.getInt("AR_ID") == 1) {
+                                    if (artistObj.getString("AR_NAME") == null) {
                                         continue;
                                     }
                                     Artist artist = new Artist();
@@ -82,10 +84,23 @@ public class CollectionData {
                                     song.addArtist(artist);
                                 }
                                 songArrayList.add(song);
+
+                                // Lấy Artist
+                                JSONArray artistObj = response.getJSONArray("artists");
+
+                                int size2 = artistObj.length();
+                                for (int m = 0; m < size2; m++) {
+                                    Artist artist = new Artist();
+                                    artist.setId(artistObj.getJSONObject(m).getInt("AR_ID"));
+                                    artist.setName(artistObj.getJSONObject(m).getString("AR_NAME"));
+                                    artist.setImg(artistObj.getJSONObject(m).getString("AR_IMG"));
+                                    artist.setStory(artistObj.getJSONObject(m).getString("AR_STORY"));
+                                    artists.add(artist);
+                                }
                             }
 
                             collection.setSongs(songArrayList);
-                            callback.processFinished(collection);
+                            callback.processFinished(collection, artists);
 
                         } catch (JSONException e) {
                             e.printStackTrace();

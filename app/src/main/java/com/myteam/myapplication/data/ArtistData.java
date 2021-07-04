@@ -8,6 +8,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.myteam.myapplication.controller.AppController;
+import com.myteam.myapplication.model.Album;
 import com.myteam.myapplication.model.Artist;
 import com.myteam.myapplication.model.Song;
 import com.myteam.myapplication.util.ServerInfo;
@@ -22,6 +23,7 @@ import java.util.List;
 public class ArtistData {
     private Artist artist;
     private List<Artist> artistList;
+    private ArrayList<Album> albumArrayList;
 
     public Artist getArtist() {
         return artist;
@@ -66,6 +68,8 @@ public class ArtistData {
     public void getArtistInfoById(final ArtistAsyncRespone callback, int id) {
         String url = ServerInfo.SERVER_BASE + "/" + id;
         Log.d("API", "URL = " + url);
+
+
         JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -82,6 +86,7 @@ public class ArtistData {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("API", error.getMessage());
             }
         });
         // Access the RequestQueue through your AppController class.
@@ -116,6 +121,43 @@ public class ArtistData {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("API", error.getMessage());
+            }
+        });
+        // Access the RequestQueue through your AppController class.
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+    }
+
+    // Lấy danh sách albums của nghệ sĩ
+    public void getArtistAlbumbyId (int artistId, final ArtistAlbumsAsyncRespone callback) {
+        albumArrayList = new ArrayList<>();
+        String url = ServerInfo.SERVER_BASE + "/artist/artist-album/" + artistId;
+        Log.d("API", "URL = " + url);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        int size = response.length();
+
+                        for (int i = 0; i< size; i++) {
+                            try{
+                                JSONObject obj = response.getJSONObject(i);
+                                Album album = new Album();
+                                album.setId(obj.getInt("AL_ID"));
+                                album.setName(obj.getString("AL_NAME"));
+                                album.setImg(obj.getString("AL_IMG"));
+
+                                albumArrayList.add(album);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        callback.processFinished(albumArrayList);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("API", error.getMessage());
             }
         });
         // Access the RequestQueue through your AppController class.

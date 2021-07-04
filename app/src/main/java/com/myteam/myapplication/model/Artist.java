@@ -1,5 +1,7 @@
 package com.myteam.myapplication.model;
 
+import com.myteam.myapplication.util.ServerInfo;
+
 import java.io.Serializable;
 
 public class Artist implements Serializable {
@@ -49,5 +51,9 @@ public class Artist implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getUrlImg(){
+        return ServerInfo.SERVER_BASE + "/storage/artist-image/" + img;
     }
 }

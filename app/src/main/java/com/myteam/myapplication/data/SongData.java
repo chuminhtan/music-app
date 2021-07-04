@@ -151,6 +151,9 @@ public class SongData {
                                 JSONArray artistArrayObj = obj.getJSONArray("ARTISTS");
                                 for (int j = 0; j < artistArrayObj.length(); j++) {
                                     JSONObject artistObj = artistArrayObj.getJSONObject(j);
+                                    if (artistObj.getString("AR_NAME") == null) {
+                                        continue;
+                                    }
                                     Artist artist = new Artist();
 
                                     artist.setId(artistObj.getInt("AR_ID"));
