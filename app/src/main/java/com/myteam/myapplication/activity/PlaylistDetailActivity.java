@@ -6,7 +6,9 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,19 +21,22 @@ import com.myteam.myapplication.adapter.ArtistAdapter;
 import com.myteam.myapplication.adapter.SonglistAdapter;
 import com.myteam.myapplication.data.CollectionAsyncResponse;
 import com.myteam.myapplication.data.CollectionData;
+import com.myteam.myapplication.data.UserAsyncResponse;
+import com.myteam.myapplication.data.UserData;
 import com.myteam.myapplication.model.Artist;
 import com.myteam.myapplication.model.Collection;
 import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class PlaylistDetailActivity extends AppCompatActivity implements View.OnClickListener{
+public class PlaylistDetailActivity extends AppCompatActivity implements View.OnClickListener {
     private Playlist playlistIntent;
     private Collection mCollection;
     private ArrayList<Artist> mArtists;
-    private ImageView imagePlaylist;
+    private ImageView imagePlaylist, imgLikePlaylist;
     private Button btnPlay;
     private Toolbar toolbar;
 
@@ -41,19 +46,18 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
     private RecyclerView recyclerViewArtist;
     private SonglistAdapter songlistAdapter;
     private ArtistAdapter artistAdapter;
-
-    private ArrayList<Song> songList =  new ArrayList<>();
+    private User user;
+    private ArrayList<Song> songList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_detail);
+        getUser();
         // Mapping
         mapping();
-
         // Data Intent
         getDataIntent();
-
         // Init
         init();
 
@@ -63,7 +67,15 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
             getSonglist(playlistIntent.getId());
         }
 
+        checkLikePlaylist();
         btnPlay.setOnClickListener(this);
+        imgLikePlaylist.setOnClickListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setButtonLike();
     }
 
     private void getSonglist(int playlistId) {
@@ -76,10 +88,10 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
                 mCollection = collection;
                 mArtists = artists;
                 songList = collection.getSongs();
-
                 songlistAdapter = new SonglistAdapter(PlaylistDetailActivity.this, R.layout.songlist_item, songList);
+
                 recyclerViewSonglist.setAdapter(songlistAdapter);
-                artistAdapter = new ArtistAdapter(PlaylistDetailActivity.this, R.layout.artist_item, mArtists);
+                artistAdapter = new ArtistAdapter(PlaylistDetailActivity.this, R.layout.artist_item, artists);
                 recyclerViewArtist.setAdapter(artistAdapter);
             }
         });
@@ -113,6 +125,7 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
         imagePlaylist = findViewById(R.id.imageview_playlist_detail);
         btnPlay = findViewById(R.id.button_play_playlist_detail);
         toolbar = findViewById(R.id.toolbar_playlist_detail);
+        imgLikePlaylist = findViewById(R.id.button_like_playlist);
 
         // Thiết lập recyclerView hiển thị hàng dọc
         recyclerViewSonglist = findViewById(R.id.recyclerview_songlist_playlist_detail);
@@ -127,27 +140,72 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
 
     private void getDataIntent() {
         Intent intent = getIntent();
-
         if (intent != null) {
-
             // Data : Playlist
             if (intent.hasExtra("playlist")) {
                 playlistIntent = (Playlist) intent.getSerializableExtra("playlist");
-                Toast.makeText(PlaylistDetailActivity.this, playlistIntent.getName(), Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    // EVENT
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
             case R.id.button_play_playlist_detail:
-//                Intent intent = new Intent(PlaylistDetailActivity.this, Servic)
-
                 Intent intent = new Intent(PlaylistDetailActivity.this, PlayActivity.class);
                 intent.putExtra("SONGLIST", songList);
                 PlaylistDetailActivity.this.startActivity(intent);
+                break;
+            case R.id.button_like_playlist:
+                setLikePlaylist();
         }
+    }
+
+    private void getUser() {
+        SharedPreferences sharedPref = PlaylistDetailActivity.this.getSharedPreferences("USER", Context.MODE_PRIVATE);
+        user = new User();
+        user.setId(sharedPref.getInt("user_id", 0));
+        user.setName(sharedPref.getString("user_name", ""));
+        user.setEmail(sharedPref.getString("user_email", ""));
+    }
+
+
+    private void setButtonLike() {
+        if (user.getId() == 0) {
+            imgLikePlaylist.setVisibility(View.GONE);
+        } else {
+            imgLikePlaylist.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setLikePlaylist() {
+        String type = "playlist";
+        new UserData().setLikePlaylist(user.getId(), playlistIntent.getId(), type, new UserAsyncResponse() {
+            @Override
+            public void processFinished(String result) {
+                if (result.equalsIgnoreCase("like")) {
+                    Toast.makeText(PlaylistDetailActivity.this, "Đã Yêu Thích", Toast.LENGTH_SHORT).show();
+                    imgLikePlaylist.setImageResource(R.drawable.ic_baseline_favorite_50);
+                } else {
+                    Toast.makeText(PlaylistDetailActivity.this, "Hủy Yêu Thích", Toast.LENGTH_SHORT).show();
+                    imgLikePlaylist.setImageResource(R.drawable.ic_baseline_favorite_border_50);
+                }
+            }
+        });
+    }
+
+    private void checkLikePlaylist() {
+        String type = "playlist";
+        new UserData().checkLiked(user.getId(), playlistIntent.getId(), type, new UserAsyncResponse() {
+            @Override
+            public void processFinished(String result) {
+                if (result.equalsIgnoreCase("yes")) {
+                    imgLikePlaylist.setImageResource(R.drawable.ic_baseline_favorite_50);
+                } else {
+                    imgLikePlaylist.setImageResource(R.drawable.ic_baseline_favorite_border_50);
+                }
+            }
+        });
     }
 }

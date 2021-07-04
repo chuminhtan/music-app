@@ -1,6 +1,8 @@
 package com.myteam.myapplication.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,10 +22,13 @@ import com.myteam.myapplication.adapter.ArtistAdapter;
 import com.myteam.myapplication.adapter.SonglistAdapter;
 import com.myteam.myapplication.data.AlbumSongAsyncRespone;
 import com.myteam.myapplication.data.AlbumSongData;
+import com.myteam.myapplication.data.UserAsyncResponse;
+import com.myteam.myapplication.data.UserData;
 import com.myteam.myapplication.model.Album;
 import com.myteam.myapplication.model.AlbumSong;
 import com.myteam.myapplication.model.Artist;
 import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.model.User;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,7 +37,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
     private Album albumIntent;
     private AlbumSong mAlbumSong;
     private ArrayList<Artist> martists;
-    private ImageView imageAlbum;
+    private ImageView imageAlbum, imvLikeAlbum;
     private Button btnPlay;
     private Toolbar toolbar;
 
@@ -42,7 +47,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
     private RecyclerView recyclerViewArtist;
     private SonglistAdapter songlistAdapter;
     private ArtistAdapter artistAdapter;
-
+    private User user;
     ArrayList<Song> songList = new ArrayList<>();
 
     @Override
@@ -50,9 +55,11 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album_detail);
 
+        getUser();
         mapping();
         getDataIntent();
         init();
+        checkLikeAlbum();
 
         // Check album is null
         if(albumIntent != null && !albumIntent.getName().equals("")) {
@@ -61,6 +68,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         }
 
         btnPlay.setOnClickListener(this);
+        imvLikeAlbum.setOnClickListener(this);
 
     }
 
@@ -85,6 +93,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         coordinatorLayout = findViewById(R.id.coordinator_album_detail);
         collapsingToolbarLayout = findViewById(R.id.collapsingtoolbarlayout_album_detail);
         imageAlbum = findViewById(R.id.imageview_album_detail);
+        imvLikeAlbum = findViewById(R.id.button_like_album);
         btnPlay = findViewById(R.id.button_play_album_detail);
         toolbar = findViewById(R.id.toolbar_album_detail);
 
@@ -141,6 +150,56 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
                 Intent intent = new Intent(AlbumDetailActivity.this, PlayActivity.class);
                 intent.putExtra("SONGLIST", songList);
                 AlbumDetailActivity.this.startActivity(intent);
+                break;
+            case R.id.button_like_album:
+                setLikeAlbum();
         }
+    }
+
+    private void getUser() {
+        SharedPreferences sharedPref = AlbumDetailActivity.this.getSharedPreferences("USER", Context.MODE_PRIVATE);
+        user = new User();
+        user.setId(sharedPref.getInt("user_id", 0));
+        user.setName(sharedPref.getString("user_name", ""));
+        user.setEmail(sharedPref.getString("user_email", ""));
+    }
+
+
+    private void setButtonLike() {
+        if (user.getId() == 0) {
+            imvLikeAlbum.setVisibility(View.GONE);
+        } else {
+            imvLikeAlbum.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setLikeAlbum() {
+        String type = "album";
+        new UserData().setLikePlaylist(user.getId(), albumIntent.getId(), type, new UserAsyncResponse() {
+            @Override
+            public void processFinished(String result) {
+                if (result.equalsIgnoreCase("like")) {
+                    Toast.makeText(AlbumDetailActivity.this, "Đã Yêu Thích", Toast.LENGTH_SHORT).show();
+                    imvLikeAlbum.setImageResource(R.drawable.ic_baseline_favorite_50);
+                } else {
+                    Toast.makeText(AlbumDetailActivity.this, "Hủy Yêu Thích", Toast.LENGTH_SHORT).show();
+                    imvLikeAlbum.setImageResource(R.drawable.ic_baseline_favorite_border_50);
+                }
+            }
+        });
+    }
+
+    private void checkLikeAlbum() {
+        String type = "playlist";
+        new UserData().checkLiked(user.getId(), albumIntent.getId(), type, new UserAsyncResponse() {
+            @Override
+            public void processFinished(String result) {
+                if (result.equalsIgnoreCase("yes")) {
+                    imvLikeAlbum.setImageResource(R.drawable.ic_baseline_favorite_50);
+                } else {
+                    imvLikeAlbum.setImageResource(R.drawable.ic_baseline_favorite_border_50);
+                }
+            }
+        });
     }
 }

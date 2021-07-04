@@ -47,6 +47,15 @@
                 android:layout_marginBottom="50dp"
                 android:elevation="6dp"
                 android:src="@mipmap/ic_launcher"/>
+            <ImageView
+                android:id="@+id/button_like_playlist"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="end"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:elevation="10dp"
+                android:src="@drawable/ic_baseline_favorite_border_50"/>
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>

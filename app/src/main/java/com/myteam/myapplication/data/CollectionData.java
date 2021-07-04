@@ -29,7 +29,6 @@ public class CollectionData {
     // @playlistId : ID của playlist
     // @callback
     public void getCollectionByPlaylistId(int playlistId, final CollectionAsyncResponse callback) {
-
          collection = new Collection();
          playlist = new Playlist();
          songArrayList = new ArrayList<>();
@@ -85,20 +84,20 @@ public class CollectionData {
                                 }
                                 songArrayList.add(song);
 
-                                // Lấy Artist
-                                JSONArray artistObj = response.getJSONArray("artists");
 
-                                int size2 = artistObj.length();
-                                for (int m = 0; m < size2; m++) {
-                                    Artist artist = new Artist();
-                                    artist.setId(artistObj.getJSONObject(m).getInt("AR_ID"));
-                                    artist.setName(artistObj.getJSONObject(m).getString("AR_NAME"));
-                                    artist.setImg(artistObj.getJSONObject(m).getString("AR_IMG"));
-                                    artist.setStory(artistObj.getJSONObject(m).getString("AR_STORY"));
-                                    artists.add(artist);
-                                }
                             }
+                            // Lấy Artist
+                            JSONArray artistObj = response.getJSONArray("artists");
 
+                            int size2 = artistObj.length();
+                            for (int m = 0; m < size2; m++) {
+                                Artist artist = new Artist();
+                                artist.setId(artistObj.getJSONObject(m).getInt("AR_ID"));
+                                artist.setName(artistObj.getJSONObject(m).getString("AR_NAME"));
+                                artist.setImg(artistObj.getJSONObject(m).getString("AR_IMG"));
+                                artist.setStory(artistObj.getJSONObject(m).getString("AR_STORY"));
+                                artists.add(artist);
+                            }
                             collection.setSongs(songArrayList);
                             callback.processFinished(collection, artists);
 

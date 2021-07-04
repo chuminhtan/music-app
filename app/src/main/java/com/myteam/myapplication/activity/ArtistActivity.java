@@ -97,7 +97,6 @@ public class ArtistActivity extends AppCompatActivity {
             @Override
             public void processFinished(Artist artist) {
                 mArtist = artist;
-
                 txtArtistName.setText(mArtist.getName());
                 txtArtistStory.setText(mArtist.getStory());
             }
@@ -120,7 +119,6 @@ public class ArtistActivity extends AppCompatActivity {
                 mAlbums = albums;
                 albumAdapter = new AlbumAdapter(ArtistActivity.this, R.layout.album_square_item, mAlbums);
                 recyclerViewAlbums.setAdapter(albumAdapter);
-
             }
         });
     }
