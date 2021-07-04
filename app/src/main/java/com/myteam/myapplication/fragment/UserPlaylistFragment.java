@@ -12,8 +12,11 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.activity.ArtistActivity;
 import com.myteam.myapplication.adapter.UserPlaylistAdapter;
 import com.myteam.myapplication.data.UserPlaylistAsyncResponse;
 import com.myteam.myapplication.data.UserPlaylistData;
@@ -24,7 +27,7 @@ import java.util.ArrayList;
 
 public class UserPlaylistFragment extends Fragment {
     View view;
-    ListView listViewPlaylist;
+    RecyclerView recyclerView;
     ArrayList<Playlist> playlists;
     UserPlaylistAdapter userPlaylistAdapter;
     User user;
@@ -33,7 +36,7 @@ public class UserPlaylistFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_playlist, container, false);
-        listViewPlaylist = view.findViewById(R.id.listview_user_playlist);
+        recyclerView = view.findViewById(R.id.recyclerview_user_playlist);
         getUser();
         getUserPlaylist(user);
         return view;
@@ -45,7 +48,9 @@ public class UserPlaylistFragment extends Fragment {
             public void processFinished(ArrayList<Playlist> playlists) {
 
                 userPlaylistAdapter = new UserPlaylistAdapter(getActivity(), R.layout.user_playlist_item, playlists);
-                listViewPlaylist.setAdapter(userPlaylistAdapter);
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setAdapter(userPlaylistAdapter);
             }
         });
     }

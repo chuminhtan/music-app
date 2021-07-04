@@ -23,6 +23,12 @@
             android:layout_height="wrap_content" />
 
         <fragment
+            android:name="com.myteam.myapplication.fragment.NewestAlbumsFragment"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="15dp"
+            android:layout_height="wrap_content" />
+
+        <fragment
             android:name="com.myteam.myapplication.fragment.HotPlaylistFragment"
             android:layout_width="match_parent"
             android:layout_marginVertical="15dp"

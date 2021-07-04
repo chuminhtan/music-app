@@ -15,42 +15,41 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
-import com.myteam.myapplication.adapter.UserAlbumAdapter;
+import com.myteam.myapplication.adapter.UserCreatedPlaylistAdapter;
 import com.myteam.myapplication.adapter.UserPlaylistAdapter;
-import com.myteam.myapplication.data.UserAlbumAsyncResponse;
-import com.myteam.myapplication.data.UserAlbumData;
+import com.myteam.myapplication.data.UserCreatedPlaylistAsyncResponse;
+import com.myteam.myapplication.data.UserCreatedPlaylistData;
 import com.myteam.myapplication.data.UserPlaylistAsyncResponse;
-import com.myteam.myapplication.data.UserPlaylistData;
-import com.myteam.myapplication.model.Album;
 import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.User;
 
 import java.util.ArrayList;
 
-public class UserAlbumFragment extends Fragment {
+public class UserCreatedPlaylistFragment  extends Fragment {
     View view;
     RecyclerView recyclerView;
-    ArrayList<Album> albums;
-    UserAlbumAdapter userAlbumAdapter;
+    ArrayList<Playlist> playlists;
+    UserCreatedPlaylistAdapter userPlaylistAdapter;
     User user;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user_album, container, false);
-        recyclerView = view.findViewById(R.id.recyclerview_user_album);
+        view = inflater.inflate(R.layout.fragment_user_created_playlist, container, false);
+        recyclerView = view.findViewById(R.id.recyclerview_user_created_playlist);
         getUser();
-        getUserAlbum(user);
-        return  view;
+        getUserPlaylist(user);
+        return view;
     }
-    public void getUserAlbum (User user) {
-        albums = new UserAlbumData().getAlbumsbyId(user, new UserAlbumAsyncResponse() {
+
+    public void getUserPlaylist(User user) {
+        playlists = new UserCreatedPlaylistData().getPlaylistsbyId(user, new UserCreatedPlaylistAsyncResponse() {
             @Override
-            public void processFinished(ArrayList<Album> albums) {
-                userAlbumAdapter = new UserAlbumAdapter(getActivity(), R.layout.user_album_item, albums);
+            public void processFinished(ArrayList<Playlist> playlists) {
+                userPlaylistAdapter = new UserCreatedPlaylistAdapter(getActivity(), R.layout.user_created_playlist_item, playlists);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
-                recyclerView.setAdapter(userAlbumAdapter);
+                recyclerView.setAdapter(userPlaylistAdapter);
             }
         });
     }
@@ -62,4 +61,5 @@ public class UserAlbumFragment extends Fragment {
         user.setName(sharedPref.getString("user_name", ""));
         user.setEmail(sharedPref.getString("user_email", ""));
     }
+
 }

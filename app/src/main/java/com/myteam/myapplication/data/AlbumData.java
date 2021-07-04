@@ -20,7 +20,7 @@ import java.util.List;
 
 public class AlbumData {
     private Album album;
-    private List<Album> albumList;
+    private ArrayList<Album> albumArrayList;
     public Album getAlbum() {
         return album;
     }
@@ -29,12 +29,12 @@ public class AlbumData {
         this.album = album;
     }
 
-    public List<Album> getAlbumList() {
-        return albumList;
+    public ArrayList<Album> getAlbumList() {
+        return albumArrayList;
     }
 
-    public void setAlbumList(List<Album> albumList) {
-        this.albumList = albumList;
+    public void setAlbumList(ArrayList<Album> albumList) {
+        this.albumArrayList = albumList;
     }
 
     // Test Server
@@ -60,66 +60,46 @@ public class AlbumData {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
 
-    // Lấy thông tin album bằng id
-    public void getAlbumById(final AlbumAsyncRespone callback, int id) {
-        String url = ServerInfo.SERVER_BASE + "/" + id;
-        Log.d("API", "URL = " + url);
-        JsonObjectRequest jsonArrayRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            album.setName(response.getString("AL_NAME"));
-                            album.setImg(response.getString("AL_IMG"));
-                            // Lấy thông tin nghệ sĩ
-                            int artistId = response.getInt("AR_ID");
+    // Lấy ra 4 album mới nhất
+    public ArrayList<Album> getNewestAlbums (final NewestAlbumsAsyncRespone callback) {
+        albumArrayList = new ArrayList<>();
+        String url = ServerInfo.SERVER_BASE + "/album/newest";
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        callback.processFinished(album);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-        // Access the RequestQueue through your AppController class.
-        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
-    }
-
-    // Lấy thông tin album bằng Name
-    public void getAlbumByName(final AlbumListAsyncRespone callback, String name) {
-        albumList = new ArrayList<Album>();
-        String url = ServerInfo.SERVER_BASE + "/" + name;
         Log.d("API", "URL = " + url);
+
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
-                        try {
-                            int size = response.length();
-                            for(int i = 0; i < size; i++) {
+                        int size = response.length();
+                        for (int i= 0; i<size; i++) {
+                            try {
                                 JSONObject obj = response.getJSONObject(i);
-                                Album album_child = new Album();
-                                album_child.setId(obj.getInt("ID"));
-                                album_child.setName(obj.getString("AL_NAME"));
-                                album_child.setImg(obj.getString("AL_IMG"));
-                                // Lấy thông tin nghệ sĩ
-                                int artistId = obj.getInt("AR_ID");
-                                albumList.add(album_child);
+                                Album album = new Album();
+                                album.setId(obj.getInt("AL_ID"));
+                                album.setName(obj.getString("AL_NAME"));
+                                album.setImg(obj.getString("AL_IMG"));
+
+                                albumArrayList.add(album);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                        callback.processFinished(albumList);
+                        callback.processFinished(albumArrayList);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Log.d("API", error.toString());
+
             }
+
         });
-        // Access the RequestQueue through your AppController class.
+        // Thêm vào hàng đợi request
         AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+
+        return albumArrayList;
     }
 }

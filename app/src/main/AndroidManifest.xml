@@ -39,6 +39,7 @@
         <activity android:name=".activity.LikedSongListActivity" />
         <activity android:name=".activity.AlbumDetailActivity" />
         <activity android:name=".activity.ArtistActivity" />
+        <activity android:name=".activity.MoreAlbumActivity" />
         <activity android:name=".activity.MainActivity"
             android:launchMode="singleInstance">
             <intent-filter>

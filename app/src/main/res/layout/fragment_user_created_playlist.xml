@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools">
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_user_playlist"
+        android:id="@+id/recyclerview_user_created_playlist"
         android:orientation="horizontal"
         android:scrollbars="none"
         android:layout_width="match_parent"
