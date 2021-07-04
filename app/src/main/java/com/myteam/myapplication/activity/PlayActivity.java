@@ -26,6 +26,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -302,7 +303,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
                             requestPermisionWriteExternalStorage();
                         }
                         Song song = SONGLIST.get(currentPositionSong);
-                        DownloadSong(song.getUrlSrc());
+                        Log.d("PLAYMUSIC", "From PlayActivity, urlsong: "+ song.getUrlSrc());
+                        DownloadSong(song.getUrlSrc(),song.getName());
                     }
                 });
             }
@@ -348,12 +350,16 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     }
 
     // Download Song
-    public void DownloadSong(String url){
+    public void DownloadSong(String url, String songname){
         try{
-            DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-            Uri uri = Uri.parse(url);
+            DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+            Log.d("PLAYMUSIC", "from activity play, url of song " + url );
+            Uri uri = Uri.parse("http://192.168.1.6:8000/storage/song/Iz9P2BXyINKQhf69rDQ431tPYaBhwBgG5x1PvV3z.mp3");
             DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,songname);
+
             Long reference = downloadManager.enqueue(request);
         }catch (IllegalArgumentException e) {
             Log.d("ERRROR DONWLOAD", e.getMessage());
