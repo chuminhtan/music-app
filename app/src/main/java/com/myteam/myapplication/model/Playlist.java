@@ -11,6 +11,15 @@ public class Playlist implements Serializable {
     private String des;
     private String img;
     private String img2;
+    private int type;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public Playlist() {}
 

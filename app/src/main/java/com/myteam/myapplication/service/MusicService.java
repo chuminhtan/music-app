@@ -3,6 +3,7 @@ package com.myteam.myapplication.service;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -90,7 +91,6 @@ public class MusicService extends Service {
                     if (actionPlaying != null) {
                         actionPlaying.btnPlayPauseClicked();
                     }
-
                     break;
 
                 case "next":
@@ -242,8 +242,9 @@ public class MusicService extends Service {
      */
     public void showNotification(final int playPauseBtn) {
         Intent intent = new Intent(this, MainActivity.class).setAction("ACTION_GOBACK");
+        intent.putExtra("duration", mediaPlayer.getDuration());
         intent.addFlags(Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
-        final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, 0);
+        final PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
 
         Intent prevIntent = new Intent(this, NotificationReceiver.class)
                 .setAction(ACTION_PREVIOUS);
