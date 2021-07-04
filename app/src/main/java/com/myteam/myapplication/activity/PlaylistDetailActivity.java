@@ -7,38 +7,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.adapter.ArtistAdapter;
 import com.myteam.myapplication.adapter.SonglistAdapter;
 import com.myteam.myapplication.data.CollectionAsyncResponse;
 import com.myteam.myapplication.data.CollectionData;
-import com.myteam.myapplication.data.PlaylistData;
+import com.myteam.myapplication.model.Artist;
 import com.myteam.myapplication.model.Collection;
 import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.Song;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class PlaylistDetailActivity extends AppCompatActivity implements View.OnClickListener{
     private Playlist playlistIntent;
     private Collection mCollection;
+    private ArrayList<Artist> mArtists;
     private ImageView imagePlaylist;
     private Button btnPlay;
     private Toolbar toolbar;
@@ -46,7 +38,9 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
     private CoordinatorLayout coordinatorLayout;
     private CollapsingToolbarLayout collapsingToolbarLayout;
     private RecyclerView recyclerViewSonglist;
+    private RecyclerView recyclerViewArtist;
     private SonglistAdapter songlistAdapter;
+    private ArtistAdapter artistAdapter;
 
     private ArrayList<Song> songList =  new ArrayList<>();
 
@@ -74,17 +68,19 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
 
     private void getSonglist(int playlistId) {
         mCollection = new Collection();
+        mArtists = new ArrayList<>();
 
         new CollectionData().getCollectionByPlaylistId(playlistId, new CollectionAsyncResponse() {
             @Override
-            public void processFinished(Collection collection) {
+            public void processFinished(Collection collection, ArrayList<Artist> artists) {
                 mCollection = collection;
-
+                mArtists = artists;
                 songList = collection.getSongs();
 
                 songlistAdapter = new SonglistAdapter(PlaylistDetailActivity.this, R.layout.songlist_item, songList);
                 recyclerViewSonglist.setAdapter(songlistAdapter);
-
+                artistAdapter = new ArtistAdapter(PlaylistDetailActivity.this, R.layout.artist_item, mArtists);
+                recyclerViewArtist.setAdapter(artistAdapter);
             }
         });
     }
@@ -123,6 +119,10 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(PlaylistDetailActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerViewSonglist.setLayoutManager(mLayoutManager);
 
+        // Thiết lập recyclerView hiển thị hàng ngang
+        recyclerViewArtist = findViewById(R.id.recyclerview_playlist_artists);
+        RecyclerView.LayoutManager layoutManager2 = new LinearLayoutManager(PlaylistDetailActivity.this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerViewArtist.setLayoutManager(layoutManager2);
     }
 
     private void getDataIntent() {

@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -32,6 +33,7 @@ public class UserPlaylistAdapter extends ArrayAdapter<Playlist> {
     ImageView imgPlaylist;
     TextView namePlaylist;
     ImageButton btnlistsong;
+    RelativeLayout relativeLayout;
 
 
     public UserPlaylistAdapter(@NonNull Context context, int resource, @NonNull List<Playlist> objects) {
@@ -54,11 +56,11 @@ public class UserPlaylistAdapter extends ArrayAdapter<Playlist> {
             imgPlaylist = convertView.findViewById(R.id.user_playlist_item_image);
             namePlaylist = convertView.findViewById(R.id.user_playlist_item_name);
             btnlistsong = convertView.findViewById(R.id.btn_user_playlist_songs);
+            relativeLayout = convertView.findViewById(R.id.user_playlist_item);
 
             Picasso.with(getContext()).load(playlist.getImageUrl()).into(imgPlaylist);
             namePlaylist.setText(playlist.getName());
-
-            btnlistsong.setOnClickListener(new View.OnClickListener() {
+            relativeLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, PlaylistDetailActivity.class);
@@ -66,13 +68,8 @@ public class UserPlaylistAdapter extends ArrayAdapter<Playlist> {
                     mContext.startActivity(intent);
                 }
             });
-
-
         }
 
         return convertView;
     }
-
-
-
 }

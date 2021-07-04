@@ -106,9 +106,6 @@ public class LikedSongListActivity extends AppCompatActivity implements View.OnC
             @Override
             public void processFinished(ArrayList<Song> songs) {
                 songList = songs;
-                for (int i = 0; i<songs.size(); i++) {
-                    Log.d("CHECK_SONG", "Song: " + songs.get(i).getName());
-                }
                 songlistAdapter = new SonglistAdapter(LikedSongListActivity.this, R.layout.songlist_item, songList);
                 recyclerViewSonglist.setAdapter(songlistAdapter);
             }

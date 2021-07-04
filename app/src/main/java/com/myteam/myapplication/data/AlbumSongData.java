@@ -28,7 +28,7 @@ public class AlbumSongData {
     // @albumId : ID của album
     // @callback
 
-    public void getAlbumSongByAlbumId (int albumId, final AlbumSongAsyncRespone callback) {
+    public void getAlbumSongByAlbumId(int albumId, final AlbumSongAsyncRespone callback) {
         albumSong = new AlbumSong();
         album = new Album();
         songArrayList = new ArrayList<>();
@@ -39,7 +39,7 @@ public class AlbumSongData {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try{
+                        try {
                             // Lấy object Album
                             JSONArray albumArr = response.getJSONArray("album");
                             JSONObject albumObj = albumArr.getJSONObject(0);
@@ -52,7 +52,7 @@ public class AlbumSongData {
 
                             // Lấy arrayObject bài hát
                             JSONArray songArrayObj = response.getJSONArray("songs");
-                            for (int i = 0; i< songArrayObj.length(); i++) {
+                            for (int i = 0; i < songArrayObj.length(); i++) {
                                 JSONObject songObj = songArrayObj.getJSONObject(i);
 
                                 Song song = new Song();
@@ -66,7 +66,7 @@ public class AlbumSongData {
                                 for (int j = 0; j < artistArrayObj.length(); j++) {
                                     JSONObject artistObj = artistArrayObj.getJSONObject(j);
 
-                                    if (artistObj.getInt("AR_ID") == 0) {
+                                    if (artistObj.getString("AR_NAME") == null) {
                                         continue;
                                     }
                                     Artist artist = new Artist();
@@ -75,13 +75,26 @@ public class AlbumSongData {
                                     artist.setName(artistObj.getString("AR_NAME"));
                                     song.addArtist(artist);
                                 }
-
                                 songArrayList.add(song);
                             }
-                            albumSong.setSongs(songArrayList);
-                            callback.processFinished(albumSong);
 
-                        } catch (JSONException e){
+                            // Lấy Artist
+                            JSONArray artistObj = response.getJSONArray("artists");
+
+                            ArrayList<Artist> artists = new ArrayList<>();
+                            int size2 = artistObj.length();
+                            for (int i = 0; i < size2; i++) {
+                                Artist artist = new Artist();
+                                artist.setId(artistObj.getJSONObject(i).getInt("AR_ID"));
+                                artist.setName(artistObj.getJSONObject(i).getString("AR_NAME"));
+                                artist.setImg(artistObj.getJSONObject(i).getString("AR_IMG"));
+                                artist.setStory(artistObj.getJSONObject(i).getString("AR_STORY"));
+                                artists.add(artist);
+                            }
+                            albumSong.setSongs(songArrayList);
+                            callback.processFinished(albumSong, artists);
+
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }

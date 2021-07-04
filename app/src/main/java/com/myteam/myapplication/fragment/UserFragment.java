@@ -10,15 +10,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.myteam.myapplication.R;
@@ -40,6 +38,8 @@ public class UserFragment extends Fragment {
     private TextView txtUserName;
     private ImageButton btnSettings;
     Button btnEnterLogin;
+    private ImageButton btnLikedSongs;
+    RelativeLayout relativeLayout;
     User user;
 
     @Nullable
@@ -56,6 +56,13 @@ public class UserFragment extends Fragment {
         });
 
         btnEnterLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -76,6 +83,9 @@ public class UserFragment extends Fragment {
         txtUserName = view.findViewById(R.id.textview_user_name);
         btnSettings = view.findViewById(R.id.btn_user_settings);
         btnEnterLogin = view.findViewById(R.id.button_enter_login);
+//        btnLikedSongs = view.findViewById(R.id.btn_list_liked_song);
+        relativeLayout = view.findViewById(R.id.layout_likedsong);
+
     }
 
     private void getUser() {

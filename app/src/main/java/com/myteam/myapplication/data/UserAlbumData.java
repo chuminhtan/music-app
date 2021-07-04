@@ -38,9 +38,6 @@ public class UserAlbumData {
                                 album.setId(obj.getInt("AL_ID"));
                                 album.setName(obj.getString("AL_NAME"));
                                 album.setImg(obj.getString("AL_IMG"));
-
-                                Artist artist = new Artist();
-//                                album.setArtist(obj.getJSONObject("AR_ID"));
                                 albums.add(album);
                             } catch (JSONException e) {
                                 e.printStackTrace();
