@@ -116,7 +116,7 @@
         android:background="@drawable/custom_button_1"
         android:textColor="@color/colorCustomBlack1"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"></Button>
+        android:layout_marginTop="10dp"></Button>
 
     <TextView
         android:id="@+id/textview_result_edit"
@@ -125,5 +125,5 @@
         android:layout_gravity="center"
         android:text=""
         android:textColor="@color/colorMain"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="20dp"/>
 </LinearLayout>
