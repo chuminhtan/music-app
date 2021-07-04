@@ -1,144 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fragment_user"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:paddingHorizontal="@dimen/padding_horizontal"
     android:scrollbars="none"
-    android:fillViewport="true">
+    tools:context=".fragment.UserFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:orientation="vertical">
 
         <RelativeLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:layout_marginTop="10dp">
-
-                <TextView
-                    android:id="@+id/textview_user_name"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Username"
-                    android:textColor="@color/teal_700"
-                    android:textSize="25dp" />
-
-                <ImageButton
-                    android:id="@+id/btn_user_settings"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:scaleType="fitCenter"
-                    android:layout_marginRight="20dp"
-                    android:background="@drawable/background_transparent"
-                    android:src="@drawable/ic_account_circle_45" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="380dp"
-                android:layout_height="1dp"
-                android:background="@color/black"
-                android:layout_marginTop="70dp"
-                android:layout_centerHorizontal="true"/>
-
-        </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/layout_likedsong"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:textSize="20dp"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:textColor="@color/teal_700"
-            android:text="Bài hát yêu thích" />
+            android:layout_marginTop="35dp"
 
-        <ImageView
-            android:id="@+id/img_arrow"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:paddingRight="20dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_baseline_keyboard_arrow_right_50"
-            android:background="@drawable/background_transparent"
-            android:layout_alignParentRight="true"/>
+            android:gravity="center_vertical">
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/textview_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="20dp"
+                android:fontFamily="sans-serif-medium"
+                android:text="Username"
+                android:textColor="#11998e"
+                android:textSize="25dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textSize="20dp"
-        android:textColor="@color/teal_700"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Playlist của tôi" />
+            <ImageButton
+                android:id="@+id/btn_user_settings"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:background="@color/white"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_baseline_person_pin_40" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/layout_likedsong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
 
-    <fragment
-        android:id="@+id/fragment_user_created_playlist"
-        android:name="com.myteam.myapplication.fragment.UserCreatedPlaylistFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            android:orientation="vertical">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textSize="20dp"
-        android:textColor="@color/teal_700"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="Playlist" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:layout_marginLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Bài hát yêu thích"
+                android:textColor="@color/colorTextMore"
+                android:textStyle="bold"
+                android:textSize="16dp" />
 
-    <fragment
-        android:id="@+id/fragment_user_playlist"
-        android:name="com.myteam.myapplication.fragment.UserPlaylistFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/img_arrow"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/background_transparent"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_baseline_play_circle_outline_30_purple" />
+        </RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Playlist cá nhân"
+                android:textColor="@color/colorTextMore"
+                android:textStyle="bold"
+                android:layout_marginVertical="10dp"
+                android:textSize="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:textSize="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/teal_700"
-        android:text="Album" />
+            <fragment
+                android:id="@+id/fragment_user_created_playlist"
+                android:name="com.myteam.myapplication.fragment.UserCreatedPlaylistFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <fragment
-        android:id="@+id/fragment_user_album"
-        android:name="com.myteam.myapplication.fragment.UserAlbumFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <Button
-        android:id="@+id/button_enter_login"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:text="Đăng Nhập"
-        android:background="@drawable/custom_button_2"
-        android:textColor="@color/colorCustomBlack1"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"></Button>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Playlist đã thích"
+                android:textColor="@color/colorTextMore"
+                android:textStyle="bold"
+                android:layout_marginVertical="10dp"
+                android:textSize="16dp" />
+
+            <fragment
+                android:id="@+id/fragment_user_playlist"
+                android:name="com.myteam.myapplication.fragment.UserPlaylistFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Album đã thích"
+                android:textColor="@color/colorTextMore"
+                android:textStyle="bold"
+                android:layout_marginVertical="10dp"
+                android:textSize="16dp" />
+
+            <fragment
+                android:id="@+id/fragment_user_album"
+                android:name="com.myteam.myapplication.fragment.UserAlbumFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/button_enter_login"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/custom_button_2"
+                android:text="Đăng Nhập"
+                android:textColor="@color/colorCustomBlack1"></Button>
+
     </LinearLayout>
 </ScrollView>
+

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.activity.ArtistActivity;
 import com.myteam.myapplication.adapter.UserPlaylistAdapter;
+import com.myteam.myapplication.adapter.UserPlaylistLikedAdapter;
 import com.myteam.myapplication.data.UserPlaylistAsyncResponse;
 import com.myteam.myapplication.data.UserPlaylistData;
 import com.myteam.myapplication.model.Playlist;
@@ -29,7 +30,7 @@ public class UserPlaylistFragment extends Fragment {
     View view;
     RecyclerView recyclerView;
     ArrayList<Playlist> playlists;
-    UserPlaylistAdapter userPlaylistAdapter;
+    UserPlaylistLikedAdapter userPlaylistAdapter;
     User user;
 
     @Nullable
@@ -50,7 +51,7 @@ public class UserPlaylistFragment extends Fragment {
             @Override
             public void processFinished(ArrayList<Playlist> playlists) {
 
-                userPlaylistAdapter = new UserPlaylistAdapter(getActivity(), R.layout.user_playlist_item, playlists);
+                userPlaylistAdapter = new UserPlaylistLikedAdapter(getActivity(), R.layout.user_playlist_item, playlists);
                 recyclerView.setAdapter(userPlaylistAdapter);
             }
         });

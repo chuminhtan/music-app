@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.adapter.UserAlbumAdapter;
+import com.myteam.myapplication.adapter.UserAlbumLikedAdapter;
 import com.myteam.myapplication.adapter.UserPlaylistAdapter;
 import com.myteam.myapplication.data.UserAlbumAsyncResponse;
 import com.myteam.myapplication.data.UserAlbumData;
@@ -31,7 +32,7 @@ public class UserAlbumFragment extends Fragment {
     View view;
     RecyclerView recyclerView;
     ArrayList<Album> albums;
-    UserAlbumAdapter userAlbumAdapter;
+    UserAlbumLikedAdapter userAlbumAdapter;
     User user;
 
     @Nullable
@@ -47,7 +48,7 @@ public class UserAlbumFragment extends Fragment {
         albums = new UserAlbumData().getAlbumsbyId(user, new UserAlbumAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Album> albums) {
-                userAlbumAdapter = new UserAlbumAdapter(getActivity(), R.layout.user_album_item, albums);
+                userAlbumAdapter = new UserAlbumLikedAdapter(getActivity(), R.layout.user_album_item, albums);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
                 recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(userAlbumAdapter);

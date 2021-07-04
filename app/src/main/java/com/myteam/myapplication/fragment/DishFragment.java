@@ -68,7 +68,6 @@ public class DishFragment extends Fragment {
     }
 
     public void changeCircleImage(String urlImage) {
-//        Picasso.with(getContext()).load(urlImage).into(circleImageView);
         circleImageAnimation(getContext(), circleImageView, urlImage);
     }
 
@@ -110,7 +109,6 @@ public class DishFragment extends Fragment {
 
             }
         });
-
         circleImageView.startAnimation(animationOut);
     }
 }

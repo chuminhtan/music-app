@@ -73,12 +73,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createTab() {
-        mainViewPagerAdapter.removeAllFragment();
         mainViewPagerAdapter.addFragment(new HomeFragment(), "");
         mainViewPagerAdapter.addFragment(new SearchFragment(), "");
         mainViewPagerAdapter.addFragment(new UserFragment(), "");
         mainViewPagerAdapter.addFragment(new OfflineFragment(),"");
-        mainViewPagerAdapter.notifyDataSetChanged();
     }
 
     private void createIcon() {

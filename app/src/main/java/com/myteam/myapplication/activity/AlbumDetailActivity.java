@@ -120,7 +120,6 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
             // Data : Album
             if (intent.hasExtra("album")) {
                 albumIntent = (Album) intent.getSerializableExtra("album");
-                Toast.makeText(AlbumDetailActivity.this, albumIntent.getName(), Toast.LENGTH_SHORT).show();
             }
         }
     }
