@@ -24,6 +24,7 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.activity.PlayActivity;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -111,33 +112,33 @@ public class OfflineFragment extends Fragment {
         });
     }
 
-//    class customAdapter extends BaseAdapter
-//    {
-//
-//        @Override
-//        public int getCount() {
-//            return items.length;
-//        }
-//
-//        @Override
-//        public Object getItem(int position) {
-//            return null;
-//        }
-//
-//        @Override
-//        public long getItemId(int position) {
-//            return 0;
-//        }
-//
-//        @Override
-//        public View getView(int i, View convertView, ViewGroup parent) {
-//            View myView = getLayoutInflater().inflate(R.layout.list_item, null);
-//            TextView textsong = myView.findViewById(R.id.txtsongname);
-//            textsong.setSelected(true);
-//            textsong.setText(items[i]);
-//
-//            return myView;
-//        }
-//    }
+    class customAdapter extends BaseAdapter
+    {
+
+        @Override
+        public int getCount() {
+            return items.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View convertView, ViewGroup parent) {
+            View myView = getLayoutInflater().inflate(R.layout.list_item, null);
+            TextView textsong = myView.findViewById(R.id.txtsongname);
+            textsong.setSelected(true);
+            textsong.setText(items[i]);
+
+            return myView;
+        }
+    }
 
 }

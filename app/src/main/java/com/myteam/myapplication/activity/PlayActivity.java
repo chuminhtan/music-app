@@ -252,7 +252,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
                 SONGLIST = new ArrayList<>(songs);
                 SONGLIST_SHUFFLE = new ArrayList<>(songs);
                 Collections.shuffle(SONGLIST_SHUFFLE);
-
                 sizeList = SONGLIST.size();
             }
 
@@ -417,7 +416,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         }
 
     }
-
 
     // PREPARE MEDIA PLAYER
     private void prepareMediaPlayer(String url) {

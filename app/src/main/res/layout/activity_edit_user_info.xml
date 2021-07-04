@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.EditUserInfoActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_edit_user"
+        android:layout_width="match_parent"
+        android:theme="@style/ToolbarTheme2"
+        android:layout_height="?attr/actionBarSize"/>
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:text="Đăng Xuất"
+        android:background="@drawable/custom_button_2"
+        android:textColor="@color/colorCustomBlack1"
+        android:layout_marginVertical="15dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Cập nhật thông tin"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorMain"
+        android:layout_marginVertical="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="Tên"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/edittext_username_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="Nhập mật khẩu hiện tại"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/edittext_password_current"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="Nhập mật khẩu mới"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/edittext_password_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="5dp"
+        android:text="Nhập lại mật khẩu mới"
+        android:textColor="@color/colorTextBlack"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/edittext_password2_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:selectAllOnFocus="true"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="20dp"
+        />
+
+    <Button
+        android:id="@+id/button_edit_user_info"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:text="Đổi mật khẩu"
+        android:background="@drawable/custom_button_1"
+        android:textColor="@color/colorCustomBlack1"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"></Button>
+
+    <TextView
+        android:id="@+id/textview_result_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text=""
+        android:textColor="@color/colorMain"
+        android:layout_marginTop="20dp"/>
+</LinearLayout>

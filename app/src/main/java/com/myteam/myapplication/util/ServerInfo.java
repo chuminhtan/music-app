@@ -18,6 +18,8 @@ public class ServerInfo {
 
 
     // Album
+    public static final String ALBUM = "album";
+    public static final String ALBUM_IMG = "storage/album-image";
 
     // Artist
 

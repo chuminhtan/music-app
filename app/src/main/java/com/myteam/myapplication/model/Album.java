@@ -1,6 +1,10 @@
 package com.myteam.myapplication.model;
 
-public class Album {
+import com.myteam.myapplication.util.ServerInfo;
+
+import java.io.Serializable;
+
+public class Album implements Serializable {
     private int id;
     private Artist artist;
     private String name;
@@ -46,5 +50,10 @@ public class Album {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getImageUrl() {
+
+        return ServerInfo.SERVER_BASE + "/" + ServerInfo.ALBUM_IMG + "/" +this.img;
     }
 }

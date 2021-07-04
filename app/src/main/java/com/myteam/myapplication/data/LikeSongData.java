@@ -5,12 +5,12 @@ import android.util.Log;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.myteam.myapplication.controller.AppController;
 import com.myteam.myapplication.model.Artist;
-import com.myteam.myapplication.model.Collection;
-import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.model.User;
 import com.myteam.myapplication.util.ServerInfo;
 
 import org.json.JSONArray;
@@ -19,25 +19,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class CollectionData {
-    Collection collection;
-    Playlist playlist;
+public class LikeSongData {
     ArrayList<Song> songArrayList;
-    ArrayList<Artist> artists;
 
-    // Lấy danh sách bài hát của một playlist = Playlist_id
-    // @playlistId : ID của playlist
-    // @callback
-    public void getCollectionByPlaylistId(int playlistId, final CollectionAsyncResponse callback) {
+    // Lấy danh sách bài hát yêu thích qua user id
+    public void getLikeSongbyUserId(int userId, final LikeSongAsyncResponse callback) {
+        songArrayList = new ArrayList<>();
 
-         collection = new Collection();
-         playlist = new Playlist();
-         songArrayList = new ArrayList<>();
-         artists = new ArrayList<>();
+        String url = ServerInfo.SERVER_BASE + "/user/liked-song/" + userId;
+        Log.d("API", "URL = " + url);
 
-        String url = ServerInfo.SERVER_BASE + "/" + ServerInfo.COLLECTION + "/" + playlistId;
-
-        // Tạo Request
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
@@ -47,16 +38,6 @@ public class CollectionData {
                     public void onResponse(JSONObject response) {
 
                         try {
-
-                            // Lấy object playlist
-                            JSONObject playlistObj = response.getJSONObject("playlist");
-                            playlist.setId(playlistObj.getInt("PL_ID"));
-                            playlist.setName(playlistObj.getString("PL_NAME"));
-                            playlist.setDes(playlistObj.getString("PL_DES"));
-                            playlist.setImg(playlistObj.getString("PL_IMG"));
-
-                            collection.setPlaylist(playlist);
-
                             // Lấy arrayObj bài hát
                             JSONArray songsArrayObj = response.getJSONArray("songs");
                             for (int i = 0; i < songsArrayObj.length(); i++) {
@@ -85,32 +66,15 @@ public class CollectionData {
                                 }
                                 songArrayList.add(song);
 
-                                // Lấy Artist
-                                JSONArray artistObj = response.getJSONArray("artists");
-
-                                int size2 = artistObj.length();
-                                for (int m = 0; m < size2; m++) {
-                                    Artist artist = new Artist();
-                                    artist.setId(artistObj.getJSONObject(m).getInt("AR_ID"));
-                                    artist.setName(artistObj.getJSONObject(m).getString("AR_NAME"));
-                                    artist.setImg(artistObj.getJSONObject(m).getString("AR_IMG"));
-                                    artist.setStory(artistObj.getJSONObject(m).getString("AR_STORY"));
-                                    artists.add(artist);
-                                }
                             }
 
-                            collection.setSongs(songArrayList);
-                            callback.processFinished(collection, artists);
+
+                            callback.processFinished(songArrayList);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
-
                     }
-
-
                 },
                 new Response.ErrorListener() {
                     @Override
@@ -119,23 +83,8 @@ public class CollectionData {
                     }
                 });
 
-        // Thêm vào hàng đợi request
+
+        // Access the RequestQueue through your AppController class.
         AppController.getInstance().addToRequestQueue(jsonObjectRequest);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

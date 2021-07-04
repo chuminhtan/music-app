@@ -94,8 +94,9 @@ public class RegisterLoginData {
                         mapResponse.put("result", result);
                         mapResponse.put("message", response.getString("message"));
 
-                        JSONObject userJson =  response.getJSONObject("user");
+
                         if (result.equalsIgnoreCase(ServerInfo.RESPONSE_SUCCESS)) {
+                            JSONObject userJson =  response.getJSONObject("user");
                             mapResponse.put("user_name", userJson.getString("US_NAME"));
                             mapResponse.put("user_id", String.valueOf(userJson.getInt("US_ID")));
                             mapResponse.put("user_email", userJson.getString("US_EMAIL"));
