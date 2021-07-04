@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,8 +39,8 @@ public class UserFragment extends Fragment {
     private TextView txtUserName;
     private ImageButton btnSettings;
     Button btnEnterLogin;
-    private ImageButton btnLikedSongs;
     RelativeLayout relativeLayout;
+    ImageView imageView;
     User user;
 
     @Nullable
@@ -65,7 +66,7 @@ public class UserFragment extends Fragment {
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
+                startActivity(new Intent(getActivity(), LikedSongListActivity.class));
             }
         });
 
@@ -83,8 +84,8 @@ public class UserFragment extends Fragment {
         txtUserName = view.findViewById(R.id.textview_user_name);
         btnSettings = view.findViewById(R.id.btn_user_settings);
         btnEnterLogin = view.findViewById(R.id.button_enter_login);
-//        btnLikedSongs = view.findViewById(R.id.btn_list_liked_song);
         relativeLayout = view.findViewById(R.id.layout_likedsong);
+        imageView = view.findViewById(R.id.img_arrow);
 
     }
 

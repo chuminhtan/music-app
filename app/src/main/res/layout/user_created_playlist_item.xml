@@ -8,25 +8,25 @@
     app:cardPreventCornerOverlap="false">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/carview_album_square_item"
+        android:id="@+id/carview_user_created_playlist_item"
         app:cardCornerRadius="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
         <ImageView
-            android:id="@+id/imageview_album_square_item"
+            android:id="@+id/imageview_user_created_playlist_item"
             android:layout_width="120dp"
             android:layout_height="120dp"
             android:scaleType="fitXY"/>
     </androidx.cardview.widget.CardView>
     <TextView
-        android:id="@+id/textview_title_album_square_item"
+        android:id="@+id/textview_title_user_created_playlist_item"
         android:gravity="center"
         android:layout_marginVertical="5dp"
         android:textAlignment="center"
         android:textColor="@color/colorTextBlack"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/carview_album_square_item"
+        android:layout_below="@id/carview_user_created_playlist_item"
         android:textSize="12sp"
         android:maxLines="2" />
 </RelativeLayout>

@@ -4,7 +4,7 @@ package com.myteam.myapplication.util;
 
 public class ServerInfo {
     // Base url
-    public static final String SERVER_BASE = "http://192.168.1.8:8000/";
+    public static final String SERVER_BASE = "http://192.168.1.8:8000";
 
     // Song
     public static final String SONG = "song";
