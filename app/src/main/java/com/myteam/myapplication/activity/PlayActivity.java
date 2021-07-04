@@ -97,7 +97,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         getDataIntent();
         // Get data from Sharedpreferences
         getPreferences();
-        initComponent();
         isActivityVisible = true;
     }
 
@@ -144,7 +143,9 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         adapterPlay.AddFragment(currentPlaylistFragment);
         viewPager.setAdapter(adapterPlay);
 
-        checkLikeSong(user.getId(), SONGLIST.get(currentPositionSong).getId());
+        if (user.getId() !=0) {
+            checkLikeSong(user.getId(), SONGLIST.get(currentPositionSong).getId());
+        }
     }
 
     private void prevThreadBtn() {
@@ -731,6 +732,13 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         initComponent();
         playSongs();
         setEvents();
+        if (user.getId() == 0) {
+            btnLikeSong.setVisibility(View.GONE);
+            btnAddPlaylist.setVisibility(View.GONE);
+        } else {
+            btnLikeSong.setVisibility(View.VISIBLE);
+            btnAddPlaylist.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -767,14 +775,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         Intent intent = new Intent(PlayActivity.this, MusicService.class);
         bindService(intent, PlayActivity.this, BIND_AUTO_CREATE);
         isActivityVisible = true;
-
-        if (user.getId() == 0) {
-            btnLikeSong.setVisibility(View.GONE);
-            btnAddPlaylist.setVisibility(View.GONE);
-        } else {
-            btnLikeSong.setVisibility(View.VISIBLE);
-            btnAddPlaylist.setVisibility(View.VISIBLE);
-        }
     }
 
     // ON PAUSE
