@@ -67,7 +67,6 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
             getSonglist(playlistIntent.getId());
         }
 
-        checkLikePlaylist();
         btnPlay.setOnClickListener(this);
         imgLikePlaylist.setOnClickListener(this);
     }
@@ -176,6 +175,7 @@ public class PlaylistDetailActivity extends AppCompatActivity implements View.On
             imgLikePlaylist.setVisibility(View.GONE);
         } else {
             imgLikePlaylist.setVisibility(View.VISIBLE);
+            checkLikePlaylist();
         }
     }
 

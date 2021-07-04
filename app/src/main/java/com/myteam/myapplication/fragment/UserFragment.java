@@ -87,6 +87,7 @@ public class UserFragment extends Fragment {
         relativeLayout = view.findViewById(R.id.layout_likedsong);
         imageView = view.findViewById(R.id.img_arrow);
 
+
     }
 
     private void getUser() {
@@ -102,10 +103,12 @@ public class UserFragment extends Fragment {
             txtUserName.setText("Chưa đăng nhập");
             btnEnterLogin.setVisibility(View.VISIBLE);
             btnSettings.setVisibility(View.GONE);
+            imageView.setVisibility(View.GONE);
         } else {
             txtUserName.setText(user.getName());
             btnEnterLogin.setVisibility(View.GONE);
             btnSettings.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
         }
     }
 }

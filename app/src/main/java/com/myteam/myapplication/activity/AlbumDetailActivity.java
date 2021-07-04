@@ -59,7 +59,6 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         mapping();
         getDataIntent();
         init();
-        checkLikeAlbum();
 
         // Check album is null
         if(albumIntent != null && !albumIntent.getName().equals("")) {
@@ -70,6 +69,12 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
         btnPlay.setOnClickListener(this);
         imvLikeAlbum.setOnClickListener(this);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setButtonLike();
     }
 
     private void init() {
@@ -134,8 +139,10 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
                 mAlbumSong = albumSong;
                 martists = artists;
                 songList = albumSong.getSongs();
+
                 songlistAdapter = new SonglistAdapter(AlbumDetailActivity.this, R.layout.songlist_item, songList);
                 recyclerViewSonglist.setAdapter(songlistAdapter);
+
                 artistAdapter = new ArtistAdapter(AlbumDetailActivity.this, R.layout.artist_item, martists);
                 recyclerViewArtist.setAdapter(artistAdapter);
             }
@@ -169,6 +176,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
             imvLikeAlbum.setVisibility(View.GONE);
         } else {
             imvLikeAlbum.setVisibility(View.VISIBLE);
+            checkLikeAlbum();
         }
     }
 
@@ -189,7 +197,7 @@ public class AlbumDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void checkLikeAlbum() {
-        String type = "playlist";
+        String type = "album";
         new UserData().checkLiked(user.getId(), albumIntent.getId(), type, new UserAsyncResponse() {
             @Override
             public void processFinished(String result) {

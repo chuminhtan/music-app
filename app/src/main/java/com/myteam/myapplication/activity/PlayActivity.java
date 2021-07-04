@@ -84,7 +84,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
     private int sizeList;
     boolean isActivityVisible;
     MusicService musicService;
-    private User user = new User();
+    private User user;
     private String result, message;
     PlaylistBottomSheetAdapter bottomSheetAdapter;
 
@@ -446,8 +446,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         Song song = SONGLIST.get(currentPositionSong);
         playlist.setType(0);
         playlist.setName(playListName);
-        User user = new User();
-        user.setId(user.getId());
         playlist.setUser(user);
         playlist.setImg(song.getImg());
         addNewUserPlaylist(playlist, song);
@@ -489,7 +487,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         startService(intent);
 
         // Change background
-
         changeBackground(song.getUrlImage());
 
         seekBarPlay.setMax(100);

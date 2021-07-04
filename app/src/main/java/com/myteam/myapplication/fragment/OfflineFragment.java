@@ -140,7 +140,7 @@ public class OfflineFragment extends Fragment {
             artist.setName("Unknown");
             artists.add(artist);
             song.setArtists(artists);
-            song.setImg("");
+            song.setImg("music.png");
             song.setArtist(artist);
             listSong.add(song);
         }
