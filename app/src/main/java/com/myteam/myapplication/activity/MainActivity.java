@@ -3,11 +3,15 @@ package com.myteam.myapplication.activity;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.adapter.MainViewPagerAdapter;
 import com.myteam.myapplication.data.SongData;
@@ -62,4 +66,5 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_search_30);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_supervised_user_circle_50);
     }
+
 }
