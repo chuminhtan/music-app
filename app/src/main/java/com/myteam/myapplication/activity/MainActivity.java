@@ -22,7 +22,11 @@ import com.myteam.myapplication.fragment.SearchFragment;
 import com.myteam.myapplication.fragment.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
+
     public static boolean RELOAD_MENU_TAB = false;
+
+    // Khai báo TabLayout cho menu
+
     private TabLayout tabLayout;
     private ViewPager viewPager;
     MainViewPagerAdapter mainViewPagerAdapter;

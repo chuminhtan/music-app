@@ -2,6 +2,7 @@ package com.myteam.myapplication.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,7 @@ public class ArtistAdapter extends  RecyclerView.Adapter<ArtistAdapter.MyViewHol
         return new ArtistAdapter.MyViewHolder(item);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ArtistAdapter.MyViewHolder holder, int position) {
         final Artist artist = martists.get(position);
@@ -52,6 +54,7 @@ public class ArtistAdapter extends  RecyclerView.Adapter<ArtistAdapter.MyViewHol
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ArtistActivity.class);
                 intent.putExtra("artist", artist);
+
                 mContext.startActivity(intent);
             }
         });

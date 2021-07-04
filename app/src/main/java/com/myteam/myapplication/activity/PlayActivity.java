@@ -3,23 +3,30 @@ package com.myteam.myapplication.activity;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.palette.graphics.Palette;
 import androidx.viewpager.widget.ViewPager;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
@@ -290,17 +297,14 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
                 btnDownSong.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Song song = SONGLIST.get(currentPositionSong);
-                        try{
-                            DownloadManager downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-                            Uri uri = Uri.parse(song.getUrlSrc());
-                            DownloadManager.Request request = new DownloadManager.Request(uri);
-                            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                            Long reference = downloadManager.enqueue(request);
-                        }catch (IllegalArgumentException e) {
-                            Log.d("ERRROR DONWLOAD", e.getMessage());
-                        }
+                        if(checkIfAlreadyHavePermission()) {
 
+                        } else {
+                            requestPermisionWriteExternalStorage();
+                        }
+                        Song song = SONGLIST.get(currentPositionSong);
+                        Log.d("PLAYMUSIC", "From PlayActivity, urlsong: "+ song.getUrlSrc());
+                        DownloadSong(song.getUrlSrc(),song.getName());
                     }
                 });
             }
@@ -344,6 +348,22 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         }
     }
 
+    // Download Song
+    public void DownloadSong(String url, String songname){
+        try{
+            DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
+            Log.d("PLAYMUSIC", "from activity play, url of song " + url );
+            Uri uri = Uri.parse("http://192.168.1.6:8000/storage/song/Iz9P2BXyINKQhf69rDQ431tPYaBhwBgG5x1PvV3z.mp3");
+            DownloadManager.Request request = new DownloadManager.Request(uri);
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS,songname);
+
+            Long reference = downloadManager.enqueue(request);
+        }catch (IllegalArgumentException e) {
+            Log.d("ERRROR DONWLOAD", e.getMessage());
+        }
+    }
     // GET DATA FROM PREFERENCES
     private void getPreferences(){
         SharedPreferences sharedPreferences = getSharedPreferences("USER", MODE_PRIVATE);
@@ -354,6 +374,44 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         user = new User(userId, userName, userEmail, "");
     }
 
+    // CHECK AND REQUEST PERMISION
+    private void requestPermisionWriteExternalStorage(){
+        int MyVersion = Build.VERSION.SDK_INT;
+        if (MyVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            if (!checkIfAlreadyHavePermission()) {
+                requestForSpecificPermission();
+            }
+        }
+    }
+
+    // CHECK PERMISSION
+    private Boolean checkIfAlreadyHavePermission(){
+        int result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(result == PackageManager.PERMISSION_GRANTED){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void requestForSpecificPermission(){
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},101);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case 101:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //granted
+                } else {
+                    //not granted
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
     // LIKE AND UNLIKE
     public void like(LikeSong likeSong) {
         new LikeSongData().like(likeSong, new LikeSongAsyncRespone() {

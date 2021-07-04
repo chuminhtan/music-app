@@ -172,7 +172,7 @@ public class SongData {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("API", error.getMessage());
+                Log.d("API", error.getMessage().toString());
             }
         });
         // Access the RequestQueue through your AppController class.

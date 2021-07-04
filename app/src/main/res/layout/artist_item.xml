@@ -8,6 +8,7 @@
     app:cardPreventCornerOverlap="false">
 
     <androidx.cardview.widget.CardView
+
         android:id="@+id/carview_artist_item"
         app:cardCornerRadius="40dp"
         android:layout_width="wrap_content"
