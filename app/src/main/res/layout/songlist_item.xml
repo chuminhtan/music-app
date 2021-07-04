@@ -55,16 +55,6 @@
                 android:textSize="@dimen/text_song_artist" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/imageview_option_songitem"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/ic_baseline_more_vert_50"
-            app:tint="@color/colorTextBlack" />
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

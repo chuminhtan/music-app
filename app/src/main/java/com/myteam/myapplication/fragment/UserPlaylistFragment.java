@@ -37,6 +37,9 @@ public class UserPlaylistFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_user_playlist, container, false);
         recyclerView = view.findViewById(R.id.recyclerview_user_playlist);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+
         getUser();
         getUserPlaylist(user);
         return view;
@@ -48,8 +51,6 @@ public class UserPlaylistFragment extends Fragment {
             public void processFinished(ArrayList<Playlist> playlists) {
 
                 userPlaylistAdapter = new UserPlaylistAdapter(getActivity(), R.layout.user_playlist_item, playlists);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(view.getContext(), LinearLayoutManager.HORIZONTAL, false);
-                recyclerView.setLayoutManager(layoutManager);
                 recyclerView.setAdapter(userPlaylistAdapter);
             }
         });

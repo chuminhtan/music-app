@@ -46,7 +46,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="50dp"
                 android:elevation="6dp"
-                android:src="@mipmap/ic_launcher"/>
+                android:src="@drawable/playicon"/>
             <ImageView
                 android:id="@+id/button_like_playlist"
                 android:layout_width="50dp"

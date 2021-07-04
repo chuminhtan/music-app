@@ -40,7 +40,7 @@ public class ServerInfo {
     public static final String RESPONSE_SUCCESS = "success";
     public static final String RESPONSE_FAIL = "fail";
     public static final String LIKE_SONG = "/" + USER + "/like";
-    public static final String REPONSE_LIKED_SONG = USER + "/liked_song";
+    public static final String REPONSE_LIKED_SONG = "/" + USER + "/liked_song";
     public static final String USER_PLAYLIST_CREATE = USER + "/new_userplaylist";
     public static final String ADD_SONG_USERPLAYLIST = USER + "/addsong_to_userplaylist";
 }
