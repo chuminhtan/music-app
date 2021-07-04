@@ -27,7 +27,7 @@ public class LikeSongData {
 
         final Map<String, String> mapResponse = new HashMap<>();
         try {
-            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.USER + "/like";
+            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.LIKE_SONG;
             final JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_id", likeSong.getUserId());
             jsonBody.put("song_id", likeSong.getSongId());
@@ -64,7 +64,7 @@ public class LikeSongData {
 
     // CHECK SONG LIKED
     public void checkIfLikeSong(final int SongId, final int UserId, final CheckLikeSongAsyncResponse callback) {
-        String url = ServerInfo.SERVER_BASE + "/user/liked_song" + "/" + UserId +"/" + SongId;
+        String url = ServerInfo.SERVER_BASE + ServerInfo.REPONSE_LIKED_SONG + "/" + UserId +"/" + SongId;
         Log.d("API", "URL = " + url);
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {

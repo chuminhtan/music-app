@@ -3,31 +3,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragment.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <RelativeLayout
         android:layout_width="match_parent"
-
         android:layout_height="match_parent">
 
-        <SearchView
-            android:id="@+id/search_field"
+        <EditText
+            android:id="@+id/edit_search_field"
+            android:layout_width="363dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:hint="Nhập tên bài hát, nghệ sĩ, playlist cần tìm" />
+
+        <ImageView
+            android:id="@+id/imageview_search"
+            android:layout_width="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="45dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_baseline_search_24" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:iconifiedByDefault="false"
-            android:queryHint="Tên Bài Hát" />
+            android:layout_below="@id/edit_search_field"
+            android:layout_marginTop="0dp"
+            app:tabSelectedTextColor="@color/black"
+            app:tabTextColor="@color/grey">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:paddingHorizontal="@dimen/padding_horizontal"
-            android:id="@+id/recyclerview_search_song"
-            android:layout_below="@id/search_field"
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabSongs"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bài hát" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabPlaylist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Playlist" />
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/tabArtists"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nghệ sĩ" />
+
+        </com.google.android.material.tabs.TabLayout>
+        <androidx.viewpager.widget.ViewPager
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:id="@+id/ViewPager"
+            android:layout_below="@id/tabbar">
+        </androidx.viewpager.widget.ViewPager>
+
     </RelativeLayout>
-
-
-
-
 </FrameLayout>

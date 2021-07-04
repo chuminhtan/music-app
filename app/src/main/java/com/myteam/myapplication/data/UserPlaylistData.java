@@ -24,7 +24,7 @@ public class UserPlaylistData {
 
         final Map<String, String> mapResponse = new HashMap<>();
         try {
-            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.USER + "/new_userplaylist";
+            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.USER_PLAYLIST_CREATE;
             final JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_playlist_name", playlist.getName());
             jsonBody.put("user_playlist_use_id", playlist.getUser().getId());
@@ -67,7 +67,7 @@ public class UserPlaylistData {
         Log.d("USERPLAYLIST", "song id, playlist id" + String.valueOf(SongId) + " " + String.valueOf(PlaylistId));
         final Map<String, String> mapResponse = new HashMap<>();
         try {
-            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.USER + "/addsong_to_userplaylist";
+            final String URL = ServerInfo.SERVER_BASE + "/" + ServerInfo.ADD_SONG_USERPLAYLIST;
             final JSONObject jsonBody = new JSONObject();
             jsonBody.put("user_playlist_id",PlaylistId);
             jsonBody.put("user_playlist_song_id", SongId);

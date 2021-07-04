@@ -1,62 +1,43 @@
 package com.myteam.myapplication.adapter;
 
-import android.app.Activity;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.myteam.myapplication.R;
-import com.myteam.myapplication.model.Song;
-import com.myteam.myapplication.util.ServerInfo;
-import com.squareup.picasso.Picasso;
 
-import java.util.List;
+import com.myteam.myapplication.fragment.ArtistFragment;
+import com.myteam.myapplication.fragment.PlaylistsFragment;
+import com.myteam.myapplication.fragment.SongFragment;
 
-public class ListSongBySearchAdapter extends ArrayAdapter<Song> {
 
-    private Activity context;
+import org.jetbrains.annotations.NotNull;
 
-    public ListSongBySearchAdapter(Activity context, int layoutID, List<Song> objects) {
-        super(context, layoutID, objects);
-        this.context = context;
+
+public class ListSongBySearchAdapter extends FragmentPagerAdapter {
+
+    private int numberOfTabs;
+    public ListSongBySearchAdapter(FragmentManager fm, int numberOfTabs) {
+        super(fm);
+        this.numberOfTabs = numberOfTabs;
+    }
+    @NonNull
+    @NotNull
+    @Override
+    public Fragment getItem(int position) {
+        switch (position){
+            case 0:
+                return new SongFragment();
+            case 1:
+                return new PlaylistsFragment();
+            case 2:
+                return new ArtistFragment();
+        }
+        return null;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_vertical_white_text, null, false);
-        }
-        // Get item
-        Song song = getItem(position);
-
-        //Get view
-        ImageView vert_item_image = convertView.findViewById(R.id.vert_item_image);
-        TextView vert_item_song = convertView.findViewById(R.id.vert_item_song);
-        TextView vert_item_artist = convertView.findViewById(R.id.vert_item_artist);
-
-        // Set fullname
-        if (song.getName() != null) {
-            vert_item_song.setText((song.getName()));
-        } else {
-            vert_item_song.setText("");
-        }
-
-        // Set Artist
-        if (song.getArtist() != null) {
-            vert_item_artist.setText(song.getArtistsName());
-        } else {
-            vert_item_artist.setText("");
-        }
-
-        // Set image
-        String url_img = ServerInfo.SERVER_BASE + "/" + ServerInfo.STORAGE_SONG_IMG + "/" + song.getImg();
-        Log.d("IMG", url_img);
-        Picasso.with(getContext()).load(url_img).into(vert_item_image);
-        Picasso.with(getContext()).setLoggingEnabled(true);
-        return convertView;
+    public int getCount() {
+        return numberOfTabs;
     }
 }

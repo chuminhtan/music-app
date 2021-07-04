@@ -22,6 +22,7 @@ import java.util.List;
 public class ArtistData {
     private Artist artist;
     private List<Artist> artistList;
+    private List<Artist> artistSimilar;
 
     public Artist getArtist() {
         return artist;
@@ -112,6 +113,41 @@ public class ArtistData {
                             e.printStackTrace();
                         }
                         callback.processFinished(artistList);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        // Access the RequestQueue through your AppController class.
+        AppController.getInstance().addToRequestQueue(jsonArrayRequest);
+    }
+
+    // GET ARTIST WITH SIMILAR
+    public void getArtistSimilar(final ArtistListAsyncRespone callback, String word) {
+        artistSimilar = new ArrayList<Artist>();
+        String url = ServerInfo.SERVER_BASE + "/" +ServerInfo.ARTIST_SIMILAR + "/" + word;
+        Log.d("ARTISTDATA", "Started from Artist Data");
+        Log.d("API", "URL = " + url);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            int size = response.length();
+                            for(int i = 0; i < size; i++) {
+                                JSONObject obj = response.getJSONObject(i);
+                                Artist artist_child = new Artist();
+                                artist_child.setId(obj.getInt("AR_ID"));
+                                artist_child.setName(obj.getString("AR_NAME"));
+                                artist_child.setImg(obj.getString("AR_IMG"));
+                                artist_child.setStory(obj.getString("AR_STORY"));
+                                artistSimilar.add(artist_child);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        callback.processFinished(artistSimilar);
                     }
                 }, new Response.ErrorListener() {
             @Override

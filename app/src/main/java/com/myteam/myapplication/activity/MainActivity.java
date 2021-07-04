@@ -17,6 +17,7 @@ import com.myteam.myapplication.fragment.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
 
+
     // Khai báo TabLayout cho menu
     private TabLayout tabLayout;
     // Khai báo View Pager
