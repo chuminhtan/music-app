@@ -19,6 +19,7 @@ import com.myteam.myapplication.adapter.MainViewPagerAdapter;
 import com.myteam.myapplication.data.SongData;
 import com.myteam.myapplication.fragment.HomeFragment;
 import com.myteam.myapplication.fragment.NoUserFragment;
+import com.myteam.myapplication.fragment.OfflineFragment;
 import com.myteam.myapplication.fragment.SearchFragment;
 import com.myteam.myapplication.fragment.UserFragment;
 
@@ -72,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         mainViewPagerAdapter.addFragment(new HomeFragment(), "");
         mainViewPagerAdapter.addFragment(new SearchFragment(), "");
         mainViewPagerAdapter.addFragment(new UserFragment(), "");
+        mainViewPagerAdapter.addFragment(new OfflineFragment(),"");
         mainViewPagerAdapter.notifyDataSetChanged();
     }
 
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_circle_dish);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_search_30);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_supervised_user_circle_50);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_library_music_30);
     }
 
 }

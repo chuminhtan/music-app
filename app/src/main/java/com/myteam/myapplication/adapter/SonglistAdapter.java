@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.activity.PlayActivity;
 import com.myteam.myapplication.model.Song;
+import com.myteam.myapplication.util.ServerInfo;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -50,7 +51,13 @@ public class SonglistAdapter extends RecyclerView.Adapter<SonglistAdapter.MyView
 
         holder.txtArtistName.setText(song.getArtistsName());
 
-        Picasso.with(mContext).load(song.getUrlImage()).into(holder.imgSongSquare);
+        if (song.getImg().isEmpty()) {
+            Picasso.with(mContext).load(ServerInfo.SERVER_BASE +"/storage/music.png").into(holder.imgSongSquare);
+        } else{
+            Picasso.with(mContext).load(song.getUrlImage()).into(holder.imgSongSquare);
+        }
+
+
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

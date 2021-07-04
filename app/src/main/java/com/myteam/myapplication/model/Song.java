@@ -22,6 +22,7 @@ public class Song implements Serializable, Cloneable {
     private String img;
     private ArrayList<Artist> artists = new ArrayList<>();
     private boolean isActive;
+    private String uri;
 
     @NonNull
     @Override
@@ -32,6 +33,13 @@ public class Song implements Serializable, Cloneable {
     public Song() {
     }
 
+    public String getUri(){
+        return uri;
+    }
+
+    public void setUri(String uri){
+        this.uri = uri;
+    }
     public boolean isActive() {
         return isActive;
     }

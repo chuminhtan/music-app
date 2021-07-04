@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,6 +38,7 @@ import com.myteam.myapplication.fragment.CurrentPlaylistFragment;
 import com.myteam.myapplication.fragment.DishFragment;
 import com.myteam.myapplication.model.Song;
 import com.myteam.myapplication.service.MusicService;
+import com.myteam.myapplication.util.ServerInfo;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -279,10 +281,27 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         startService(intent);
 
         // Change background
-        changeBackground(song.getUrlImage());
-        musicService.createMediaPlayer();
+        if(song.getImg().isEmpty()) {
+            changeBackground(ServerInfo.SERVER_BASE + "/storage/music.png");
+            Log.d("PLAYMUSIC", "imageurl: " + ServerInfo.SERVER_BASE + "/storage/music.png");
+        } else {
+            Log.d("PLAYMUSIC", "From PlayMusic " + song.getImg());
+            changeBackground(song.getUrlImage());
+        }
+
+
+
         seekBarPlay.setMax(100);
-        prepareMediaPlayer(song.getUrlSrc());
+        if(song.getUri() == null) {
+            // URL
+            Log.d("PLAYMUSIC", "From PlayActivity, Uri " );
+            musicService.createMediaPlayer(null, null);
+            prepareMediaPlayer(song.getUrlSrc());
+        } else {
+            //URI
+            Log.d("PLAYMUSIC", "From PlayActivity, Uri " +Uri.parse(song.getUri()));
+            musicService.createMediaPlayer(getApplication(), Uri.parse(song.getUri()));
+        }
         musicService.start();
 
         // Change song name image
@@ -290,7 +309,11 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
             // change icon play/pause
             btnPlayPause.setImageResource(R.drawable.ic_pause_circle);
             updateSeekBar();
-            changeSongImageFromDishFragment(song.getUrlImage());
+            if(song.getImg().isEmpty()) {
+                changeSongImageFromDishFragment(ServerInfo.SERVER_BASE + "/storage/music.png");
+            } else {
+                changeSongImageFromDishFragment(song.getUrlImage());
+            }
             // Set song name
             txtSongName.setText(song.getName());
             txtSongArtist.setText(song.getArtistsName());
@@ -417,7 +440,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
     }
 
-    // PREPARE MEDIA PLAYER
+    // PREPARE MEDIA PLAYER URL
     private void prepareMediaPlayer(String url) {
         Log.d("URL", url);
         try {
@@ -428,6 +451,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
             Toast.makeText(PlayActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+//mp.setDataSource(context, uri);
 
     // UPDATE SEEK BAR
     private Runnable update = new Runnable() {

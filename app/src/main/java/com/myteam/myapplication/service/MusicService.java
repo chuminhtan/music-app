@@ -3,10 +3,12 @@ package com.myteam.myapplication.service;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -24,6 +26,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 
 import static com.myteam.myapplication.controller.AppController.ACTION_NEXT;
@@ -151,14 +154,14 @@ public class MusicService extends Service {
                 mediaPlayer.release();
 
                 if (songlist != null) {
-                    createMediaPlayer();
+                    createMediaPlayer(getApplication(),Uri.parse(song.getUri()));
 
                     mediaPlayer.setDataSource(song.getUrlSrc());
                     mediaPlayer.prepare();
                     mediaPlayer.start();
                 }
             } else {
-                createMediaPlayer();
+                createMediaPlayer(getApplication(), Uri.parse(song.getUri()));
                 mediaPlayer.setDataSource(song.getUrlSrc());
                 mediaPlayer.prepare();
                 mediaPlayer.start();
@@ -196,8 +199,13 @@ public class MusicService extends Service {
         mediaPlayer.seekTo(position);
     }
 
-    public void createMediaPlayer() {
-        mediaPlayer = new MediaPlayer();
+    public void createMediaPlayer(Context context, Uri uri) {
+        if (uri == null) {
+            mediaPlayer = new MediaPlayer();
+        } else {
+            mediaPlayer = MediaPlayer.create(context,uri);
+        }
+
     }
 
     public void pause() {
