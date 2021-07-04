@@ -1,8 +1,10 @@
 package com.myteam.myapplication.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,45 +17,44 @@ import com.myteam.myapplication.R;
 import com.myteam.myapplication.adapter.MainViewPagerAdapter;
 import com.myteam.myapplication.data.SongData;
 import com.myteam.myapplication.fragment.HomeFragment;
+import com.myteam.myapplication.fragment.NoUserFragment;
 import com.myteam.myapplication.fragment.SearchFragment;
 import com.myteam.myapplication.fragment.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
-
-    // Khai báo TabLayout cho menu
+    public static boolean RELOAD_MENU_TAB = false;
     private TabLayout tabLayout;
-    // Khai báo View Pager
     private ViewPager viewPager;
+    MainViewPagerAdapter mainViewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        createUser();
-        // Ánh xạ thành phần ra View
         mappingComponent();
-
-        // Khởi tạo menu tab
         init();
     }
 
-
-    // Ánh Xạ Các Thành Phần Từ MainActivity Đến View
-    private void mappingComponent() {
-        tabLayout = findViewById(R.id.myTabLayout);
-        viewPager = findViewById(R.id.myViewPager);
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (RELOAD_MENU_TAB) {
+            init();
+            RELOAD_MENU_TAB = false;
+        }
     }
 
+    private void mappingComponent() {
+    }
 
-    // Khởi tạo ViewPager chứa các Fragment
     private void init() {
-        MainViewPagerAdapter mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager()); // Truyền vào Fragment Quản lý tại Activity
+        tabLayout = findViewById(R.id.myTabLayout);
+        viewPager = findViewById(R.id.myViewPager);
 
+        mainViewPagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         // Thêm 3 Fragment vào bộ chuyển đổi mainView
-        mainViewPagerAdapter.addFragment(new HomeFragment(),"");
-        mainViewPagerAdapter.addFragment(new SearchFragment(), "");
-        mainViewPagerAdapter.addFragment(new UserFragment(), "");
+        createTab();
 
         // Set Adapter cho view pager
         viewPager.setAdapter(mainViewPagerAdapter);
@@ -62,20 +63,21 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         // Thiết Lập Icon
+        createIcon();
+    }
+
+    private void createTab() {
+        mainViewPagerAdapter.removeAllFragment();
+        mainViewPagerAdapter.addFragment(new HomeFragment(), "");
+        mainViewPagerAdapter.addFragment(new SearchFragment(), "");
+        mainViewPagerAdapter.addFragment(new UserFragment(), "");
+        mainViewPagerAdapter.notifyDataSetChanged();
+    }
+
+    private void createIcon() {
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_circle_dish);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_baseline_search_30);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_baseline_supervised_user_circle_50);
     }
 
-    // User
-    private void createUser() {
-
-
-        SharedPreferences sharedPreferences = getSharedPreferences("USER", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("user_name", "User Name 1");
-            editor.putString("user_email", "User Email 1");
-            editor.putInt("user_id", 1);
-            editor.apply();
-    }
 }

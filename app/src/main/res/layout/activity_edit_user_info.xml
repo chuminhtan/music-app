@@ -13,6 +13,16 @@
         android:theme="@style/ToolbarTheme2"
         android:layout_height="?attr/actionBarSize"/>
 
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:text="Đăng Xuất"
+        android:background="@drawable/custom_button_2"
+        android:textColor="@color/colorCustomBlack1"
+        android:layout_marginVertical="15dp"
+        android:layout_gravity="center"/>
+
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
@@ -21,7 +31,7 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/colorMain"
-        android:layout_marginVertical="40dp"
+        android:layout_marginVertical="20dp"
         />
 
     <TextView
@@ -30,7 +40,7 @@
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="5dp"
         android:text="Tên"
-        android:textColor="@color/colorMain"
+        android:textColor="@color/colorTextBlack"
         android:textSize="20dp"/>
 
     <EditText
@@ -41,36 +51,32 @@
         android:selectAllOnFocus="true"
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="20dp"
-        android:enabled="false"
         />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="5dp"
-        android:text="Email"
-        android:textColor="@color/colorMain"
+        android:text="Nhập mật khẩu hiện tại"
+        android:textColor="@color/colorTextBlack"
         android:textSize="20dp"/>
 
     <EditText
-        android:id="@+id/edittext_useremail_info"
+        android:id="@+id/edittext_password_current"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textEmailAddress"
+        android:inputType="textPassword"
         android:selectAllOnFocus="true"
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="20dp"
-        android:enabled="false"
         />
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="5dp"
         android:text="Nhập mật khẩu mới"
-        android:textColor="@color/colorMain"
+        android:textColor="@color/colorTextBlack"
         android:textSize="20dp"/>
 
     <EditText
@@ -89,7 +95,7 @@
         android:layout_marginHorizontal="50dp"
         android:layout_marginBottom="5dp"
         android:text="Nhập lại mật khẩu mới"
-        android:textColor="@color/colorMain"
+        android:textColor="@color/colorTextBlack"
         android:textSize="20dp"/>
 
     <EditText

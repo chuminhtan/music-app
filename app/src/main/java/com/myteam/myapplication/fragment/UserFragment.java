@@ -17,12 +17,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.activity.EditUserInfoActivity;
 import com.myteam.myapplication.activity.LikedSongListActivity;
+import com.myteam.myapplication.activity.LoginActivity;
 import com.myteam.myapplication.activity.MainActivity;
 import com.myteam.myapplication.model.User;
 
@@ -37,17 +39,15 @@ public class UserFragment extends Fragment {
     View view;
     private TextView txtUserName;
     private ImageButton btnSettings;
-    private ImageButton btnLikedSongs;
+    Button btnEnterLogin;
     User user;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_user, container, false );
+        view = inflater.inflate(R.layout.fragment_user, container, false);
         init();
         getUser();
-        txtUserName.setText(user.getName());
-
         btnSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,27 +55,46 @@ public class UserFragment extends Fragment {
             }
         });
 
-        btnLikedSongs.setOnClickListener(new View.OnClickListener() {
+        btnEnterLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LikedSongListActivity.class));
+                startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
 
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getUser();
+        changeUI();
+    }
+
     private void init() {
         txtUserName = view.findViewById(R.id.textview_user_name);
         btnSettings = view.findViewById(R.id.btn_user_settings);
-        btnLikedSongs = view.findViewById(R.id.btn_list_liked_song);
+        btnEnterLogin = view.findViewById(R.id.button_enter_login);
     }
 
     private void getUser() {
-        user = new User();
         SharedPreferences sharedPref = getContext().getSharedPreferences("USER", Context.MODE_PRIVATE);
-        user.setId(sharedPref.getInt("user_id", -1));
-        user.setName(sharedPref.getString("user_name", ""));
-        user.setEmail(sharedPref.getString("user_email", ""));
+            user = new User();
+            user.setId(sharedPref.getInt("user_id", 0));
+            user.setName(sharedPref.getString("user_name", ""));
+            user.setEmail(sharedPref.getString("user_email", ""));
+    }
+
+    private void changeUI() {
+        if (user.getId() == 0) {
+            txtUserName.setText("Chưa đăng nhập");
+            btnEnterLogin.setVisibility(View.VISIBLE);
+            btnSettings.setVisibility(View.GONE);
+        } else {
+            txtUserName.setText(user.getName());
+            btnEnterLogin.setVisibility(View.GONE);
+            btnSettings.setVisibility(View.VISIBLE);
+        }
     }
 }

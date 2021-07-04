@@ -34,8 +34,14 @@ public class NoUserFragment extends Fragment {
         btnLogin = view.findViewById(R.id.button_nouser_login);
         txtUserName = view.findViewById(R.id.textview_user_name);
         txtUserEmail = view.findViewById(R.id.textview_user_email);
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainIntent = new Intent(requireActivity(), LoginActivity.class);
+                requireActivity().startActivity(mainIntent);
+            }
+        });
 
-        setInfo();
         return view;
     }
 
@@ -57,14 +63,6 @@ public class NoUserFragment extends Fragment {
             txtUserName.setText("Chưa Đăng Nhập");
             txtUserEmail.setText("");
             btnLogin.setText("Đăng Nhập");
-
-            btnLogin.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent mainIntent = new Intent(requireActivity(), LoginActivity.class);
-                    requireActivity().startActivity(mainIntent);
-                }
-            });
         } else {
             isLogin = true;
             String name = sharedPreferences.getString("user_name", "NULL");
@@ -90,12 +88,4 @@ public class NoUserFragment extends Fragment {
         }
     }
 
-    // RELOAD FRAGMENT
-    private void reloadFragment() {
-//        Fragment currentFragment = Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);;
-        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.detach(this);
-        fragmentTransaction.attach(this);
-        fragmentTransaction.commit();
-    }
 }

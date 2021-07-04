@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_user"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="none"
@@ -29,19 +30,20 @@
                     android:id="@+id/textview_user_name"
                     android:layout_width="320dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="20dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="Username"
                     android:textColor="@color/teal_700"
-                    android:textSize="35dp" />
+                    android:textSize="25dp" />
 
                 <ImageButton
                     android:id="@+id/btn_user_settings"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_baseline_settings_40"
-                    android:background="@drawable/background_transparent"/>
-
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="fitCenter"
+                    android:layout_marginRight="20dp"
+                    android:background="@drawable/background_transparent"
+                    android:src="@drawable/ic_account_circle_45" />
 
             </LinearLayout>
 
@@ -64,20 +66,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:textSize="30dp"
+                android:textSize="20dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:textColor="@color/teal_700"
                 android:text="Liked Songs" />
-
-            <ImageButton
-                android:id="@+id/btn_list_liked_song"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_baseline_keyboard_arrow_right_50"
-                android:background="@drawable/background_transparent"
-                android:layout_marginLeft="350dp"
-                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
@@ -85,7 +78,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:textColor="@color/teal_700"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -101,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
-            android:textSize="30dp"
+            android:textSize="20dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:textColor="@color/teal_700"
@@ -112,15 +105,14 @@
             android:name="com.myteam.myapplication.fragment.UserAlbumFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
         <Button
-            android:id="@+id/button_logout"
+            android:id="@+id/button_enter_login"
             android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:text="Đăng Xuất"
-            android:background="@drawable/custom_button_1"
+            android:layout_height="wrap_content"
+            android:text="Đăng Nhập"
+            android:background="@drawable/custom_button_2"
             android:textColor="@color/colorCustomBlack1"
-            android:layout_marginVertical="30dp"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"></Button>
     </LinearLayout>
 </ScrollView>

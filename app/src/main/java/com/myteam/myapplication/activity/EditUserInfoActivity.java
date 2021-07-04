@@ -14,13 +14,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.myteam.myapplication.R;
+import com.myteam.myapplication.data.UserAsyncResponse;
+import com.myteam.myapplication.data.UserData;
+import com.myteam.myapplication.fragment.NoUserFragment;
 import com.myteam.myapplication.model.User;
 
 public class EditUserInfoActivity extends AppCompatActivity {
-    EditText txtUserName, txtUserEmail, txtUserPassword, txtUserPassword2;
-    Button btnEdit;
+    EditText txtUserName, txtCurrentPassword, txtNewPassword, txtNewPassword2;
+    Button btnEdit, btnLogout;
     TextView txtResult;
     Toolbar toolbar;
     User user;
@@ -32,15 +37,14 @@ public class EditUserInfoActivity extends AppCompatActivity {
         getUser();
 
         txtUserName = findViewById(R.id.edittext_username_info);
-        txtUserEmail = findViewById(R.id.edittext_useremail_info);
-        txtUserPassword = findViewById(R.id.edittext_password_info);
-        txtUserPassword2 = findViewById(R.id.edittext_password2_info);
+        txtCurrentPassword = findViewById(R.id.edittext_password_current);
+        txtNewPassword = findViewById(R.id.edittext_password_info);
+        txtNewPassword2 = findViewById(R.id.edittext_password2_info);
         btnEdit = findViewById(R.id.button_edit_user_info);
         txtResult = findViewById(R.id.textview_result_edit);
         toolbar = findViewById(R.id.toolbar_edit_user);
-
         txtUserName.setText(user.getName());
-        txtUserEmail.setText(user.getEmail());
+        btnLogout = findViewById(R.id.button_logout);
 
         // Create Toolbar
         setSupportActionBar(toolbar);
@@ -53,49 +57,53 @@ public class EditUserInfoActivity extends AppCompatActivity {
             }
         });
 
+        // Event
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearText();
+                removeUser();
+                finish();
+            }
+        });
+
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = txtUserName.getText().toString().trim();
-                String email = txtUserEmail.getText().toString().trim();
-                String password = txtUserPassword.getText().toString().trim();
-                String password2 = txtUserPassword2.getText().toString().trim();
+                final String name = txtUserName.getText().toString().trim();
+                final String currentPassword = txtCurrentPassword.getText().toString().trim();
+                final String newPassword = txtNewPassword.getText().toString().trim();
+                String newPassword2 = txtNewPassword2.getText().toString().trim();
 
-                if (password.isEmpty()) {
-                    txtResult.setText("Vui lòng nhập đầy đủ 2 trường mật khẩu");
+                if (name.isEmpty() || currentPassword.isEmpty() || newPassword.isEmpty() || newPassword2.isEmpty()) {
+                    txtResult.setText("Vui lòng nhập đủ thông tin");
                     return;
-                } else if (password2.isEmpty()) {
-                    txtResult.setText("Vui lòng nhập đầy đủ 2 trường mật khẩu");
-                    return;
-                } else if (!password.equals(password2)) {
+                } else if (!newPassword.equals(newPassword2)) {
                     txtResult.setText("Xác Nhận Mật Khẩu Không Khớp");
+                    clearText();
                     return;
                 }
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(EditUserInfoActivity.this);
-                builder.setTitle("Xác nhận đổi mật khẩu");
-                builder.setMessage("Mật khẩu của bạn sẽ được thay đổi");
-
+                builder.setTitle("Xác nhận");
+                builder.setMessage("Thông tin của bạn sẽ được thay đổi");
                 builder.setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // Hàm đổi mật khẩu ở đây
-
-                        Toast.makeText(getApplicationContext(), "Mật khẩu đã được cập nhật",Toast.LENGTH_SHORT).show();
+                        // Hàm đổi thông tin ở đây
+                        changeUser(name, currentPassword, newPassword);
                     }
                 });
 
                 builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getApplicationContext(), "Hủy đổi mật khẩu",Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getApplicationContext(), "Đã Hủy", Toast.LENGTH_SHORT).show();
                     }
                 });
-
                 AlertDialog dialog = builder.create();
                 // Hiển thị dialog
                 dialog.show();
-
             }
         });
     }
@@ -108,6 +116,31 @@ public class EditUserInfoActivity extends AppCompatActivity {
         user.setEmail(sharedPref.getString("user_email", ""));
     }
 
+    private void changeUser(String name, String currentPassword, String newPassword) {
+        new UserData().changeInfo(user.getId(), name, currentPassword, newPassword, new UserAsyncResponse() {
+            @Override
+            public void processFinished(String result) {
+                if (result.equalsIgnoreCase("success")) {
+                    txtResult.setText("Đã Cập Nhật Thông Tin");
+                    clearText();
+                } else {
+                    txtResult.setText("Cập Nhật Không Thành Công");
+                }
+            }
+        });
+    }
 
+    private void clearText() {
+        txtCurrentPassword.setText("");
+        txtNewPassword.setText("");
+        txtNewPassword2.setText("");
+    }
+
+    private void removeUser() {
+        SharedPreferences sharedPreferences = EditUserInfoActivity.this.getSharedPreferences("USER", Context.MODE_PRIVATE);
+        sharedPreferences.edit().clear().commit();
+        MainActivity.RELOAD_MENU_TAB = true;
+        Toast.makeText(EditUserInfoActivity.this, "Đã Đăng Xuất", Toast.LENGTH_SHORT).show();
+    }
 
 }

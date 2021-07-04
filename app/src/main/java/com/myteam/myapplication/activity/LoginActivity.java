@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity {
                     TextView txtMessageDialog = dialogView.findViewById(R.id.textview_message_custom_dialog_success);
 
                     builder.setView(dialogView);
-                    AlertDialog alertDialog = builder.create();
+                    final AlertDialog alertDialog = builder.create();
                     alertDialog.show();
 
                     txtTitleDialog.setText("Đã Đăng Nhập");
@@ -139,14 +139,34 @@ public class LoginActivity extends AppCompatActivity {
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            MainActivity.RELOAD_MENU_TAB=true;
+                            alertDialog.cancel();
                             finish();
+
+                        }
+                    });
+
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    ViewGroup viewGroup = findViewById(android.R.id.content);
+
+                    View dialogView = LayoutInflater.from(v.getContext()).inflate(R.layout.dialog_custom_success, viewGroup, false);
+                    Button btn = dialogView.findViewById(R.id.button_success);
+                    TextView txtTitleDialog = dialogView.findViewById(R.id.textview_title_custom_dialog_success);
+                    TextView txtMessageDialog = dialogView.findViewById(R.id.textview_message_custom_dialog_success);
+
+                    builder.setView(dialogView);
+                    final AlertDialog alertDialog = builder.create();
+                    alertDialog.show();
+                    txtTitleDialog.setText("Đăng Nhập Không Thành Công");
+                    txtMessageDialog.setText("Vui Lòng Thử Lại");
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.cancel();
                         }
                     });
                 }
-
-                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG);
-
-
             }
         });
     }
