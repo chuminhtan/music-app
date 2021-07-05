@@ -99,24 +99,24 @@ public class OfflineFragment extends Fragment {
         File[] files = file.listFiles();
         if (files == null) {
             playAll.setVisibility(View.GONE);
-            return null;
         } else {
             playAll.setVisibility(View.VISIBLE);
-        }
-        for (File singlefile : files)
-        {
-            if (singlefile.isDirectory() && !singlefile.isHidden())
+            for (File singlefile : files)
             {
-                arrayList.addAll(findSong(singlefile));
-            }
-            else
-            {
-                if (singlefile.getName().endsWith(".mp3") || singlefile.getName().endsWith(".wav"))
+                if (singlefile.isDirectory() && !singlefile.isHidden())
                 {
-                    arrayList.add(singlefile);
+                    arrayList.addAll(findSong(singlefile));
+                }
+                else
+                {
+                    if (singlefile.getName().endsWith(".mp3") || singlefile.getName().endsWith(".wav"))
+                    {
+                        arrayList.add(singlefile);
+                    }
                 }
             }
         }
+
         return arrayList;
     }
 

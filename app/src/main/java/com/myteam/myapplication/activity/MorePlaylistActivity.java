@@ -31,7 +31,7 @@ public class MorePlaylistActivity extends AppCompatActivity {
 
         type = getTypeFromIntent();
         mapping();
-        loadData();
+        loadData(type);
     }
 
     private void mapping() {
@@ -55,8 +55,8 @@ public class MorePlaylistActivity extends AppCompatActivity {
         });
     }
 
-    private void loadData() {
-        new PlaylistData().getPlaylistsType(1,0, new PlaylistArrayListAsyncResponse() {
+    private void loadData(int type) {
+        new PlaylistData().getPlaylistsType(type,0, new PlaylistArrayListAsyncResponse() {
             @Override
             public void processFinished(ArrayList<Playlist> playlistArrayList) {
                 playlistSquareAdapter = new PlaylistSquareAdapter(MorePlaylistActivity.this, R.layout.playlist_square_item ,playlistArrayList);
