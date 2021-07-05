@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.adapter.PlaylistSquareAdapter;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 public class MorePlaylistActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     PlaylistSquareAdapter playlistSquareAdapter;
+    TextView tvToolbar;
     Toolbar toolbar;
     int type;
 
@@ -28,8 +30,17 @@ public class MorePlaylistActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_more_playlist);
+        tvToolbar = findViewById(R.id.textview_toolbar_more_playlist);
 
         type = getTypeFromIntent();
+
+        if (type == 1) {
+            tvToolbar.setText("Chủ Đề Hot");
+        } else if (type == 2) {
+            tvToolbar.setText("Top 100");
+        } else if (type == 3) {
+            tvToolbar.setText("Tâm Trạng Và Hoạt Động");
+        }
         mapping();
         loadData(type);
     }
