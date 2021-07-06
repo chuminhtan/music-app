@@ -8,16 +8,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.myteam.myapplication.R;
 import com.myteam.myapplication.data.PlaylistArrayListAsyncResponse;
 import com.myteam.myapplication.data.PlaylistData;
+import com.myteam.myapplication.data.UserCreatedPlaylistAsyncResponse;
+import com.myteam.myapplication.data.UserCreatedPlaylistData;
+import com.myteam.myapplication.data.UserData;
 import com.myteam.myapplication.model.Playlist;
 import com.myteam.myapplication.model.Song;
 import com.myteam.myapplication.model.User;
@@ -26,18 +31,19 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-public class PlaylistBottomSheetAdapter extends BottomSheetDialogFragment  {
+public class PlaylistBottomSheetAdapter extends BottomSheetDialogFragment {
     private ImageView btn_add_playlist;
     private RecyclerView recyclerView_user_playlist;
     private UserPlaylistAdapter userPlaylistAdapter;
     private CardView cardView;
     private User user;
     private int songId;
+
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
     public View onCreateView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.playlist_bottom_sheet_layout,container, false);
+        View v = inflater.inflate(R.layout.playlist_bottom_sheet_layout, container, false);
         Bundle bundle = getArguments();
         songId = bundle.getInt("song_id");
         Log.d("USERPLAYLIST", "From PlaylistBottomSheetAdapter, SongId" + String.valueOf(songId));
@@ -63,13 +69,13 @@ public class PlaylistBottomSheetAdapter extends BottomSheetDialogFragment  {
         recyclerView_user_playlist.setLayoutManager(mLayoutManager);
     }
 
-    public void openDialog(){
+    public void openDialog() {
         CreateUserPlaylistDialog createUserPlaylistDialog = new CreateUserPlaylistDialog();
-        createUserPlaylistDialog.show(getActivity().getSupportFragmentManager(),"Tạo Playlist" );
+        createUserPlaylistDialog.show(getActivity().getSupportFragmentManager(), "Tạo Playlist");
     }
 
     //Get UserID
-    private void getPreferences(){
+    private void getPreferences() {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", 0);
         String userName = sharedPreferences.getString("user_name", "");
@@ -77,15 +83,14 @@ public class PlaylistBottomSheetAdapter extends BottomSheetDialogFragment  {
         Log.d("Playlist BottomSheet", "User Information: " + String.valueOf(userId) + " " + userName + " " + userEmail);
         user = new User(userId, userName, userEmail, "");
     }
-    public void getData(){
-        new PlaylistData().getPlaylistsType(0,0, new PlaylistArrayListAsyncResponse() {
-            @Override
-            public void processFinished(ArrayList<Playlist> playlistArrayList) {
 
-                userPlaylistAdapter = new UserPlaylistAdapter(getActivity(),R.layout.playlist_bottom_sheet_item,playlistArrayList, user.getName(),songId);
+    public void getData() {
+        new UserCreatedPlaylistData().getPlaylistsbyId(user, new UserCreatedPlaylistAsyncResponse() {
+            @Override
+            public void processFinished(ArrayList<Playlist> playlists) {
+                userPlaylistAdapter = new UserPlaylistAdapter(getActivity(), R.layout.playlist_bottom_sheet_item, playlists, user.getName(), songId);
                 recyclerView_user_playlist.setAdapter(userPlaylistAdapter);
             }
         });
     }
-
 }

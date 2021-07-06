@@ -143,9 +143,7 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         adapterPlay.AddFragment(currentPlaylistFragment);
         viewPager.setAdapter(adapterPlay);
 
-        if (user.getId() !=0) {
-            checkLikeSong(user.getId(), SONGLIST.get(currentPositionSong).getId());
-        }
+
     }
 
     private void prevThreadBtn() {
@@ -270,6 +268,8 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
         playThread.start();
     }
 
+
+    // event add playlist
     public void btnAddPlaylist() {
         playThread = new Thread() {
             @Override
@@ -422,9 +422,6 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
                 result = mapResponse.get("result");
                 message = mapResponse.get("message");
 
-                Log.d("USERPLAYLIST", "From PlayActivity-addNewUserPlaylist Started");
-                Log.d("LIKESONG", "From PlayActivity-createUserPlaylist response : " + mapResponse.get("result") + " | " + mapResponse.get("message"));
-
                 if (result.equalsIgnoreCase("success")) {
                     Log.d("USERPLAYLIST", "Add New User Playlist Successfully");
                     Bundle bundle = new Bundle();
@@ -515,6 +512,9 @@ public class PlayActivity extends AppCompatActivity implements ActionPlaying, Se
 
         // Change Song When Complete
         musicService.onCompleted(isShuffle);
+        if (user.getId() !=0) {
+            checkLikeSong(user.getId(), SONGLIST.get(currentPositionSong).getId());
+        }
     }
 
     // CHANGE SONG IMAGE FROM DISH FRAGMENT

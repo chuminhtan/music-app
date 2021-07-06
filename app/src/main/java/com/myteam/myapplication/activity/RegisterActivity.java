@@ -71,7 +71,9 @@ public class RegisterActivity extends AppCompatActivity {
                 } else if (!isValidEmail(email)) {
                     txtResult.setText("Email Không Hợp Lệ ");
                     return;
-
+                } else if (password.length() < 6 || password.length() > 32) {
+                    txtResult.setText("Mật khẩu chứa từ 6 - 32 ký tự");
+                    return;
                 } else if (!password.equals(password2)) {
                     txtResult.setText("Xác Nhận Mật Khẩu Không Khớp");
                     return;
